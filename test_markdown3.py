@@ -2,16 +2,9 @@
 
 import markdown3
 
-def test_emphasis():
-    data = [
-        ("*Hello*", "<em>Hello</em>"),
-        ("*Hello World*", "<em>Hello World</em>"),
-        ("Hello *World*", "Hello <em>World</em>"),
-        ("**Hello**", "<strong>Hello</strong>"),
-        ("**Hello World**", "<strong>Hello World</strong>"),
-        ("Hello **World**", "Hello <strong>World</strong>"),
-        ]
+def test_body():
+    data = "Hello World"
+    expected = ['body', ['plain', "Hello World"]]
+    result = markdown3.parse(data)
+    assert expected == result
 
-    for text, expected in data:
-        result = markdown3.parse(text)
-        assert expected == result
