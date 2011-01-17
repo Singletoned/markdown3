@@ -3,10 +3,16 @@
 import pegger as pg
 
 def body():
-    return pg.Many(plain)
+    return pg.Many(plain, emphasis)
 
 def plain():
     return pg.Words()
+
+def emphasis():
+    return (
+        lambda: pg.Ignore('*'),
+        lambda: pg.Words(),
+        lambda: pg.Ignore('*'))
 
 def parse(text):
     return pg.parse_string(text, body)
