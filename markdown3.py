@@ -3,7 +3,7 @@
 import pegger as pg
 
 def body():
-    return pg.Many(plain, emphasis)
+    return pg.Many(plain, emphasis, link)
 
 def plain():
     return pg.Words()
@@ -13,6 +13,21 @@ def emphasis():
         pg.Ignore('*'),
         pg.Words(),
         pg.Ignore('*'))
+
+def link():
+    return (link_text, link_url)
+
+def link_text():
+    return (
+        pg.Ignore("["),
+        pg.Words(),
+        pg.Ignore("]"))
+
+def link_url():
+    return (
+        pg.Ignore("("),
+        pg.Not(")"),
+        pg.Ignore(")"))
 
 def parse(text):
     return pg.parse_string(text, body)
