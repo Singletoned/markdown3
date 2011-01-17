@@ -10,9 +10,9 @@ def plain():
 
 def emphasis():
     return (
-        lambda: pg.Ignore('*'),
-        lambda: pg.Words(),
-        lambda: pg.Ignore('*'))
+        pg.Ignore('*'),
+        pg.Words(),
+        pg.Ignore('*'))
 
 def parse(text):
     return pg.parse_string(text, body)
