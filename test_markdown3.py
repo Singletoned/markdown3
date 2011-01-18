@@ -50,3 +50,13 @@ def test_code():
          ['plain', " in it"]]]
     result = markdown3.parse(data)
     assert expected == result
+
+def test_paragraph():
+    data = """
+A paragraph.
+"""
+    expected = [
+        'body',
+        ['paragraph', "A paragraph."]]
+    result = markdown3.parse(data)
+    assert expected == result
