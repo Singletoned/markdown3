@@ -44,7 +44,11 @@ def code():
 def paragraph():
     return (
         pg.Ignore("\n"),
-        pg.Not("\n"),
+        pg.Many(
+            plain,
+            emphasis,
+            link,
+            code),
         pg.Ignore("\n"))
 
 def parse(text):

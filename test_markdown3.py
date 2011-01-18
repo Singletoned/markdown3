@@ -57,6 +57,25 @@ A paragraph.
 """
     expected = [
         'body',
-        ['paragraph', "A paragraph."]]
+        ['paragraph',
+         ['plain', "A paragraph."]]]
+    result = markdown3.parse(data)
+    assert expected == result
+
+    data = """
+A paragraph with *some bold*, `some code` and [a link to Google](http://www.google.com) in it.
+"""
+    expected = [
+        'body',
+        ['paragraph',
+         [['plain', "A paragraph with "],
+          ['emphasis', "some bold"],
+          ['plain', ", "],
+          ['code', "some code"],
+          ['plain', " and "],
+          ['link',
+           [['link_text', "a link to Google"],
+            ['link_url', "http://www.google.com"]]],
+          ['plain', " in it."]]]]
     result = markdown3.parse(data)
     assert expected == result
