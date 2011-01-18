@@ -40,3 +40,13 @@ def test_link():
          ['plain', " in it"]]]
     result = markdown3.parse(data)
     assert expected == result
+
+def test_code():
+    data = "text with `some code` in it"
+    expected = [
+        'body',
+        [['plain', "text with "],
+         ['code', "some code"],
+         ['plain', " in it"]]]
+    result = markdown3.parse(data)
+    assert expected == result

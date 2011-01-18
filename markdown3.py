@@ -3,7 +3,12 @@
 import pegger as pg
 
 def body():
-    return pg.Many(plain, emphasis, link)
+    return pg.Many(
+        plain,
+        emphasis,
+        link,
+        code,
+        )
 
 def plain():
     return pg.Words()
@@ -28,6 +33,12 @@ def link_url():
         pg.Ignore("("),
         pg.Not(")"),
         pg.Ignore(")"))
+
+def code():
+    return (
+        pg.Ignore("`"),
+        pg.Not("`"),
+        pg.Ignore("`"))
 
 def parse(text):
     return pg.parse_string(text, body)
