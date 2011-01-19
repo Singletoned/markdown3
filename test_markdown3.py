@@ -82,10 +82,19 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
 
 def test_title():
     data = """
-#A level one title#
+# A level one title #
 """
     expected = [
         'body',
-        ['title_level_1', "A level one title"]]
+        ['title_level_1', " A level one title "]]
+    result = markdown3.parse(data)
+    assert expected == result
+
+    data = """
+# A level one title
+"""
+    expected = [
+        'body',
+        ['title_level_1', " A level one title"]]
     result = markdown3.parse(data)
     assert expected == result

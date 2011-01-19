@@ -56,7 +56,9 @@ def title_level_1():
     return (
         pg.Ignore("\n#"),
         pg.Words(),
-        pg.Ignore("#\n"))
+        pg.Ignore(
+            (pg.Optional("#"),
+             "\n")))
 
 def parse(text):
     return pg.parse_string(text, body)
