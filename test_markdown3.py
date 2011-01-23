@@ -125,7 +125,8 @@ def test_bullet_level_1():
 
     expected = [
         'body',
-        ['numbered_bullet', "A numbered bullet"]]
+        ['numbered_bullet',
+         ['plain', "A numbered bullet"]]]
 
     result = markdown3.parse(data)
     assert expected == result
@@ -133,12 +134,23 @@ def test_bullet_level_1():
     data = """
 1. A numbered bullet
 2. Another numbered bullet
+3. A bullet with *bold*
+4. A bullet with `code`
 """
 
     expected = [
         'body',
-        [['numbered_bullet', "A numbered bullet"],
-         ['numbered_bullet', "Another numbered bullet"]]]
+        [['numbered_bullet',
+          ['plain', "A numbered bullet"]],
+         ['numbered_bullet',
+          ['plain', "Another numbered bullet"]],
+         ['numbered_bullet',
+          [['plain', "A bullet with "],
+           ['emphasis', "bold"]]],
+         ['numbered_bullet',
+          [['plain', "A bullet with "],
+           ['code', "code"]]]
+         ]]
 
     result = markdown3.parse(data)
     assert expected == result

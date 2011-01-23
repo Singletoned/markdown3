@@ -78,7 +78,11 @@ def numbered_bullet():
         pg.Ignore(pg.Optional("\n")),
         pg.Ignore(digits),
         pg.Ignore(". "),
-        pg.Words(),
+        pg.Many(
+            plain,
+            emphasis,
+            link,
+            code),
         pg.Ignore("\n"))
 
 
