@@ -4,6 +4,7 @@ import pegger as pg
 
 def body():
     return pg.Many(
+        title_level_2,
         title_level_1,
         paragraph,
         plain,
@@ -58,6 +59,14 @@ def title_level_1():
         pg.Words(),
         pg.Ignore(
             (pg.Optional("#"),
+             "\n")))
+
+def title_level_2():
+    return (
+        pg.Ignore("\n##"),
+        pg.Words(),
+        pg.Ignore(
+            (pg.Optional("##"),
              "\n")))
 
 def parse(text):
