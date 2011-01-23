@@ -47,11 +47,7 @@ def code():
 def paragraph():
     return (
         pg.Ignore("\n"),
-        pg.Many(
-            plain,
-            emphasis,
-            link,
-            code),
+        span_text,
         pg.Ignore("\n"))
 
 def title_level_1():
@@ -78,12 +74,14 @@ def numbered_bullet():
         pg.Ignore(pg.Optional("\n")),
         pg.Ignore(digits),
         pg.Ignore(". "),
-        pg.Many(
-            plain,
-            emphasis,
-            link,
-            code),
+        span_text,
         pg.Ignore("\n"))
+
+span_text = pg.Many(
+    plain,
+    emphasis,
+    link,
+    code),
 
 
 def parse(text):
