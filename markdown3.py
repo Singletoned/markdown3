@@ -75,7 +75,7 @@ def digits():
 
 def numbered_bullet():
     return (
-        pg.Ignore("\n"),
+        pg.Ignore(pg.Optional("\n")),
         pg.Ignore(digits),
         pg.Ignore(". "),
         pg.Words(),
