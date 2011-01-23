@@ -117,3 +117,15 @@ def test_title_level_2():
         ['title_level_2', " A level two title"]]
     result = markdown3.parse(data)
     assert expected == result
+
+def test_bullet_level_1():
+    data = """
+1. A numbered bullet
+"""
+
+    expected = [
+        'body',
+        ['numbered_bullet', "A numbered bullet"]]
+
+    result = markdown3.parse(data)
+    assert expected == result

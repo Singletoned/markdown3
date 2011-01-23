@@ -6,6 +6,7 @@ def body():
     return pg.Many(
         title_level_2,
         title_level_1,
+        numbered_bullet,
         paragraph,
         plain,
         emphasis,
@@ -68,6 +69,18 @@ def title_level_2():
         pg.Ignore(
             (pg.Optional("##"),
              "\n")))
+
+def digits():
+    return pg.Words(letters="1234567890")
+
+def numbered_bullet():
+    return (
+        pg.Ignore("\n"),
+        pg.Ignore(digits),
+        pg.Ignore(". "),
+        pg.Words(),
+        pg.Ignore("\n"))
+
 
 def parse(text):
     return pg.parse_string(text, body)
