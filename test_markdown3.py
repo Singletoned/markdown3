@@ -118,15 +118,15 @@ def test_title_level_2():
     result = markdown3.parse(data)
     assert expected == result
 
-def test_bullet_level_1():
+def test_ordered_list():
     data = """
-1. A numbered bullet
-"""
+1. A numbered bullet"""
 
     expected = [
         'body',
-        ['numbered_bullet',
-         ['plain', "A numbered bullet"]]]
+        ['ordered_list', 
+         ['numbered_bullet',
+          ['plain', "A numbered bullet"]]]]
 
     result = markdown3.parse(data)
     assert expected == result
@@ -140,19 +140,45 @@ def test_bullet_level_1():
 
     expected = [
         'body',
-        [['numbered_bullet',
-          ['plain', "A numbered bullet"]],
-         ['numbered_bullet',
-          ['plain', "Another numbered bullet"]],
-         ['numbered_bullet',
-          [['plain', "A bullet with "],
-           ['emphasis', "bold"]]],
-         ['numbered_bullet',
-          [['plain', "A bullet with "],
-           ['code', "code"]]]
-         ]]
+        ['ordered_list',
+         [['numbered_bullet',
+           ['plain', "A numbered bullet"]],
+          [['numbered_bullet',
+            ['plain', "Another numbered bullet"]],
+           ['numbered_bullet',
+            [['plain', "A bullet with "],
+             ['emphasis', "bold"]]],
+           ['numbered_bullet',
+            [['plain', "A bullet with "],
+             ['code', "code"]]]]]]]
 
     result = markdown3.parse(data)
     assert expected == result
 
+def test_nested_bullets():
+    data = """
+1. A numbered bullet
+  2. A bullet in a sublist
+  3. A bullet with *bold* in a sublist
+4. A bullet with `code` in the first list
+"""
+
+    expected = [
+        'body',
+        ['ordered_list',
+         [['numbered_bullet',
+           ['plain', "A numbered bullet"]],
+          [['ordered_list',
+            [['numbered_bullet', ['plain', "A bullet in a sublist"]],
+             ['numbered_bullet',
+              [['plain', "A bullet with "],
+               ['emphasis', "bold"],
+               ['plain', " in a sublist"]]]]],
+          ['numbered_bullet',
+           [['plain', "A bullet with "],
+            ['code', "code"],
+            ['plain', " in the first list"]]]]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
     
