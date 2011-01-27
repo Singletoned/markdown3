@@ -32,7 +32,7 @@ def test_link():
         ['link_text', "a link to Google"],
         ['link_url', "http://www.google.com"]]
     result = markdown3.pg.parse_string(data, markdown3.link)
-    
+
     data = "Text with [a link to Google](http://www.google.com) in it"
     expected = [
         'body',
@@ -135,7 +135,7 @@ def test_ordered_list():
 
     expected = [
         'body',
-        ['ordered_list', 
+        ['ordered_list',
          ['numbered_bullet',
           ['',
            ['',
@@ -216,4 +216,3 @@ def test_nested_bullets():
 
     result = markdown3.parse(data)
     assert expected == result
-    
