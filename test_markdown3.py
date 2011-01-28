@@ -216,3 +216,34 @@ def test_nested_bullets():
 
     result = markdown3.parse(data)
     assert expected == result
+
+def test_html():
+    data = """
+1. A numbered bullet
+  2. A bullet in a sublist
+  3. A bullet with *bold* in a sublist
+4. A bullet with `code` in the first list
+"""
+
+    expected = """
+<body>
+  <ol>
+    <li>
+      A numbered bullet
+    </li>
+    <ol>
+      <li>
+        A bullet in a sublist
+      </li>
+      <li>
+        A bullet with <strong>bold</strong> in a sublist
+      </li>
+    </ol>
+    <li>
+      A bullet with <code>code</code> in the first list
+    </li>
+  </ol>
+</body>""".strip()
+
+    result = markdown3.to_html(data)
+    assert expected == result

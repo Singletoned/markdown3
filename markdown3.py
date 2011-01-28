@@ -95,3 +95,6 @@ span_text = pg.Many(
 
 def parse(text):
     return pg.parse_string(text, body)
+
+def to_html(data):
+    return pg.htmlise(pg.parse_string(data, body))
