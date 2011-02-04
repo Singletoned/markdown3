@@ -16,6 +16,7 @@ def test_body():
     result = markdown3.to_html(data)
     assert expected == result
 
+
 def test_emphasis():
     data = "Hello *World*"
     expected = [
@@ -52,6 +53,7 @@ def test_emphasis():
     """.strip()
     result = markdown3.to_html(data)
     assert expected == result
+
 
 def test_link():
     data = "[a link to Google](http://www.google.com)"
@@ -92,6 +94,7 @@ def test_link():
 </body>
     '''.strip()
 
+
 def test_code():
     data = "text with `some code` in it"
     expected = [
@@ -112,6 +115,7 @@ def test_code():
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
+
 
 def test_paragraph():
     data = """
@@ -174,6 +178,7 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
     result = markdown3.to_html(data)
     assert expected == result
 
+
 def test_title_level_1():
     data = """
 # A level one title #
@@ -213,6 +218,7 @@ def test_title_level_1():
     result = markdown3.to_html(data)
     assert expected == result
 
+
 def test_title_level_2():
     data = """
 ## A level two title ##
@@ -251,6 +257,7 @@ def test_title_level_2():
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
+
 
 def test_ordered_list():
     data = """
@@ -336,6 +343,7 @@ def test_ordered_list():
 
     result = markdown3.to_html(data)
     assert expected == result
+
 
 def test_nested_bullets():
     data = """
