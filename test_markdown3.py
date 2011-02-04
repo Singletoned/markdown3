@@ -8,6 +8,14 @@ def test_body():
     result = markdown3.parse(data)
     assert expected == result
 
+    expected = """
+<body>
+  Hello World
+</body>
+    """.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
 def test_emphasis():
     data = "Hello *World*"
     expected = [
@@ -15,6 +23,15 @@ def test_emphasis():
         ['plain', "Hello "],
         ['emphasis', "World"]]
     result = markdown3.parse(data)
+    assert expected == result
+
+    expected = """
+<body>
+  Hello 
+  <strong>World</strong>
+</body>
+    """.strip()
+    result = markdown3.to_html(data)
     assert expected == result
 
     data = "Text with *some bold* in it"
@@ -26,6 +43,16 @@ def test_emphasis():
     result = markdown3.parse(data)
     assert expected == result
 
+    expected = """
+<body>
+  Text with 
+  <strong>some bold</strong>
+   in it
+</body>
+    """.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
 def test_link():
     data = "[a link to Google](http://www.google.com)"
     expected = [
@@ -34,6 +61,14 @@ def test_link():
         ['link_url',
          ['', "http://www.google.com"]]]
     result = markdown3.pg.parse_string(data, markdown3.link)
+    assert expected == result
+
+    expected = '''
+<body>
+  <a href="http://www.google.com">a link to Google</a>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
     assert expected == result
 
     data = "Text with [a link to Google](http://www.google.com) in it"
@@ -48,6 +83,15 @@ def test_link():
     result = markdown3.parse(data)
     assert expected == result
 
+    expected = '''
+<body>
+  Text with
+  <a href="http://ww.google.com">
+    a link to Google
+  </a>
+</body>
+    '''.strip()
+
 def test_code():
     data = "text with `some code` in it"
     expected = [
@@ -57,6 +101,16 @@ def test_code():
          ['', "some code"]],
         ['plain', " in it"]]
     result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  text with 
+  <code>some code</code>
+   in it
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
     assert expected == result
 
 def test_paragraph():
@@ -70,6 +124,16 @@ A paragraph.
           ['',
            ['plain', "A paragraph."]]]]]
     result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <p>
+    A paragraph.
+  </p>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
     assert expected == result
 
     data = """
@@ -94,6 +158,22 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
     result = markdown3.parse(data)
     assert expected == result
 
+    expected = '''
+<body>
+  <p>
+    A paragraph with 
+    <strong>some bold</strong>
+    , 
+    <code>some code</code>
+     and 
+    <a href="http://www.google.com">a link to Google</a>
+     in it.
+  </p>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
 def test_title_level_1():
     data = """
 # A level one title #
@@ -104,6 +184,16 @@ def test_title_level_1():
     result = markdown3.parse(data)
     assert expected == result
 
+    expected = '''
+<body>
+  <h1>
+     A level one title 
+  </h1>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
     data = """
 # A level one title
 """
@@ -111,6 +201,16 @@ def test_title_level_1():
         'body',
         ['title_level_1', " A level one title"]]
     result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <h1>
+     A level one title
+  </h1>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
     assert expected == result
 
 def test_title_level_2():
@@ -123,6 +223,16 @@ def test_title_level_2():
     result = markdown3.parse(data)
     assert expected == result
 
+    expected = '''
+<body>
+  <h2>
+     A level two title 
+  </h2>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
     data = """
 ## A level two title
 """
@@ -130,6 +240,16 @@ def test_title_level_2():
         'body',
         ['title_level_2', " A level two title"]]
     result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <h2>
+     A level two title
+  </h2>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
     assert expected == result
 
 def test_ordered_list():
@@ -145,6 +265,18 @@ def test_ordered_list():
             ['plain', "A numbered bullet"]]]]]]
 
     result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <ol>
+    <li>
+      A numbered bullet
+    </li>
+  </ol>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
     assert expected == result
 
     data = """
@@ -179,6 +311,30 @@ def test_ordered_list():
              ['', "code"]]]]]]]]
 
     result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <ol>
+    <li>
+      A numbered bullet
+    </li>
+    <li>
+      Another numbered bullet
+    </li>
+    <li>
+      A bullet with 
+      <strong>bold</strong>
+    </li>
+    <li>
+      A bullet with 
+      <code>code</code>
+    </li>
+  </ol>
+</body>
+    '''.strip()
+
+    result = markdown3.to_html(data)
     assert expected == result
 
 def test_nested_bullets():
@@ -220,14 +376,6 @@ def test_nested_bullets():
     result = markdown3.parse(data)
     assert expected == result
 
-def test_html():
-    data = """
-1. A numbered bullet
-  2. A bullet in a sublist
-  3. A bullet with *bold* in a sublist
-4. A bullet with `code` in the first list
-"""
-
     expected = """
 <body>
   <ol>
@@ -239,11 +387,15 @@ def test_html():
         A bullet in a sublist
       </li>
       <li>
-        A bullet with <strong>bold</strong> in a sublist
+        A bullet with 
+        <strong>bold</strong>
+         in a sublist
       </li>
     </ol>
     <li>
-      A bullet with <code>code</code> in the first list
+      A bullet with 
+      <code>code</code>
+       in the first list
     </li>
   </ol>
 </body>""".strip()
