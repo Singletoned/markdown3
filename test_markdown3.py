@@ -28,8 +28,7 @@ def test_emphasis():
 
     expected = """
 <body>
-  Hello 
-  <strong>World</strong>
+  Hello <strong>World</strong>
 </body>
     """.strip()
     result = markdown3.to_html(data)
@@ -46,9 +45,7 @@ def test_emphasis():
 
     expected = """
 <body>
-  Text with 
-  <strong>some bold</strong>
-   in it
+  Text with <strong>some bold</strong> in it
 </body>
     """.strip()
     result = markdown3.to_html(data)
@@ -60,8 +57,7 @@ def test_link():
     expected = [
         'link',
         ['link_text', "a link to Google"],
-        ['link_url',
-         ['', "http://www.google.com"]]]
+        ['link_url', "http://www.google.com"]]
     result = markdown3.pg.parse_string(data, markdown3.link)
     assert expected == result
 
@@ -80,17 +76,14 @@ def test_link():
         ['link',
          ['link_text', "a link to Google"],
          ['link_url',
-          ['', "http://www.google.com"]]],
+          "http://www.google.com"]],
         ['plain', " in it"]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
 <body>
-  Text with
-  <a href="http://ww.google.com">
-    a link to Google
-  </a>
+  Text with <a href="http://ww.google.com"> a link to Google </a>
 </body>
     '''.strip()
 
@@ -100,17 +93,14 @@ def test_code():
     expected = [
         'body',
         ['plain', "text with "],
-        ['code',
-         ['', "some code"]],
+        ['code', "some code"],
         ['plain', " in it"]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
 <body>
-  text with 
-  <code>some code</code>
-   in it
+  text with <code>some code</code> in it
 </body>
     '''.strip()
     result = markdown3.to_html(data)
@@ -124,9 +114,7 @@ A paragraph.
     expected = [
         'body',
         ['paragraph',
-         ['',
-          ['',
-           ['plain', "A paragraph."]]]]]
+         ['plain', "A paragraph."]]]
     result = markdown3.parse(data)
     assert expected == result
 
@@ -146,32 +134,22 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
     expected = [
         'body',
         ['paragraph',
-         ['',
-          ['',
-           ['plain', "A paragraph with "],
-           ['emphasis', "some bold"],
-           ['plain', ", "],
-           ['code',
-            ['', "some code"]],
-           ['plain', " and "],
-           ['link',
-            ['link_text', "a link to Google"],
-            ['link_url',
-             ['', "http://www.google.com"]]],
-           ['plain', " in it."]]]]]
+         ['plain', "A paragraph with "],
+         ['emphasis', "some bold"],
+         ['plain', ", "],
+         ['code', "some code"],
+         ['plain', " and "],
+         ['link',
+          ['link_text', "a link to Google"],
+          ['link_url', "http://www.google.com"]],
+         ['plain', " in it."]]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
 <body>
   <p>
-    A paragraph with 
-    <strong>some bold</strong>
-    , 
-    <code>some code</code>
-     and 
-    <a href="http://www.google.com">a link to Google</a>
-     in it.
+    A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.
   </p>
 </body>
     '''.strip()
@@ -267,9 +245,7 @@ def test_ordered_list():
         'body',
         ['ordered_list',
          ['numbered_bullet',
-          ['',
-           ['',
-            ['plain', "A numbered bullet"]]]]]]
+          ['plain', "A numbered bullet"]]]]
 
     result = markdown3.parse(data)
     assert expected == result
@@ -297,25 +273,15 @@ def test_ordered_list():
         'body',
         ['ordered_list',
          ['numbered_bullet',
-          ['',
-           ['',
-            ['plain', "A numbered bullet"]]]],
-         ['',
-          ['numbered_bullet',
-           ['',
-            ['',
-             ['plain', "Another numbered bullet"]]]],
-          ['numbered_bullet',
-           ['',
-            ['',
-             ['plain', "A bullet with "],
-            ['emphasis', "bold"]]]],
-          ['numbered_bullet',
-           ['',
-            ['',
-             ['plain', "A bullet with "],
-            ['code',
-             ['', "code"]]]]]]]]
+          ['plain', "A numbered bullet"]],
+         ['numbered_bullet',
+          ['plain', "Another numbered bullet"]],
+         ['numbered_bullet',
+          ['plain', "A bullet with "],
+          ['emphasis', "bold"]],
+         ['numbered_bullet',
+          ['plain', "A bullet with "],
+          ['code', "code"]]]]
 
     result = markdown3.parse(data)
     assert expected == result
@@ -330,12 +296,10 @@ def test_ordered_list():
       Another numbered bullet
     </li>
     <li>
-      A bullet with 
-      <strong>bold</strong>
+      A bullet with <strong>bold</strong>
     </li>
     <li>
-      A bullet with 
-      <code>code</code>
+      A bullet with <code>code</code>
     </li>
   </ol>
 </body>
@@ -357,29 +321,18 @@ def test_nested_bullets():
         'body',
         ['ordered_list',
          ['numbered_bullet',
-          ['',
-           ['',
-            ['plain', "A numbered bullet"]]]],
-         ['',
-          ['ordered_list',
-           ['numbered_bullet',
-            ['',
-             ['',
-              ['plain', "A bullet in a sublist"]]]],
-           ['',
-            ['numbered_bullet',
-             ['',
-              ['',
-               ['plain', "A bullet with "],
-              ['emphasis', "bold"],
-              ['plain', " in a sublist"]]]]]],
+          ['plain', "A numbered bullet"]],
+         ['ordered_list',
           ['numbered_bullet',
-           ['',
-            ['',
-             ['plain', "A bullet with "],
-            ['code',
-             ['', "code"]],
-            ['plain', " in the first list"]]]]]]]
+           ['plain', "A bullet in a sublist"]],
+          ['numbered_bullet',
+           ['plain', "A bullet with "],
+           ['emphasis', "bold"],
+           ['plain', " in a sublist"]]],
+         ['numbered_bullet',
+          ['plain', "A bullet with "],
+          ['code', "code"],
+          ['plain', " in the first list"]]]]
 
     result = markdown3.parse(data)
     assert expected == result
@@ -395,15 +348,11 @@ def test_nested_bullets():
         A bullet in a sublist
       </li>
       <li>
-        A bullet with 
-        <strong>bold</strong>
-         in a sublist
+        A bullet with <strong>bold</strong> in a sublist
       </li>
     </ol>
     <li>
-      A bullet with 
-      <code>code</code>
-       in the first list
+      A bullet with <code>code</code> in the first list
     </li>
   </ol>
 </body>""".strip()
