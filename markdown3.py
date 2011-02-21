@@ -94,7 +94,7 @@ span_text = pg.Many(
     code),
 
 def code_line():
-    return pg.Not("\n")
+    return pg.Escaped(pg.Not("\n"))
 
 code_paragraph = (
     pg.Ignore("\n"),

@@ -368,7 +368,7 @@ def test_code_block():
         'body',
         ['code_block',
          ['code_line',
-          "<p>This is some html</p>"]]]
+          "&lt;p&gt;This is some html&lt;/p&gt;"]]]
 
     result = markdown3.parse(data)
     assert expected == result
