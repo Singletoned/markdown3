@@ -372,3 +372,14 @@ def test_code_block():
 
     result = markdown3.parse(data)
     assert expected == result
+
+    expected = """
+<body>
+  <code>
+    &lt;p&gt;This is some html&lt;/p&gt;
+  </code>
+</body>
+    """.strip()
+
+    result = markdown3.to_html(data)
+    assert expected == result
