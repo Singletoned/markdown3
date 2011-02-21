@@ -359,3 +359,16 @@ def test_nested_bullets():
 
     result = markdown3.to_html(data)
     assert expected == result
+
+def test_code_block():
+    data = """
+    <p>This is some html</p>"""
+
+    expected = [
+        'body',
+        ['code_block',
+         ['code_line',
+          "<p>This is some html</p>"]]]
+
+    result = markdown3.parse(data)
+    assert expected == result

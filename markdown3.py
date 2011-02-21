@@ -4,14 +4,15 @@ import pegger as pg
 
 def body():
     return pg.Many(
+        code,
         title_level_2,
         title_level_1,
         ordered_list,
         paragraph,
+        code_block,
         plain,
         emphasis,
         link,
-        code,
         )
 
 def plain():
@@ -92,6 +93,16 @@ span_text = pg.Many(
     link,
     code),
 
+def code_line():
+    return pg.Not("\n")
+
+code_paragraph = (
+    pg.Ignore("\n"),
+    pg.Many(
+        code_line))
+
+def code_block():
+    return pg.Indented(code_paragraph)
 
 def parse(text):
     return pg.parse_string(text, body)
