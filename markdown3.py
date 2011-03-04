@@ -82,13 +82,14 @@ def ordered_list():
         pg.Optional(
             pg.Many(
                 numbered_bullet,
-                pg.Indented(
-                    ordered_list))))
+                    ordered_list))),
+        optional=True))
 
 def numbered_bullet():
     return (
         pg.Ignore(
-            pg.Optional("\n")),
+            pg.Optional(
+                pg.Many("\n"))),
         pg.Ignore(digits),
         pg.Ignore(". "),
         span_text)
@@ -103,12 +104,19 @@ def code_line():
     return pg.Escaped(pg.Not("\n"))
 
 code_paragraph = (
-    pg.Ignore("\n"),
+    pg.Ignore(
+        pg.Optional(
+            pg.Many("\n"))),
     pg.Many(
         code_line))
 
 def code_block():
-    return pg.Indented(code_paragraph)
+    return (
+        pg.Ignore(
+            pg.Optional(
+                pg.Many("\n"))),
+        pg.Indented(
+            code_paragraph))
 
 def parse(text):
     return pg.parse_string(text, body)

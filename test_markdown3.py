@@ -215,6 +215,28 @@ def test_title_level_1():
     result = markdown3.to_html(data)
     assert expected == result
 
+    # With extra linebreaks
+
+    data = """
+
+# A level one title
+"""
+    expected = [
+        'body',
+        ['title_level_1', " A level one title"]]
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <h1>
+     A level one title
+  </h1>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
 
 def test_title_level_2():
     data = """
@@ -255,16 +277,64 @@ def test_title_level_2():
     result = markdown3.to_html(data)
     assert expected == result
 
+    # With extra linebreaks
+
+    data = """
+
+## A level two title
+"""
+    expected = [
+        'body',
+        ['title_level_2', " A level two title"]]
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <h2>
+     A level two title
+  </h2>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
+
+def test_title_level_1_and_2():
+    data = """
+# A Header
+
+## A SubHeader
+
+"""
+
+    expected = """
+<body>
+  <h1>
+     A Header
+  </h1>
+  <h2>
+     A SubHeader
+  </h2>
+</body>
+    """.strip()
+
+    result = markdown3.to_html(data)
+    assert expected == result
+
 
 def test_ordered_list():
     data = """
-1. A numbered bullet"""
+1. A numbered bullet
+2. Another numbered bullet"""
 
     expected = [
         'body',
         ['ordered_list',
          ['numbered_bullet',
-          ['plain', "A numbered bullet"]]]]
+          ['plain', "A numbered bullet"]],
+         ['numbered_bullet',
+          ['plain', "Another numbered bullet"]]]]
 
     result = markdown3.parse(data)
     assert expected == result
@@ -275,11 +345,39 @@ def test_ordered_list():
     <li>
       A numbered bullet
     </li>
+    <li>
+      Another numbered bullet
+    </li>
   </ol>
 </body>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
+
+    data = """
+  1. An indented numbered bullet"""
+
+    expected = [
+        'body',
+        ['ordered_list',
+         ['numbered_bullet',
+          ['plain', "An indented numbered bullet"]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <ol>
+    <li>
+      An indented numbered bullet
+    </li>
+  </ol>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
 
     data = """
 1. A numbered bullet
@@ -394,6 +492,44 @@ def test_code_block():
 
     expected = """
 <body>
+  <code>
+    &lt;p&gt;This is some html&lt;/p&gt;
+  </code>
+</body>
+    """.strip()
+
+    result = markdown3.to_html(data)
+    assert expected == result
+
+    # Test list followed by code
+
+    data = """
+
+    1. A bullet point
+
+
+    <p>This is some html</p>
+"""
+
+    expected = [
+        'body',
+        ['ordered_list',
+         ['numbered_bullet',
+          ['plain', "A bullet point"]]],
+        ['code_block',
+         ['code_line',
+          "&lt;p&gt;This is some html&lt;/p&gt;"]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = """
+<body>
+  <ol>
+    <li>
+      A bullet point
+    </li>
+  </ol>
   <code>
     &lt;p&gt;This is some html&lt;/p&gt;
   </code>
