@@ -47,13 +47,16 @@ def code():
 
 def paragraph():
     return (
-        pg.Ignore("\n"),
-        span_text,
-        pg.Ignore("\n"))
+        pg.Ignore(
+            pg.Optional(
+                pg.Many("\n"))),
+        span_text)
 
 def title_level_1():
     return (
-        pg.Ignore("\n#"),
+        pg.Ignore(
+            pg.Many("\n")),
+        pg.Ignore("#"),
         pg.Words(),
         pg.Ignore(
             (pg.Optional("#"),
@@ -61,7 +64,9 @@ def title_level_1():
 
 def title_level_2():
     return (
-        pg.Ignore("\n##"),
+        pg.Ignore(
+            pg.Many("\n")),
+        pg.Ignore("##"),
         pg.Words(),
         pg.Ignore(
             (pg.Optional("##"),
@@ -72,6 +77,11 @@ def digits():
 
 def ordered_list():
     return (
+        pg.Ignore(
+            pg.Optional(
+                pg.Many("\n"))),
+        pg.Indented(
+        (
         numbered_bullet,
         pg.Optional(
             pg.Many(
