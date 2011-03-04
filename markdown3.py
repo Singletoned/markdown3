@@ -4,15 +4,11 @@ import pegger as pg
 
 def body():
     return pg.Many(
-        code,
         title_level_2,
         title_level_1,
         ordered_list,
-        paragraph,
         code_block,
-        plain,
-        emphasis,
-        link,
+        paragraph,
         )
 
 def plain():
