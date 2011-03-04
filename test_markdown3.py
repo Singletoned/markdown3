@@ -426,6 +426,109 @@ def test_ordered_list():
     assert expected == result
 
 
+def test_unordered_list():
+    data = """
+* A bullet
+* Another bullet"""
+
+    expected = [
+        'body',
+        ['unordered_list',
+         ['bullet',
+          ['plain', "A bullet"]],
+         ['bullet',
+          ['plain', "Another bullet"]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <ul>
+    <li>
+      A bullet
+    </li>
+    <li>
+      Another bullet
+    </li>
+  </ul>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
+    data = """
+  * An indented bullet"""
+
+    expected = [
+        'body',
+        ['unordered_list',
+         ['bullet',
+          ['plain', "An indented bullet"]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <ul>
+    <li>
+      An indented bullet
+    </li>
+  </ul>
+</body>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
+
+    data = """
+* A bullet
+* Another bullet
+* A bullet with *bold*
+* A bullet with `code`
+"""
+
+    expected = [
+        'body',
+        ['unordered_list',
+         ['bullet',
+          ['plain', "A bullet"]],
+         ['bullet',
+          ['plain', "Another bullet"]],
+         ['bullet',
+          ['plain', "A bullet with "],
+          ['emphasis', "bold"]],
+         ['bullet',
+          ['plain', "A bullet with "],
+          ['code', "code"]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<body>
+  <ul>
+    <li>
+      A bullet
+    </li>
+    <li>
+      Another bullet
+    </li>
+    <li>
+      A bullet with <strong>bold</strong>
+    </li>
+    <li>
+      A bullet with <code>code</code>
+    </li>
+  </ul>
+</body>
+    '''.strip()
+
+    result = markdown3.to_html(data)
+    assert expected == result
+
+
 def test_nested_bullets():
     data = """
 1. A numbered bullet

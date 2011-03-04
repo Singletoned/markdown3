@@ -7,6 +7,7 @@ def body():
         title_level_2,
         title_level_1,
         ordered_list,
+        unordered_list,
         code_block,
         paragraph,
         )
@@ -92,6 +93,28 @@ def numbered_bullet():
                 pg.Many("\n"))),
         pg.Ignore(digits),
         pg.Ignore(". "),
+        span_text)
+
+def unordered_list():
+    return (
+        pg.Ignore(
+            pg.Optional(
+                pg.Many("\n"))),
+        pg.Indented(
+        (
+        bullet,
+        pg.Optional(
+            pg.Many(
+                bullet,
+                unordered_list))),
+        optional=True))
+
+def bullet():
+    return (
+        pg.Ignore(
+            pg.Optional(
+                pg.Many("\n"))),
+        pg.Ignore("* "),
         span_text)
 
 span_text = pg.Many(
