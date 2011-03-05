@@ -641,3 +641,60 @@ def test_code_block():
 
     result = markdown3.to_html(data)
     assert expected == result
+
+def test_document():
+    data = """
+# A Header
+
+## A SubHeader ##
+
+A paragraph with *some bold*, `some code` and [a link to Google](http://www.google.com) in it.
+
+ 1. A bullet in a list
+ 2. Another bullet
+   * A sublist bullet
+   * Another sublist bullet
+ 3. A bullet in the first list
+
+  A code block with <span>some html</span> in it.
+"""
+
+    expected = """
+<body>
+  <h1>
+     A Header
+  </h1>
+  <h2>
+     A SubHeader 
+  </h2>
+  <p>
+    A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.
+  </p>
+  <ol>
+    <li>
+      A bullet in a list
+    </li>
+    <li>
+      Another bullet
+    </li>
+    <ul>
+      <li>
+        A sublist bullet
+      </li>
+      <li>
+        Another sublist bullet
+      </li>
+    </ul>
+    <li>
+      A bullet in the first list
+    </li>
+  </ol>
+  <code>
+    A code block with &lt;span&gt;some html&lt;/span&gt; in it.
+  </code>
+</body>
+    """.strip()
+
+    result = markdown3.to_html(data)
+    print_quick_pprint_diff(expected, result)
+    assert expected == result

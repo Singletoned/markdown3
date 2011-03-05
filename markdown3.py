@@ -83,7 +83,8 @@ def ordered_list():
         pg.Optional(
             pg.Many(
                 numbered_bullet,
-                    ordered_list))),
+                ordered_list,
+                unordered_list))),
         optional=True))
 
 def numbered_bullet():
@@ -106,7 +107,8 @@ def unordered_list():
         pg.Optional(
             pg.Many(
                 bullet,
-                unordered_list))),
+                unordered_list,
+                ordered_list))),
         optional=True))
 
 def bullet():
