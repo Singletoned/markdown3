@@ -16,79 +16,81 @@ def plain():
     return pg.Words()
 
 def emphasis():
-    return (
+    return pg.AllOf(
         pg.Ignore('*'),
         pg.Words(),
         pg.Ignore('*'))
 
 def link():
-    return (link_text, link_url)
+    return pg.AllOf(link_text, link_url)
 
 def link_text():
-    return (
+    return pg.AllOf(
         pg.Ignore("["),
         pg.Words(),
         pg.Ignore("]"))
 
 def link_url():
-    return (
+    return pg.AllOf(
         pg.Ignore("("),
         pg.Not(")"),
         pg.Ignore(")"))
 
 def code():
-    return (
+    return pg.AllOf(
         pg.Ignore("`"),
         pg.Not("`"),
         pg.Ignore("`"))
 
 def paragraph():
-    return (
+    return pg.AllOf(
         pg.Ignore(
             pg.Optional(
                 pg.Many("\n"))),
         span_text)
 
 def title_level_1():
-    return (
+    return pg.AllOf(
         pg.Ignore(
             pg.Many("\n")),
         pg.Ignore("#"),
         pg.Words(),
         pg.Ignore(
-            (pg.Optional("#"),
-             "\n")))
+            pg.AllOf(
+                pg.Optional("#"),
+                "\n")))
 
 def title_level_2():
-    return (
+    return pg.AllOf(
         pg.Ignore(
             pg.Many("\n")),
         pg.Ignore("##"),
         pg.Words(),
         pg.Ignore(
-            (pg.Optional("##"),
-             "\n")))
+            pg.AllOf(
+                pg.Optional("##"),
+                "\n")))
 
 def digits():
     return pg.Words(letters="1234567890")
 
 def ordered_list():
-    return (
+    return pg.AllOf(
         pg.Ignore(
             pg.Optional(
                 pg.Many("\n"))),
         pg.Indented(
-        (
-        numbered_bullet,
-        pg.Optional(
-            pg.Many(
+            pg.AllOf(
                 numbered_bullet,
-                ordered_list,
-                unordered_list))),
-        optional=True))
+                pg.Optional(
+                    pg.Many(
+                        numbered_bullet,
+                        ordered_list,
+                        unordered_list))),
+            optional=True))
 
 def numbered_bullet():
-    return (
+    return pg.AllOf(
         pg.Ignore(
             pg.Optional(
                 pg.Many("\n"))),
@@ -97,22 +99,22 @@ def numbered_bullet():
         span_text)
 
 def unordered_list():
-    return (
+    return pg.AllOf(
         pg.Ignore(
             pg.Optional(
                 pg.Many("\n"))),
         pg.Indented(
-        (
-        bullet,
-        pg.Optional(
-            pg.Many(
+            pg.AllOf(
                 bullet,
-                unordered_list,
-                ordered_list))),
-        optional=True))
+                pg.Optional(
+                    pg.Many(
+                        bullet,
+                        unordered_list,
+                        ordered_list))),
+            optional=True))
 
 def bullet():
-    return (
+    return pg.AllOf(
         pg.Ignore(
             pg.Optional(
                 pg.Many("\n"))),
@@ -123,12 +125,12 @@ span_text = pg.Many(
     plain,
     emphasis,
     link,
-    code),
+    code)
 
 def code_line():
     return pg.Escaped(pg.Not("\n"))
 
-code_paragraph = (
+code_paragraph = pg.AllOf(
     pg.Ignore(
         pg.Optional(
             pg.Many("\n"))),
@@ -136,7 +138,7 @@ code_paragraph = (
         code_line))
 
 def code_block():
-    return (
+    return pg.AllOf(
         pg.Ignore(
             pg.Optional(
                 pg.Many("\n"))),
