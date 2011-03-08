@@ -45,9 +45,7 @@ def code():
 
 def paragraph():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Optional(
-                pg.Many("\n"))),
+        linebreaks,
         span_text)
 
 def title_level_1():
@@ -77,9 +75,7 @@ def digits():
 
 def ordered_list():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Optional(
-                pg.Many("\n"))),
+        linebreaks,
         pg.Indented(
             pg.AllOf(
                 numbered_bullet,
@@ -92,18 +88,14 @@ def ordered_list():
 
 def numbered_bullet():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Optional(
-                pg.Many("\n"))),
+        linebreaks,
         pg.Ignore(digits),
         pg.Ignore(". "),
         span_text)
 
 def unordered_list():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Optional(
-                pg.Many("\n"))),
+        linebreaks,
         pg.Indented(
             pg.AllOf(
                 bullet,
@@ -116,9 +108,7 @@ def unordered_list():
 
 def bullet():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Optional(
-                pg.Many("\n"))),
+        linebreaks,
         pg.Ignore("* "),
         span_text)
 
@@ -140,20 +130,20 @@ code_paragraph = pg.AllOf(
 
 def code_block():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Optional(
-                pg.Many("\n"))),
+        linebreaks,
         pg.Indented(
             code_paragraph))
 
 def horizontal_rule():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Optional(
-                pg.Many("\n"))),
+        linebreaks,
         pg.Ignore("---"),
         ""
         )
+
+linebreaks = pg.Ignore(
+    pg.Optional(
+        pg.Many("\n")))
 
 def parse(text):
     return pg.parse_string(text, body)
