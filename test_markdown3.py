@@ -642,6 +642,29 @@ def test_code_block():
     result = markdown3.to_html(data)
     assert expected == result
 
+
+def test_horizontal_rules():
+    data = """
+---
+"""
+
+    expected = [
+        'body',
+        [ 'horizontal_rule', ""]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = """
+<body>
+  <hr/>
+</body>
+    """.strip()
+
+    result = markdown3.to_html(data)
+    assert expected == result
+
+
 def test_document():
     data = """
 # A Header
@@ -649,6 +672,8 @@ def test_document():
 ## A SubHeader ##
 
 A paragraph with *some bold*, `some code` and [a link to Google](http://www.google.com) in it.
+
+---
 
  1. A bullet in a list
  2. Another bullet
@@ -670,6 +695,7 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
   <p>
     A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.
   </p>
+  <hr/>
   <ol>
     <li>
       A bullet in a list

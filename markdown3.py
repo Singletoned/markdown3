@@ -4,6 +4,7 @@ import pegger as pg
 
 def body():
     return pg.Many(
+        horizontal_rule,
         title_level_2,
         title_level_1,
         ordered_list,
@@ -144,6 +145,15 @@ def code_block():
                 pg.Many("\n"))),
         pg.Indented(
             code_paragraph))
+
+def horizontal_rule():
+    return pg.AllOf(
+        pg.Ignore(
+            pg.Optional(
+                pg.Many("\n"))),
+        pg.Ignore("---"),
+        ""
+        )
 
 def parse(text):
     return pg.parse_string(text, body)
