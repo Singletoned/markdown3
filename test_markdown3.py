@@ -722,5 +722,4 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
     """.strip()
 
     result = markdown3.to_html(data)
-    print_quick_pprint_diff(expected, result)
     assert expected == result
