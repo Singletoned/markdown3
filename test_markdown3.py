@@ -686,6 +686,34 @@ _ _ _ _ _
     assert expected == result
 
 
+def test_quoted_paragraph():
+    data = """
+> A quoted paragraph
+"""
+
+    expected = [
+        'body',
+        ['blockquote',
+         ['paragraph',
+          ['plain',
+           "A quoted paragraph"]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = """
+<body>
+  <blockquote>
+    <p>
+      A quoted paragraph
+    </p>
+  </blockquote>
+</body>
+    """.strip()
+
+    result = markdown3.to_html(data)
+    assert expected == result
+
 def test_document():
     data = """
 # A Header
@@ -703,6 +731,8 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
  3. A bullet in the first list
 
   A code block with <span>some html</span> in it.
+
+> A quoted paragraph
 """
 
     expected = """
@@ -739,6 +769,11 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
   <code>
     A code block with &lt;span&gt;some html&lt;/span&gt; in it.
   </code>
+  <blockquote>
+    <p>
+      A quoted paragraph
+    </p>
+  </blockquote>
 </body>
     """.strip()
 

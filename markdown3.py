@@ -11,6 +11,7 @@ def body():
         unordered_list,
         code_block,
         paragraph,
+        blockquote,
         )
 
 def plain():
@@ -147,6 +148,13 @@ def horizontal_rule():
         pg.Optional(
             pg.Ignore(
                 pg.Not("\n"))))
+
+def blockquote():
+    return pg.AllOf(
+        linebreaks,
+        pg.Ignore('> '),
+        paragraph
+        )
 
 linebreaks = pg.Ignore(
     pg.Optional(
