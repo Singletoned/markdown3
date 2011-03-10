@@ -647,17 +647,37 @@ def test_code_block():
 def test_horizontal_rules():
     data = """
 ---
+
+- - - -
+
+____
+
+_ _ _ _ _
+
+***
+
+* * * *
 """
 
     expected = [
         'body',
-        [ 'horizontal_rule', ""]]
+        [ 'horizontal_rule', "---"],
+        [ 'horizontal_rule', "- - -"],
+        [ 'horizontal_rule', "___"],
+        [ 'horizontal_rule', "_ _ _"],
+        [ 'horizontal_rule', "***"],
+        [ 'horizontal_rule', "* * *"]]
 
     result = markdown3.parse(data)
     assert expected == result
 
     expected = """
 <body>
+  <hr/>
+  <hr/>
+  <hr/>
+  <hr/>
+  <hr/>
   <hr/>
 </body>
     """.strip()

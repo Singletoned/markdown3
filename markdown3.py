@@ -137,9 +137,16 @@ def code_block():
 def horizontal_rule():
     return pg.AllOf(
         linebreaks,
-        pg.Ignore("---"),
-        ""
-        )
+        pg.OneOf(
+            "---",
+            "___",
+            "***",
+            "- - -",
+            "_ _ _",
+            "* * *"),
+        pg.Optional(
+            pg.Ignore(
+                pg.Not("\n"))))
 
 linebreaks = pg.Ignore(
     pg.Optional(
