@@ -12,11 +12,7 @@ def test_body():
     assert expected == result
 
     expected = """
-<body>
-  <p>
-    Hello World
-  </p>
-</body>
+<p>Hello World</p>
     """.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -33,11 +29,7 @@ def test_emphasis():
     assert expected == result
 
     expected = """
-<body>
-  <p>
-    Hello <strong>World</strong>
-  </p>
-</body>
+<p>Hello <strong>World</strong></p>
     """.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -53,11 +45,7 @@ def test_emphasis():
     assert expected == result
 
     expected = """
-<body>
-  <p>
-    Text with <strong>some bold</strong> in it
-  </p>
-</body>
+<p>Text with <strong>some bold</strong> in it</p>
     """.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -75,11 +63,7 @@ def test_link():
     assert expected == result
 
     expected = '''
-<body>
-  <p>
-    <a href="http://www.google.com">a link to Google</a>
-  </p>
-</body>
+<p><a href="http://www.google.com">a link to Google</a></p>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -98,9 +82,7 @@ def test_link():
     assert expected == result
 
     expected = '''
-<body>
-  Text with <a href="http://ww.google.com"> a link to Google </a>
-</body>
+<p>Text with <a href="http://www.google.com">a link to Google</a> in it</p>
     '''.strip()
 
 
@@ -116,11 +98,7 @@ def test_code():
     assert expected == result
 
     expected = '''
-<body>
-  <p>
-    text with <code>some code</code> in it
-  </p>
-</body>
+<p>text with <code>some code</code> in it</p>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -138,11 +116,7 @@ A paragraph.
     assert expected == result
 
     expected = '''
-<body>
-  <p>
-    A paragraph.
-  </p>
-</body>
+<p>A paragraph.</p>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -166,11 +140,7 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
     assert expected == result
 
     expected = '''
-<body>
-  <p>
-    A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.
-  </p>
-</body>
+<p>A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.</p>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -187,11 +157,7 @@ def test_title_level_1():
     assert expected == result
 
     expected = '''
-<body>
-  <h1>
-     A level one title 
-  </h1>
-</body>
+<h1> A level one title </h1>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -206,11 +172,7 @@ def test_title_level_1():
     assert expected == result
 
     expected = '''
-<body>
-  <h1>
-     A level one title
-  </h1>
-</body>
+<h1> A level one title</h1>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -228,11 +190,7 @@ def test_title_level_1():
     assert expected == result
 
     expected = '''
-<body>
-  <h1>
-     A level one title
-  </h1>
-</body>
+<h1> A level one title</h1>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -249,11 +207,7 @@ def test_title_level_2():
     assert expected == result
 
     expected = '''
-<body>
-  <h2>
-     A level two title 
-  </h2>
-</body>
+<h2> A level two title </h2>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -268,11 +222,7 @@ def test_title_level_2():
     assert expected == result
 
     expected = '''
-<body>
-  <h2>
-     A level two title
-  </h2>
-</body>
+<h2> A level two title</h2>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -290,11 +240,7 @@ def test_title_level_2():
     assert expected == result
 
     expected = '''
-<body>
-  <h2>
-     A level two title
-  </h2>
-</body>
+<h2> A level two title</h2>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -309,14 +255,8 @@ def test_title_level_1_and_2():
 """
 
     expected = """
-<body>
-  <h1>
-     A Header
-  </h1>
-  <h2>
-     A SubHeader
-  </h2>
-</body>
+<h1> A Header</h1>
+<h2> A SubHeader</h2>
     """.strip()
 
     result = markdown3.to_html(data)
@@ -340,16 +280,10 @@ def test_ordered_list():
     assert expected == result
 
     expected = '''
-<body>
-  <ol>
-    <li>
-      A numbered bullet
-    </li>
-    <li>
-      Another numbered bullet
-    </li>
-  </ol>
-</body>
+<ol>
+  <li>A numbered bullet</li>
+  <li>Another numbered bullet</li>
+</ol>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -367,13 +301,9 @@ def test_ordered_list():
     assert expected == result
 
     expected = '''
-<body>
-  <ol>
-    <li>
-      An indented numbered bullet
-    </li>
-  </ol>
-</body>
+<ol>
+  <li>An indented numbered bullet</li>
+</ol>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -404,22 +334,12 @@ def test_ordered_list():
     assert expected == result
 
     expected = '''
-<body>
-  <ol>
-    <li>
-      A numbered bullet
-    </li>
-    <li>
-      Another numbered bullet
-    </li>
-    <li>
-      A bullet with <strong>bold</strong>
-    </li>
-    <li>
-      A bullet with <code>code</code>
-    </li>
-  </ol>
-</body>
+<ol>
+  <li>A numbered bullet</li>
+  <li>Another numbered bullet</li>
+  <li>A bullet with <strong>bold</strong></li>
+  <li>A bullet with <code>code</code></li>
+</ol>
     '''.strip()
 
     result = markdown3.to_html(data)
@@ -443,16 +363,10 @@ def test_unordered_list():
     assert expected == result
 
     expected = '''
-<body>
-  <ul>
-    <li>
-      A bullet
-    </li>
-    <li>
-      Another bullet
-    </li>
-  </ul>
-</body>
+<ul>
+  <li>A bullet</li>
+  <li>Another bullet</li>
+</ul>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -470,13 +384,9 @@ def test_unordered_list():
     assert expected == result
 
     expected = '''
-<body>
-  <ul>
-    <li>
-      An indented bullet
-    </li>
-  </ul>
-</body>
+<ul>
+  <li>An indented bullet</li>
+</ul>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -507,22 +417,12 @@ def test_unordered_list():
     assert expected == result
 
     expected = '''
-<body>
-  <ul>
-    <li>
-      A bullet
-    </li>
-    <li>
-      Another bullet
-    </li>
-    <li>
-      A bullet with <strong>bold</strong>
-    </li>
-    <li>
-      A bullet with <code>code</code>
-    </li>
-  </ul>
-</body>
+<ul>
+  <li>A bullet</li>
+  <li>Another bullet</li>
+  <li>A bullet with <strong>bold</strong></li>
+  <li>A bullet with <code>code</code></li>
+</ul>
     '''.strip()
 
     result = markdown3.to_html(data)
@@ -558,24 +458,15 @@ def test_nested_bullets():
     assert expected == result
 
     expected = """
-<body>
+<ol>
+  <li>A numbered bullet</li>
   <ol>
-    <li>
-      A numbered bullet
-    </li>
-    <ol>
-      <li>
-        A bullet in a sublist
-      </li>
-      <li>
-        A bullet with <strong>bold</strong> in a sublist
-      </li>
-    </ol>
-    <li>
-      A bullet with <code>code</code> in the first list
-    </li>
+    <li>A bullet in a sublist</li>
+    <li>A bullet with <strong>bold</strong> in a sublist</li>
   </ol>
-</body>""".strip()
+  <li>A bullet with <code>code</code> in the first list</li>
+</ol>
+""".strip()
 
     result = markdown3.to_html(data)
     assert expected == result
@@ -595,11 +486,9 @@ def test_code_block():
     assert expected == result
 
     expected = """
-<body>
-  <code>
-    &lt;p&gt;This is some html&lt;/p&gt;
-  </code>
-</body>
+<code>
+  &lt;p&gt;This is some html&lt;/p&gt;
+</code>
     """.strip()
 
     result = markdown3.to_html(data)
@@ -628,16 +517,12 @@ def test_code_block():
     assert expected == result
 
     expected = """
-<body>
-  <ol>
-    <li>
-      A bullet point
-    </li>
-  </ol>
-  <code>
-    &lt;p&gt;This is some html&lt;/p&gt;
-  </code>
-</body>
+<ol>
+  <li>A bullet point</li>
+</ol>
+<code>
+  &lt;p&gt;This is some html&lt;/p&gt;
+</code>
     """.strip()
 
     result = markdown3.to_html(data)
@@ -672,14 +557,12 @@ _ _ _ _ _
     assert expected == result
 
     expected = """
-<body>
-  <hr/>
-  <hr/>
-  <hr/>
-  <hr/>
-  <hr/>
-  <hr/>
-</body>
+<hr/>
+<hr/>
+<hr/>
+<hr/>
+<hr/>
+<hr/>
     """.strip()
 
     result = markdown3.to_html(data)
@@ -702,13 +585,9 @@ def test_quoted_paragraph():
     assert expected == result
 
     expected = """
-<body>
-  <blockquote>
-    <p>
-      A quoted paragraph
-    </p>
-  </blockquote>
-</body>
+<blockquote>
+  <p>A quoted paragraph</p>
+</blockquote>
     """.strip()
 
     result = markdown3.to_html(data)
@@ -736,45 +615,25 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
 """
 
     expected = """
-<body>
-  <h1>
-     A Header
-  </h1>
-  <h2>
-     A SubHeader 
-  </h2>
-  <p>
-    A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.
-  </p>
-  <hr/>
-  <ol>
-    <li>
-      A bullet in a list
-    </li>
-    <li>
-      Another bullet
-    </li>
-    <ul>
-      <li>
-        A sublist bullet
-      </li>
-      <li>
-        Another sublist bullet
-      </li>
-    </ul>
-    <li>
-      A bullet in the first list
-    </li>
-  </ol>
-  <code>
-    A code block with &lt;span&gt;some html&lt;/span&gt; in it.
-  </code>
-  <blockquote>
-    <p>
-      A quoted paragraph
-    </p>
-  </blockquote>
-</body>
+<h1> A Header</h1>
+<h2> A SubHeader </h2>
+<p>A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.</p>
+<hr/>
+<ol>
+  <li>A bullet in a list</li>
+  <li>Another bullet</li>
+  <ul>
+    <li>A sublist bullet</li>
+    <li>Another sublist bullet</li>
+  </ul>
+  <li>A bullet in the first list</li>
+</ol>
+<code>
+  A code block with &lt;span&gt;some html&lt;/span&gt; in it.
+</code>
+<blockquote>
+  <p>A quoted paragraph</p>
+</blockquote>
     """.strip()
 
     result = markdown3.to_html(data)
