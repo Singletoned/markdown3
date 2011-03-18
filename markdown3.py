@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import string
+
 import pegger as pg
 
 def body():
@@ -15,7 +17,7 @@ def body():
         )
 
 def plain():
-    return pg.Words()
+    return pg.Words(string.lowercase+string.uppercase+string.digits+"., :")
 
 def emphasis():
     return pg.AllOf(

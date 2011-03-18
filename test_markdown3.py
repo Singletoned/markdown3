@@ -18,6 +18,22 @@ def test_body():
     assert expected == result
 
 
+def test_plain():
+    data = "Name: Mr Flibble"
+    expected = [
+        'body',
+        ['paragraph',
+         ['plain', "Name: Mr Flibble"]]]
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = """
+<p>Name: Mr Flibble</p>
+    """.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
+
 def test_emphasis():
     data = "Hello *World*"
     expected = [
