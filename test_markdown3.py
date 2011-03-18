@@ -164,9 +164,10 @@ def test_title_level_1():
     result = markdown3.to_html(data)
     assert expected == result
 
+    # Without linebreaks
     data = """
 # A level one title
-"""
+""".strip()
     expected = [
         'body',
         ['title_level_1', "A level one title"]]
@@ -214,9 +215,11 @@ def test_title_level_2():
     result = markdown3.to_html(data)
     assert expected == result
 
+    # Without linebreaks
+
     data = """
 ## A level two title
-"""
+""".strip()
     expected = [
         'body',
         ['title_level_2', "A level two title"]]

@@ -55,8 +55,7 @@ def paragraph():
 
 def title_level_1():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Many("\n")),
+        linebreaks,
         pg.Ignore("# "),
         pg.Words(),
         pg.Ignore(
@@ -67,8 +66,7 @@ def title_level_1():
 
 def title_level_2():
     return pg.AllOf(
-        pg.Ignore(
-            pg.Many("\n")),
+        linebreaks,
         pg.Ignore("## "),
         pg.Words(),
         pg.Ignore(
@@ -286,7 +284,11 @@ def htmlise(node, depth=0):
     return "\n".join(do_render(node))
 
 def parse(text):
+    if not text.endswith("\n"):
+        text = text + "\n"
     return pg.parse_string(text, body)
 
-def to_html(data):
-    return htmlise(pg.parse_string(data, body))
+def to_html(text):
+    if not text.endswith("\n"):
+        text = text + "\n"
+    return htmlise(pg.parse_string(text, body)).strip()
