@@ -11,12 +11,8 @@ def test_make_block():
         ['list_item', "Another bullet"]]
     expected = [
         "<ol>",
-        "  <li>",
-        "    A bullet",
-        "  </li>",
-        "  <li>",
-        "    Another bullet",
-        "  </li>",
+        "  <li>A bullet</li>",
+        "  <li>Another bullet</li>",
         "</ol>"]
     result = md.make_block(data[0], data[1:])
     assert expected == result
@@ -50,18 +46,14 @@ def test_do_render():
         ['emphasis',
          "some bold"]]
     expected = [
-        "<li>",
-        "  <strong>some bold</strong>",
-        "</li>"]
+        "<li><strong>some bold</strong></li>"]
     result = md.do_render(data)
     assert expected == result
 
 def test_htmlise():
     data = ['list_item', "A bullet"]
     expected = """
-<li>
-  A bullet
-</li>""".strip()
+<li>A bullet</li>""".strip()
     result = md.htmlise(data)
     assert expected == result
 
@@ -70,11 +62,9 @@ def test_htmlise():
         ['list_item', "A bullet"]]
     expected = """
 <ol>
-  <li>
-    A bullet
-  </li>
+  <li>A bullet</li>
 </ol>""".strip()
-    result = md.htmlise(data)
+    result = md.htmlise(data).strip()
     assert expected == result
 
     data = [
@@ -85,10 +75,8 @@ def test_htmlise():
           "bold"],
          " in it"]]
     expected = """
-<li>
-  A bullet with some <strong>bold</strong> in it
-</li>""".strip()
-    result = md.htmlise(data)
+<li>A bullet with some <strong>bold</strong> in it</li>""".strip()
+    result = md.htmlise(data).strip()
     assert expected == result
 
 

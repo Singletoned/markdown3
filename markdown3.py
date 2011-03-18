@@ -250,7 +250,7 @@ def make_anchor(head, rest):
     return [result]
 
 tag_funcs = {
-    'list_item': make_block,
+    'list_item': make_span,
     'emphasis': make_span,
     'ordered_list': make_block,
     'code': make_span,
