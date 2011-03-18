@@ -219,7 +219,7 @@ def make_block(head, rest):
     if single_line:
         content = ["".join(content)]
     content = indent_tags(content)
-    return [start_tag] + content + [end_tag]
+    return [start_tag] + content + [end_tag] + [""]
 
 def make_span(head, rest):
     tag = lookups[head]

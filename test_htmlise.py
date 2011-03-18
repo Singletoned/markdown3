@@ -13,7 +13,8 @@ def test_make_block():
         "<ol>",
         "  <li>A bullet</li>",
         "  <li>Another bullet</li>",
-        "</ol>"]
+        "</ol>",
+        ""]
     result = md.make_block(data[0], data[1:])
     assert expected == result
 
@@ -95,6 +96,7 @@ def test_htmlise_2():
     <li>A bullet in a sublist</li>
     <li>A bullet with <strong>bold</strong> in a sublist</li>
   </ul>
+  
   <li>A bullet with <code>code</code> in the first list</li>
 </ul>""".strip()
 

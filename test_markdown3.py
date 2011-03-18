@@ -469,6 +469,7 @@ def test_nested_bullets():
     <li>A bullet in a sublist</li>
     <li>A bullet with <strong>bold</strong> in a sublist</li>
   </ol>
+  
   <li>A bullet with <code>code</code> in the first list</li>
 </ol>
 """.strip()
@@ -525,6 +526,7 @@ def test_code_block():
 <ol>
   <li>A bullet point</li>
 </ol>
+
 <code>
   &lt;p&gt;This is some html&lt;/p&gt;
 </code>
@@ -631,11 +633,14 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
     <li>A sublist bullet</li>
     <li>Another sublist bullet</li>
   </ul>
+  
   <li>A bullet in the first list</li>
 </ol>
+
 <code>
   A code block with &lt;span&gt;some html&lt;/span&gt; in it.
 </code>
+
 <blockquote>
   <p>A quoted paragraph</p>
 </blockquote>
