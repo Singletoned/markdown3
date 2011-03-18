@@ -152,12 +152,12 @@ def test_title_level_1():
 """
     expected = [
         'body',
-        ['title_level_1', " A level one title "]]
+        ['title_level_1', "A level one title "]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
-<h1> A level one title </h1>
+<h1>A level one title </h1>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -167,12 +167,12 @@ def test_title_level_1():
 """
     expected = [
         'body',
-        ['title_level_1', " A level one title"]]
+        ['title_level_1', "A level one title"]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
-<h1> A level one title</h1>
+<h1>A level one title</h1>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -185,12 +185,12 @@ def test_title_level_1():
 """
     expected = [
         'body',
-        ['title_level_1', " A level one title"]]
+        ['title_level_1', "A level one title"]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
-<h1> A level one title</h1>
+<h1>A level one title</h1>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -202,12 +202,12 @@ def test_title_level_2():
 """
     expected = [
         'body',
-        ['title_level_2', " A level two title "]]
+        ['title_level_2', "A level two title "]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
-<h2> A level two title </h2>
+<h2>A level two title </h2>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -217,12 +217,12 @@ def test_title_level_2():
 """
     expected = [
         'body',
-        ['title_level_2', " A level two title"]]
+        ['title_level_2', "A level two title"]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
-<h2> A level two title</h2>
+<h2>A level two title</h2>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -235,12 +235,12 @@ def test_title_level_2():
 """
     expected = [
         'body',
-        ['title_level_2', " A level two title"]]
+        ['title_level_2', "A level two title"]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
-<h2> A level two title</h2>
+<h2>A level two title</h2>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
@@ -255,8 +255,8 @@ def test_title_level_1_and_2():
 """
 
     expected = """
-<h1> A Header</h1>
-<h2> A SubHeader</h2>
+<h1>A Header</h1>
+<h2>A SubHeader</h2>
     """.strip()
 
     result = markdown3.to_html(data)
@@ -615,8 +615,8 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
 """
 
     expected = """
-<h1> A Header</h1>
-<h2> A SubHeader </h2>
+<h1>A Header</h1>
+<h2>A SubHeader </h2>
 <p>A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.</p>
 <hr/>
 <ol>

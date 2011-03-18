@@ -53,10 +53,11 @@ def title_level_1():
     return pg.AllOf(
         pg.Ignore(
             pg.Many("\n")),
-        pg.Ignore("#"),
+        pg.Ignore("# "),
         pg.Words(),
         pg.Ignore(
             pg.AllOf(
+                pg.Optional(" "),
                 pg.Optional("#"),
                 "\n")))
 
@@ -64,10 +65,11 @@ def title_level_2():
     return pg.AllOf(
         pg.Ignore(
             pg.Many("\n")),
-        pg.Ignore("##"),
+        pg.Ignore("## "),
         pg.Words(),
         pg.Ignore(
             pg.AllOf(
+                pg.Optional(" "),
                 pg.Optional("##"),
                 "\n")))
 
