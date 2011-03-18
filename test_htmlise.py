@@ -5,14 +5,6 @@ import pegger as pg
 import markdown3 as md
 
 def test_make_block():
-    data = ['list_item', "blah, blah"]
-    expected = [
-        "<li>",
-        "  blah, blah",
-        "</li>"]
-    result = md.make_block(data[0], data[1:])
-    assert expected == result
-
     data = [
         'ordered_list',
         ['list_item', "A bullet"],
@@ -101,43 +93,6 @@ def test_htmlise():
 
 
 def test_htmlise_2():
-    def code():
-        return pg.AllOf(
-            pg.Ignore("`"),
-            pg.Not("`"),
-            pg.Ignore("`"))
-
-    def emphasis():
-        return pg.AllOf(
-            pg.Ignore('*'),
-            pg.Words(),
-            pg.Ignore('*'))
-
-    def list_item():
-        return pg.AllOf(
-            pg.Ignore(
-                pg.Optional(
-                    pg.Many("\n"))),
-            pg.Ignore("* "),
-            pg.Many(
-                code,
-                emphasis,
-                pg.Words()))
-
-    def nested_list():
-        return pg.AllOf(
-            pg.Ignore(
-                pg.Optional(
-                    pg.Many("\n"))),
-            pg.Indented(
-                pg.AllOf(
-                    list_item,
-                    pg.Optional(
-                        pg.Many(
-                            list_item,
-                            nested_list))),
-                optional=True))
-
     data = """
 * A numbered bullet
   * A bullet in a sublist
@@ -145,82 +100,37 @@ def test_htmlise_2():
 * A bullet with `code` in the first list
 """
 
-    expected = [
-        'nested_list',
-       ['list_item',
-        "A numbered bullet"],
-        ['nested_list',
-         ['list_item',
-          "A bullet in a sublist"],
-         ['list_item',
-          "A bullet with ",
-          ['emphasis', "bold"],
-          " in a sublist"]],
-        ['list_item',
-         "A bullet with ",
-         ['code', "code"],
-         " in the first list"]]
-
-    result = pg.parse_string(data, nested_list)
-    assert expected == result
-
     expected_html = """
-<ol>
-  <li>
-    A numbered bullet
-  </li>
-  <ol>
-    <li>
-      A bullet in a sublist
-    </li>
-    <li>
-      A bullet with <strong>bold</strong> in a sublist
-    </li>
-  </ol>
-  <li>
-    A bullet with <code>code</code> in the first list
-  </li>
-</ol>""".strip()
+<ul>
+  <li>A numbered bullet</li>
+  <ul>
+    <li>A bullet in a sublist</li>
+    <li>A bullet with <strong>bold</strong> in a sublist</li>
+  </ul>
+  <li>A bullet with <code>code</code> in the first list</li>
+</ul>""".strip()
 
-    result = md.htmlise(expected)
+    result = md.to_html(data).strip()
     assert result == expected_html
 
 
 def test_htmlise_link():
-    def link():
-        return pg.AllOf(link_text, link_url)
-
-    def link_text():
-        return pg.AllOf(
-            pg.Ignore("["),
-            pg.Words(),
-            pg.Ignore("]"))
-
-    def link_url():
-        return pg.AllOf(
-            pg.Ignore("("),
-            pg.Not(")"),
-            pg.Ignore(")"))
-
-    data = "[a link to Google](http://www.google.com)"
-    expected = [
+    data = [
         'link',
         ['link_text', "a link to Google"],
         ['link_url',
          "http://www.google.com"]]
-    result = pg.parse_string(data, link)
-    assert expected == result
 
     expected_html = ['''
     <a href="http://www.google.com">a link to Google</a>
     '''.strip()]
-    result = md.make_anchor(expected[0], expected[1:])
+    result = md.make_anchor(data[0], data[1:])
     assert expected_html == result
 
     expected_html = '''
     <a href="http://www.google.com">a link to Google</a>
     '''.strip()
-    result = md.htmlise(expected)
+    result = md.htmlise(data)
     assert expected_html == result
 
 def test_numbered_bullet():
