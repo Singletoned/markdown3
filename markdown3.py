@@ -35,13 +35,17 @@ def link_text():
 def link_url():
     return pg.AllOf(
         pg.Ignore("("),
-        pg.Not(")"),
+        pg.Join(
+            pg.Many(
+                pg.Not(")"))),
         pg.Ignore(")"))
 
 def code():
     return pg.AllOf(
         pg.Ignore("`"),
-        pg.Not("`"),
+        pg.Join(
+            pg.Many(
+                pg.Not("`"))),
         pg.Ignore("`"))
 
 def paragraph():
@@ -122,7 +126,10 @@ span_text = pg.Many(
     code)
 
 def code_line():
-    return pg.Escaped(pg.Not("\n"))
+    return pg.Escaped(
+        pg.Join(
+            pg.Many(
+                pg.Not("\n"))))
 
 code_paragraph = pg.AllOf(
     pg.Ignore(
@@ -149,7 +156,8 @@ def horizontal_rule():
             "* * *"),
         pg.Optional(
             pg.Ignore(
-                pg.Not("\n"))))
+                pg.Many(
+                    pg.Not("\n")))))
 
 def blockquote():
     return pg.AllOf(
