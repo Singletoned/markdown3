@@ -85,6 +85,8 @@ def test_link():
 <p>Text with <a href="http://www.google.com">a link to Google</a> in it</p>
     '''.strip()
 
+    result = markdown3.to_html(data)
+    assert expected == result
 
 def test_code():
     data = "text with `some code` in it"
