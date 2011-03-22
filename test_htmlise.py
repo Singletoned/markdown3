@@ -41,6 +41,14 @@ def test_make_span():
     result = md.make_span(data[0], data[1:])
     assert expected == result
 
+def test_make_span_with_linebreak():
+    data = [
+        'title_level_1',
+        "FooBar"]
+    expected = ["<h1>FooBar</h1>", ""]
+    result = md.make_span_with_linebreak(data[0], data[1:])
+    assert expected == result
+
 def test_do_render():
     data = [
         'list_item',

@@ -237,6 +237,9 @@ def make_span(head, rest):
     content = "".join(content)
     return ["%s%s%s" % (start_tag, content, end_tag)]
 
+def make_span_with_linebreak(head, rest):
+    return make_span(head, rest) + [""]
+
 def make_tagless(head, rest):
     content = []
     for item in rest:
