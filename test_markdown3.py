@@ -277,6 +277,7 @@ def test_title_level_1_and_2():
 
     expected = """
 <h1>A Header</h1>
+
 <h2>A SubHeader</h2>
     """.strip()
 
@@ -306,7 +307,7 @@ def test_ordered_list():
   <li>Another numbered bullet</li>
 </ol>
     '''.strip()
-    result = markdown3.to_html(data)
+    result = markdown3.to_html(data).strip()
     assert expected == result
 
     data = """
@@ -610,6 +611,7 @@ def test_quoted_paragraph():
     expected = """
 <blockquote>
   <p>A quoted paragraph</p>
+  
 </blockquote>
     """.strip()
 
@@ -639,8 +641,11 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
 
     expected = """
 <h1>A Header</h1>
+
 <h2>A SubHeader </h2>
+
 <p>A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.</p>
+
 <hr/>
 <ol>
   <li>A bullet in a list</li>
@@ -659,6 +664,7 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
 
 <blockquote>
   <p>A quoted paragraph</p>
+  
 </blockquote>
     """.strip()
 
