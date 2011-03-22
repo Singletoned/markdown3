@@ -416,20 +416,21 @@ def test_unordered_list():
         result = markdown3.to_html(data)
         assert expected == result
 
-    items = [
+    data_templates = [
 """
-* A bullet
-* Another bullet""",
+%(bullet)s A bullet
+%(bullet)s Another bullet""",
 """
-*	A bullet
-*	Another bullet""",
+%(bullet)s	A bullet
+%(bullet)s	Another bullet""",
 """
-  * A bullet
-  * Another bullet""",
+  %(bullet)s A bullet
+  %(bullet)s Another bullet""",
         ]
 
-    for item in items:
-        yield do_test, item
+    for data_template in data_templates:
+        for bullet_type in ["*", "-", "+"]:
+            yield do_test, data_template % dict(bullet=bullet_type)
 
 def test_unordered_list_advanced():
     data = """

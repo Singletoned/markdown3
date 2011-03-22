@@ -121,7 +121,8 @@ def unordered_list():
 def bullet():
     return pg.AllOf(
         linebreaks,
-        pg.Ignore("*"),
+        pg.Ignore(
+            pg.OneOf("*", "+", "-")),
         pg.Ignore(
             pg.OneOf(" ", "\t")
             ),
