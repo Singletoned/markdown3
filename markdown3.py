@@ -31,7 +31,9 @@ def link():
 def link_text():
     return pg.AllOf(
         pg.Ignore("["),
-        pg.Words(),
+        pg.Join(
+            pg.Many(
+                pg.Not("]"))),
         pg.Ignore("]"))
 
 def link_url():

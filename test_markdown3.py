@@ -68,18 +68,18 @@ def test_emphasis():
 
 
 def test_link():
-    data = "[a link to Google](http://www.google.com)"
+    data = "[a link to Google with * in it](http://www.google.com)"
     expected = [
         'body',
         ['paragraph',
          ['link',
-          ['link_text', "a link to Google"],
+          ['link_text', "a link to Google with * in it"],
           ['link_url', "http://www.google.com"]]]]
     result = markdown3.parse(data)
     assert expected == result
 
     expected = '''
-<p><a href="http://www.google.com">a link to Google</a></p>
+<p><a href="http://www.google.com">a link to Google with * in it</a></p>
     '''.strip()
     result = markdown3.to_html(data)
     assert expected == result
