@@ -99,7 +99,10 @@ def numbered_bullet():
     return pg.AllOf(
         linebreaks,
         pg.Ignore(digits),
-        pg.Ignore(". "),
+        pg.Ignore("."),
+        pg.Ignore(
+            pg.OneOf(" ", "\t")
+            ),
         span_text)
 
 def unordered_list():
@@ -118,7 +121,10 @@ def unordered_list():
 def bullet():
     return pg.AllOf(
         linebreaks,
-        pg.Ignore("* "),
+        pg.Ignore("*"),
+        pg.Ignore(
+            pg.OneOf(" ", "\t")
+            ),
         span_text)
 
 span_text = pg.Many(

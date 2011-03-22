@@ -310,6 +310,32 @@ def test_ordered_list():
     result = markdown3.to_html(data).strip()
     assert expected == result
 
+    # With tabs
+
+    data = """
+1.	A numbered bullet
+2.	Another numbered bullet"""
+
+    expected = [
+        'body',
+        ['ordered_list',
+         ['numbered_bullet',
+          ['plain', "A numbered bullet"]],
+         ['numbered_bullet',
+          ['plain', "Another numbered bullet"]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<ol>
+  <li>A numbered bullet</li>
+  <li>Another numbered bullet</li>
+</ol>
+    '''.strip()
+    result = markdown3.to_html(data).strip()
+    assert expected == result
+
     data = """
   1. An indented numbered bullet"""
 
@@ -372,6 +398,32 @@ def test_unordered_list():
     data = """
 * A bullet
 * Another bullet"""
+
+    expected = [
+        'body',
+        ['unordered_list',
+         ['bullet',
+          ['plain', "A bullet"]],
+         ['bullet',
+          ['plain', "Another bullet"]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<ul>
+  <li>A bullet</li>
+  <li>Another bullet</li>
+</ul>
+    '''.strip()
+    result = markdown3.to_html(data)
+    assert expected == result
+
+    # With tabs
+
+    data = """
+*	A bullet
+*	Another bullet"""
 
     expected = [
         'body',
