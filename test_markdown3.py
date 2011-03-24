@@ -293,9 +293,9 @@ def test_ordered_list():
     expected = [
         'body',
         ['ordered_list',
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "A numbered bullet"]],
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "Another numbered bullet"]]]]
 
     result = markdown3.parse(data)
@@ -319,9 +319,9 @@ def test_ordered_list():
     expected = [
         'body',
         ['ordered_list',
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "A numbered bullet"]],
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "Another numbered bullet"]]]]
 
     result = markdown3.parse(data)
@@ -342,7 +342,7 @@ def test_ordered_list():
     expected = [
         'body',
         ['ordered_list',
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "An indented numbered bullet"]]]]
 
     result = markdown3.parse(data)
@@ -367,14 +367,14 @@ def test_ordered_list():
     expected = [
         'body',
         ['ordered_list',
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "A numbered bullet"]],
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "Another numbered bullet"]],
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "A bullet with "],
           ['emphasis', "bold"]],
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "A bullet with "],
           ['code', "code"]]]]
 
@@ -387,6 +387,37 @@ def test_ordered_list():
   <li>Another numbered bullet</li>
   <li>A bullet with <strong>bold</strong></li>
   <li>A bullet with <code>code</code></li>
+</ol>
+    '''.strip()
+
+    result = markdown3.to_html(data)
+    assert expected == result
+
+    # With paragraphs in bullet
+
+    data = """
+1. A numbered bullet
+
+2. Another numbered bullet
+"""
+
+    expected = [
+        'body',
+        ['ordered_list',
+         ['numbered_bullet_with_paragraph',
+          ['paragraph',
+           ['plain', "A numbered bullet"]]],
+         ['numbered_bullet_with_paragraph',
+          ['paragraph',
+           ['plain', "Another numbered bullet"]]]]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = '''
+<ol>
+  <li><p>A numbered bullet</p></li>
+  <li><p>Another numbered bullet</p></li>
 </ol>
     '''.strip()
 
@@ -481,16 +512,16 @@ def test_nested_bullets():
     expected = [
         'body',
         ['ordered_list',
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "A numbered bullet"]],
          ['ordered_list',
-          ['numbered_bullet',
+          ['numbered_bullet_without_paragraph',
            ['plain', "A bullet in a sublist"]],
-          ['numbered_bullet',
+          ['numbered_bullet_without_paragraph',
            ['plain', "A bullet with "],
            ['emphasis', "bold"],
            ['plain', " in a sublist"]]],
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "A bullet with "],
           ['code', "code"],
           ['plain', " in the first list"]]]]
@@ -549,7 +580,7 @@ def test_code_block():
     expected = [
         'body',
         ['ordered_list',
-         ['numbered_bullet',
+         ['numbered_bullet_without_paragraph',
           ['plain', "A bullet point"]]],
         ['code_block',
          ['code_line',

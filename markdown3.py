@@ -84,28 +84,56 @@ def digits():
     return pg.Words(letters="1234567890")
 
 def ordered_list():
-    return pg.AllOf(
-        pg.Indented(
-            pg.AllOf(
-                numbered_bullet,
-                pg.Optional(
-                    pg.Many(
-                        pg.AllOf(
-                            linebreaks,
-                            pg.OneOf(
-                                numbered_bullet,
-                                ordered_list,
-                                unordered_list))))),
-            optional=True))
+    return pg.OneOf(
+        ordered_list_without_paragraphs,
+        ordered_list_with_paragraphs,
+        ordered_list_with_single_bullet
+        )
 
-def numbered_bullet():
+ordered_list_with_single_bullet = lambda: pg.Indented(
+    numbered_bullet_without_paragraph,
+    optional=True)
+
+ordered_list_without_paragraphs = lambda: pg.Indented(
+    pg.AllOf(
+        numbered_bullet_without_paragraph,
+        pg.Many(
+            pg.AllOf(
+                pg.Ignore("\n"),
+                pg.OneOf(
+                    numbered_bullet_without_paragraph,
+                    ordered_list,
+                    unordered_list)))),
+    optional=True)
+
+ordered_list_with_paragraphs = lambda: pg.Indented(
+    pg.AllOf(
+        numbered_bullet_with_paragraph,
+        pg.Many(
+            pg.AllOf(
+                pg.Ignore("\n\n"),
+                pg.OneOf(
+                    numbered_bullet_with_paragraph,
+                    ordered_list,
+                    unordered_list
+                    )))),
+    optional=True)
+
+def numbered_bullet_without_paragraph():
     return pg.AllOf(
         pg.Ignore(digits),
         pg.Ignore("."),
         pg.Ignore(
-            pg.OneOf(" ", "\t")
-            ),
+            pg.OneOf(" ", "\t")),
         span_text)
+
+def numbered_bullet_with_paragraph():
+    return pg.AllOf(
+        pg.Ignore(digits),
+        pg.Ignore("."),
+        pg.Ignore(
+            pg.OneOf(" ", "\t")),
+        paragraph)
 
 def unordered_list():
     return pg.AllOf(
@@ -182,7 +210,8 @@ lookups = {
     'ordered_list': "ol",
     'list_item': "li",
     'body': "body",
-    'numbered_bullet': "li",
+    'numbered_bullet_with_paragraph': "li",
+    'numbered_bullet_without_paragraph': "li",
     'plain': None,
     'emphasis': "strong",
     'code': "code",
@@ -270,7 +299,8 @@ tag_funcs = {
     'link': make_anchor,
     'link_text': make_span,
     'body': make_tagless,
-    'numbered_bullet': make_span,
+    'numbered_bullet_with_paragraph': make_span,
+    'numbered_bullet_without_paragraph': make_span,
     'paragraph': make_span_with_linebreak,
     'title_level_1': make_span_with_linebreak,
     'title_level_2': make_span_with_linebreak,
@@ -294,11 +324,11 @@ def htmlise(node, depth=0):
     return "\n".join(do_render(node))
 
 def parse(text):
-    if not text.endswith("\n"):
-        text = text + "\n"
+    if not text.endswith("\n\n"):
+        text = text + "\n\n"
     return pg.parse_string(text, body)
 
 def to_html(text):
-    if not text.endswith("\n"):
-        text = text + "\n"
+    if not text.endswith("\n\n"):
+        text = text + "\n\n"
     return htmlise(pg.parse_string(text, body)).strip()
