@@ -85,39 +85,10 @@ def digits():
 
 def ordered_list():
     return pg.OneOf(
-        ordered_list_without_paragraphs,
-        ordered_list_with_paragraphs,
-        ordered_list_with_single_bullet
+        _ordered_list_without_paragraphs,
+        _ordered_list_with_paragraphs,
+        _ordered_list_with_single_bullet
         )
-
-ordered_list_with_single_bullet = lambda: pg.Indented(
-    numbered_bullet_without_paragraph,
-    optional=True)
-
-ordered_list_without_paragraphs = lambda: pg.Indented(
-    pg.AllOf(
-        numbered_bullet_without_paragraph,
-        pg.Many(
-            pg.AllOf(
-                pg.Ignore("\n"),
-                pg.OneOf(
-                    numbered_bullet_without_paragraph,
-                    ordered_list,
-                    unordered_list)))),
-    optional=True)
-
-ordered_list_with_paragraphs = lambda: pg.Indented(
-    pg.AllOf(
-        numbered_bullet_with_paragraph,
-        pg.Many(
-            pg.AllOf(
-                pg.Ignore("\n\n"),
-                pg.OneOf(
-                    numbered_bullet_with_paragraph,
-                    ordered_list,
-                    unordered_list
-                    )))),
-    optional=True)
 
 def numbered_bullet_without_paragraph():
     return pg.AllOf(
@@ -134,6 +105,35 @@ def numbered_bullet_with_paragraph():
         pg.Ignore(
             pg.OneOf(" ", "\t")),
         paragraph)
+
+def _ordered_list_with_single_bullet():
+    return pg.Indented(
+        numbered_bullet_without_paragraph,
+        optional=True)
+
+def _ordered_list_template(bullet_type, spacing):
+    return pg.Indented(
+        pg.AllOf(
+            bullet_type,
+            pg.Many(
+                pg.AllOf(
+                    pg.Ignore(
+                        spacing),
+                    pg.OneOf(
+                        bullet_type,
+                        ordered_list,
+                        unordered_list)))),
+        optional=True)
+
+def _ordered_list_without_paragraphs():
+    return _ordered_list_template(
+        bullet_type=numbered_bullet_without_paragraph,
+        spacing="\n")
+
+def _ordered_list_with_paragraphs():
+    return _ordered_list_template(
+        bullet_type=numbered_bullet_with_paragraph,
+        spacing="\n\n")
 
 def unordered_list():
     return pg.AllOf(
