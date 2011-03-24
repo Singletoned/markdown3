@@ -426,28 +426,29 @@ def test_ordered_list():
 
 
 def test_unordered_list():
-    def do_test(data):
-        expected = [
-            'body',
-            ['unordered_list',
-             ['bullet',
-              ['plain', "A bullet"]],
-             ['bullet',
-              ['plain', "Another bullet"]]]]
-
+    def do_test(data, expected_tree, expected_html):
         result = markdown3.parse(data)
-        assert expected == result
+        assert expected_tree == result
 
-        expected = '''
+        result = markdown3.to_html(data)
+        assert expected_html == result
+
+    items = [
+        dict(
+            expected_tree = [
+                'body',
+                ['unordered_list',
+                 ['bullet_without_paragraph',
+                  ['plain', "A bullet"]],
+                 ['bullet_without_paragraph',
+                  ['plain', "Another bullet"]]]],
+            expected_html = '''
 <ul>
   <li>A bullet</li>
   <li>Another bullet</li>
 </ul>
-        '''.strip()
-        result = markdown3.to_html(data)
-        assert expected == result
-
-    data_templates = [
+        '''.strip(),
+            data_templates = [
 """
 %(bullet)s A bullet
 %(bullet)s Another bullet""",
@@ -456,12 +457,47 @@ def test_unordered_list():
 %(bullet)s	Another bullet""",
 """
   %(bullet)s A bullet
-  %(bullet)s Another bullet""",
-        ]
+  %(bullet)s Another bullet"""]),
+        dict(
+            expected_tree = [
+                'body',
+                ['unordered_list',
+                 ['bullet_with_paragraph',
+                  ['paragraph',
+                   ['plain', "A bullet"]]],
+                 ['bullet_with_paragraph',
+                  ['paragraph',
+                   ['plain', "Another bullet"]]]]],
+            expected_html = '''
+<ul>
+  <li><p>A bullet</p></li>
+  <li><p>Another bullet</p></li>
+</ul>
+        '''.strip(),
+            data_templates = [
+"""
+%(bullet)s A bullet
 
-    for data_template in data_templates:
-        for bullet_type in ["*", "-", "+"]:
-            yield do_test, data_template % dict(bullet=bullet_type)
+%(bullet)s Another bullet""",
+"""
+%(bullet)s	A bullet
+
+%(bullet)s	Another bullet""",
+"""
+  %(bullet)s A bullet
+  
+  %(bullet)s Another bullet"""])]
+
+    for item in items:
+        expected_tree = item['expected_tree']
+        expected_html = item['expected_html']
+        data_templates = item['data_templates']
+        for data_template in data_templates:
+            for bullet_type in ["*", "-", "+"]:
+                yield (do_test,
+                       data_template % dict(bullet=bullet_type),
+                       expected_tree,
+                       expected_html)
 
 def test_unordered_list_advanced():
     data = """
@@ -474,14 +510,14 @@ def test_unordered_list_advanced():
     expected = [
         'body',
         ['unordered_list',
-         ['bullet',
+         ['bullet_without_paragraph',
           ['plain', "A bullet"]],
-         ['bullet',
+         ['bullet_without_paragraph',
           ['plain', "Another bullet"]],
-         ['bullet',
+         ['bullet_without_paragraph',
           ['plain', "A bullet with "],
           ['emphasis', "bold"]],
-         ['bullet',
+         ['bullet_without_paragraph',
           ['plain', "A bullet with "],
           ['code', "code"]]]]
 

@@ -136,28 +136,56 @@ def _ordered_list_with_paragraphs():
         spacing="\n\n")
 
 def unordered_list():
-    return pg.AllOf(
-        pg.Indented(
-            pg.AllOf(
-                bullet,
-                pg.Optional(
-                    pg.Many(
-                        pg.AllOf(
-                            linebreaks,
-                            pg.OneOf(
-                                bullet,
-                                unordered_list,
-                                ordered_list))))),
-            optional=True))
+    return pg.OneOf(
+        _unordered_list_without_paragraphs,
+        _unordered_list_with_paragraphs,
+        _unordered_list_with_single_bullet
+        )
 
-def bullet():
+def _unordered_list_with_single_bullet():
+    return pg.Indented(
+        bullet_without_paragraph,
+        optional=True)
+
+def _unordered_list_template(bullet_type, spacing):
+    return pg.Indented(
+        pg.AllOf(
+            bullet_type,
+            pg.Many(
+                pg.AllOf(
+                    pg.Ignore(
+                        spacing),
+                    pg.OneOf(
+                        bullet_type,
+                        unordered_list,
+                        ordered_list)))),
+        optional=True)
+
+def _unordered_list_without_paragraphs():
+    return _unordered_list_template(
+        bullet_type=bullet_without_paragraph,
+        spacing="\n")
+
+def _unordered_list_with_paragraphs():
+    return _ordered_list_template(
+        bullet_type=bullet_with_paragraph,
+        spacing="\n\n")
+
+def bullet_without_paragraph():
     return pg.AllOf(
         pg.Ignore(
             pg.OneOf("*", "+", "-")),
         pg.Ignore(
-            pg.OneOf(" ", "\t")
-            ),
+            pg.OneOf(" ", "\t")),
         span_text)
+
+def bullet_with_paragraph():
+    return pg.AllOf(
+        pg.Ignore(
+            pg.OneOf("*", "+", "-")),
+        pg.Ignore(
+            pg.OneOf(" ", "\t")),
+        paragraph)
 
 span_text = pg.Many(
     plain,
@@ -224,7 +252,8 @@ lookups = {
     'code_block': "code",
     'code_line': None,
     'unordered_list': "ul",
-    'bullet': "li",
+    'bullet_with_paragraph': "li",
+    'bullet_without_paragraph': "li",
     'horizontal_rule': "hr",
     'blockquote': "blockquote",
     }
@@ -307,7 +336,8 @@ tag_funcs = {
     'code_block': make_block,
     'code_line': make_span,
     'unordered_list': make_block,
-    'bullet': make_span,
+    'bullet_with_paragraph': make_span,
+    'bullet_without_paragraph': make_span,
     'horizontal_rule': make_void_element,
     'blockquote': make_block,
     }
