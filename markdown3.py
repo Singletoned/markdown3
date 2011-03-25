@@ -269,6 +269,9 @@ def make_void_element(head, rest):
     tag = "<%s/>" % tag
     return [tag]
 
+def make_void_element_with_linebreak(head, rest):
+    return make_void_element(head, rest) + [""]
+
 def make_block(head, rest):
     tag = lookups[head]
     start_tag = "<%s>" % tag
@@ -338,7 +341,7 @@ tag_funcs = {
     'unordered_list': make_block,
     'bullet_with_paragraph': make_span,
     'bullet_without_paragraph': make_span,
-    'horizontal_rule': make_void_element,
+    'horizontal_rule': make_void_element_with_linebreak,
     'blockquote': make_block,
     }
 

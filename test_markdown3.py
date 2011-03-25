@@ -668,11 +668,17 @@ _ _ _ _ _
 
     expected = """
 <hr/>
+
 <hr/>
+
 <hr/>
+
 <hr/>
+
 <hr/>
+
 <hr/>
+
     """.strip()
 
     result = markdown3.to_html(data)
@@ -733,6 +739,7 @@ A paragraph with *some bold*, `some code` and [a link to Google](http://www.goog
 <p>A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.</p>
 
 <hr/>
+
 <ol>
   <li>A bullet in a list</li>
   <li>Another bullet</li>
