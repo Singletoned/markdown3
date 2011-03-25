@@ -433,6 +433,29 @@ class TestOrderedList(unittest.TestCase):
         result = markdown3.to_html(data)
         assert expected == result
 
+    def test_tab_indentation(self):
+        data = """
+	1. Bullet One
+	2. Bullet Two"""
+
+        expected = [
+            'body',
+            ['ordered_list',
+             ['numbered_bullet_without_paragraph',
+              ['plain', "Bullet One"]],
+             ['numbered_bullet_without_paragraph',
+              ['plain', "Bullet Two"]]]]
+
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected = """
+<ol>
+  <li>Bullet One</li>
+  <li>Bullet Two</li>
+</ol>""".strip()
+        result = markdown3.to_html(data)
+        assert expected == result
 
 def test_unordered_list():
     def do_test(data, expected_tree, expected_html):
