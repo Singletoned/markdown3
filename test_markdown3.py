@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import unittest
+
 import markdown3
 
 def test_body():
@@ -285,144 +287,151 @@ def test_title_level_1_and_2():
     assert expected == result
 
 
-def test_ordered_list():
-    data = """
+class TestOrderedList(unittest.TestCase):
+    """Test ordered lists
+    """
+
+    def test_simple(self):
+        "Test that basic numbered bullets work"
+        data = """
 1. A numbered bullet
 2. Another numbered bullet"""
 
-    expected = [
-        'body',
-        ['ordered_list',
-         ['numbered_bullet_without_paragraph',
-          ['plain', "A numbered bullet"]],
-         ['numbered_bullet_without_paragraph',
-          ['plain', "Another numbered bullet"]]]]
+        expected = [
+            'body',
+            ['ordered_list',
+             ['numbered_bullet_without_paragraph',
+              ['plain', "A numbered bullet"]],
+             ['numbered_bullet_without_paragraph',
+              ['plain', "Another numbered bullet"]]]]
 
-    result = markdown3.parse(data)
-    assert expected == result
+        result = markdown3.parse(data)
+        assert expected == result
 
-    expected = '''
+        expected = '''
 <ol>
   <li>A numbered bullet</li>
   <li>Another numbered bullet</li>
 </ol>
-    '''.strip()
-    result = markdown3.to_html(data).strip()
-    assert expected == result
+        '''.strip()
+        result = markdown3.to_html(data).strip()
+        assert expected == result
 
-    # With tabs
-
-    data = """
+    def test_with_tabs(self):
+        "Test that tabs between the bullet and text work"
+        data = """
 1.	A numbered bullet
 2.	Another numbered bullet"""
 
-    expected = [
-        'body',
-        ['ordered_list',
-         ['numbered_bullet_without_paragraph',
-          ['plain', "A numbered bullet"]],
-         ['numbered_bullet_without_paragraph',
-          ['plain', "Another numbered bullet"]]]]
+        expected = [
+            'body',
+            ['ordered_list',
+             ['numbered_bullet_without_paragraph',
+              ['plain', "A numbered bullet"]],
+             ['numbered_bullet_without_paragraph',
+              ['plain', "Another numbered bullet"]]]]
 
-    result = markdown3.parse(data)
-    assert expected == result
+        result = markdown3.parse(data)
+        assert expected == result
 
-    expected = '''
+        expected = '''
 <ol>
   <li>A numbered bullet</li>
   <li>Another numbered bullet</li>
 </ol>
-    '''.strip()
-    result = markdown3.to_html(data).strip()
-    assert expected == result
+        '''.strip()
+        result = markdown3.to_html(data).strip()
+        assert expected == result
 
-    data = """
-  1. An indented numbered bullet"""
+    def test_indented(self):
+        "Test that an indented bullet works"
+        data = """
+    1. An indented numbered bullet"""
 
-    expected = [
-        'body',
-        ['ordered_list',
-         ['numbered_bullet_without_paragraph',
-          ['plain', "An indented numbered bullet"]]]]
+        expected = [
+            'body',
+            ['ordered_list',
+             ['numbered_bullet_without_paragraph',
+              ['plain', "An indented numbered bullet"]]]]
 
-    result = markdown3.parse(data)
-    assert expected == result
+        result = markdown3.parse(data)
+        assert expected == result
 
-    expected = '''
+        expected = '''
 <ol>
   <li>An indented numbered bullet</li>
 </ol>
-    '''.strip()
-    result = markdown3.to_html(data)
-    assert expected == result
+        '''.strip()
+        result = markdown3.to_html(data)
+        assert expected == result
 
-
-    data = """
+    def test_multiple_bullets(self):
+        "Test that several bullets with markup in them work"
+        data = """
 1. A numbered bullet
 2. Another numbered bullet
 3. A bullet with *bold*
 4. A bullet with `code`
 """
 
-    expected = [
-        'body',
-        ['ordered_list',
-         ['numbered_bullet_without_paragraph',
-          ['plain', "A numbered bullet"]],
-         ['numbered_bullet_without_paragraph',
-          ['plain', "Another numbered bullet"]],
-         ['numbered_bullet_without_paragraph',
-          ['plain', "A bullet with "],
-          ['emphasis', "bold"]],
-         ['numbered_bullet_without_paragraph',
-          ['plain', "A bullet with "],
-          ['code', "code"]]]]
+        expected = [
+            'body',
+            ['ordered_list',
+             ['numbered_bullet_without_paragraph',
+              ['plain', "A numbered bullet"]],
+             ['numbered_bullet_without_paragraph',
+              ['plain', "Another numbered bullet"]],
+             ['numbered_bullet_without_paragraph',
+              ['plain', "A bullet with "],
+              ['emphasis', "bold"]],
+             ['numbered_bullet_without_paragraph',
+              ['plain', "A bullet with "],
+              ['code', "code"]]]]
 
-    result = markdown3.parse(data)
-    assert expected == result
+        result = markdown3.parse(data)
+        assert expected == result
 
-    expected = '''
+        expected = '''
 <ol>
   <li>A numbered bullet</li>
   <li>Another numbered bullet</li>
   <li>A bullet with <strong>bold</strong></li>
   <li>A bullet with <code>code</code></li>
 </ol>
-    '''.strip()
+        '''.strip()
 
-    result = markdown3.to_html(data)
-    assert expected == result
+        result = markdown3.to_html(data)
+        assert expected == result
 
-    # With paragraphs in bullet
-
-    data = """
+    def test_paragraphs_in_bullet(self):
+        "Test that spaced out bullets add paragraphs"
+        data = """
 1. A numbered bullet
 
 2. Another numbered bullet
 """
 
-    expected = [
-        'body',
-        ['ordered_list',
-         ['numbered_bullet_with_paragraph',
-          ['paragraph',
-           ['plain', "A numbered bullet"]]],
-         ['numbered_bullet_with_paragraph',
-          ['paragraph',
-           ['plain', "Another numbered bullet"]]]]]
+        expected = [
+            'body',
+            ['ordered_list',
+             ['numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain', "A numbered bullet"]]],
+             ['numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain', "Another numbered bullet"]]]]]
 
-    result = markdown3.parse(data)
-    assert expected == result
+        result = markdown3.parse(data)
+        assert expected == result
 
-    expected = '''
+        expected = '''
 <ol>
   <li><p>A numbered bullet</p></li>
   <li><p>Another numbered bullet</p></li>
-</ol>
-    '''.strip()
+</ol>'''.strip()
 
-    result = markdown3.to_html(data)
-    assert expected == result
+        result = markdown3.to_html(data)
+        assert expected == result
 
 
 def test_unordered_list():
