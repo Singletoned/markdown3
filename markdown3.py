@@ -356,12 +356,12 @@ def do_render(data):
 def htmlise(node, depth=0):
     return "\n".join(do_render(node))
 
-def parse(text):
+def parse(text, pattern=body):
     if not text.endswith("\n\n"):
         text = text + "\n\n"
-    return pg.parse_string(text, body)
+    return pg.parse_string(text, pattern)
 
-def to_html(text):
+def to_html(text, pattern=body):
     if not text.endswith("\n\n"):
         text = text + "\n\n"
-    return htmlise(pg.parse_string(text, body)).strip()
+    return htmlise(pg.parse_string(text, pattern)).strip()
