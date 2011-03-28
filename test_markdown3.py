@@ -457,6 +457,66 @@ class TestOrderedList(unittest.TestCase):
         result = markdown3.to_html(data)
         assert expected == result
 
+    def test_multiple_paragraphs_bullet(self):
+        data = """
+1. Bullet One, Paragraph One
+   Paragraph Two
+""".strip()
+
+        expected = [
+            'numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain',
+                "Bullet One, Paragraph One"]],
+              ['paragraph',
+               ['plain',
+               "Paragraph Two"]]]
+
+        result = markdown3.parse(data, markdown3.numbered_bullet_with_paragraph)
+        assert expected == result
+
+        expected = """
+<li><p>Bullet One, Paragraph One</p><p>Paragraph Two</p></li>
+""".strip()
+        result = markdown3.to_html(data, markdown3.numbered_bullet_with_paragraph)
+        assert expected == result
+
+    def test_multiple_paragraphs(self):
+        data = """
+1. Bullet One, Paragraph One
+   Paragraph Two
+
+2. Bullet Two
+""".strip()
+
+        expected = [
+            'body',
+            ['ordered_list',
+             ['numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain',
+                "Bullet One, Paragraph One"]],
+              ['paragraph',
+               ['plain',
+               "Paragraph Two"]]],
+             ['numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain',
+               "Bullet Two"]]]]]
+
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected = """
+<ol>
+  <li><p>Bullet One, Paragraph One</p><p>Paragraph Two</p></li>
+  <li><p>Bullet Two</p></li>
+</ol>
+        """.strip()
+        result = markdown3.to_html(data)
+        assert expected == result
+
+
 def test_unordered_list():
     def do_test(data, expected_tree, expected_html):
         result = markdown3.parse(data)

@@ -99,12 +99,19 @@ def numbered_bullet_without_paragraph():
         span_text)
 
 def numbered_bullet_with_paragraph():
-    return pg.AllOf(
-        pg.Ignore(digits),
-        pg.Ignore("."),
-        pg.Ignore(
-            pg.OneOf(" ", "\t")),
-        paragraph)
+    return pg.Indented(
+        pg.AllOf(
+            paragraph,
+            pg.Optional(
+                pg.AllOf(
+                    linebreaks,
+                    paragraph))),
+        initial_indent=pg.AllOf(
+            pg.Optional(
+                pg.Ignore(linebreaks)),
+            digits,
+            ".",
+            pg.OneOf(" ", '\t')))
 
 def _ordered_list_with_single_bullet():
     return pg.Indented(
