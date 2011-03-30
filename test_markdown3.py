@@ -409,6 +409,8 @@ class TestOrderedList(unittest.TestCase):
 1. A numbered bullet
 
 2. Another numbered bullet
+
+3. Yet another bullet
 """
 
         expected = [
@@ -419,7 +421,10 @@ class TestOrderedList(unittest.TestCase):
                ['plain', "A numbered bullet"]]],
              ['numbered_bullet_with_paragraph',
               ['paragraph',
-               ['plain', "Another numbered bullet"]]]]]
+               ['plain', "Another numbered bullet"]]],
+             ['numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain', "Yet another bullet"]]]]]
 
         result = markdown3.parse(data)
         assert expected == result
@@ -428,6 +433,7 @@ class TestOrderedList(unittest.TestCase):
 <ol>
   <li><p>A numbered bullet</p></li>
   <li><p>Another numbered bullet</p></li>
+  <li><p>Yet another bullet</p></li>
 </ol>'''.strip()
 
         result = markdown3.to_html(data)
@@ -642,7 +648,7 @@ def test_nested_bullets():
         ['ordered_list',
          ['numbered_bullet_without_paragraph',
           ['plain', "A numbered bullet"]],
-         ['ordered_list',
+         ['ordered_list_nested',
           ['numbered_bullet_without_paragraph',
            ['plain', "A bullet in a sublist"]],
           ['numbered_bullet_without_paragraph',

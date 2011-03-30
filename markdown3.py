@@ -90,6 +90,13 @@ def ordered_list():
         _ordered_list_with_single_bullet
         )
 
+def ordered_list_nested():
+    return pg.OneOf(
+        _ordered_list_without_paragraphs_nested,
+        _ordered_list_with_paragraphs_nested,
+        _ordered_list_with_single_bullet_nested,
+        )
+
 def numbered_bullet_without_paragraph():
     return pg.AllOf(
         pg.Ignore(digits),
@@ -118,7 +125,12 @@ def _ordered_list_with_single_bullet():
         numbered_bullet_without_paragraph,
         optional=True)
 
-def _ordered_list_template(bullet_type, spacing):
+def _ordered_list_with_single_bullet_nested():
+    return pg.Indented(
+        numbered_bullet_without_paragraph,
+        optional=False)
+
+def _ordered_list_template(bullet_type, spacing, optional=True):
     return pg.Indented(
         pg.AllOf(
             bullet_type,
@@ -128,19 +140,31 @@ def _ordered_list_template(bullet_type, spacing):
                         spacing),
                     pg.OneOf(
                         bullet_type,
-                        ordered_list,
+                        ordered_list_nested,
                         unordered_list)))),
-        optional=True)
+        optional=optional)
 
 def _ordered_list_without_paragraphs():
     return _ordered_list_template(
         bullet_type=numbered_bullet_without_paragraph,
         spacing="\n")
 
+def _ordered_list_without_paragraphs_nested():
+    return _ordered_list_template(
+        bullet_type=numbered_bullet_without_paragraph,
+        spacing="\n",
+        optional=False)
+
 def _ordered_list_with_paragraphs():
     return _ordered_list_template(
         bullet_type=numbered_bullet_with_paragraph,
         spacing="\n\n")
+
+def _ordered_list_with_paragraphs_nested():
+    return _ordered_list_template(
+        bullet_type=numbered_bullet_with_paragraph,
+        spacing="\n\n",
+        optional=False)
 
 def unordered_list():
     return pg.OneOf(
@@ -243,6 +267,7 @@ lookups = {
     '': None,
     'nested_list': "ol",
     'ordered_list': "ol",
+    'ordered_list_nested': "ol",
     'list_item': "li",
     'body': "body",
     'numbered_bullet_with_paragraph': "li",
@@ -331,6 +356,7 @@ tag_funcs = {
     'list_item': make_span,
     'emphasis': make_span,
     'ordered_list': make_block,
+    'ordered_list_nested': make_block,
     'code': make_span,
     '': make_tagless,
     'nested_list': make_block,
