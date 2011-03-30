@@ -439,6 +439,44 @@ class TestOrderedList(unittest.TestCase):
         result = markdown3.to_html(data)
         assert expected == result
 
+    def test_tab_indentation_with_multiple_paragraphs(self):
+        data = """
+1.	Bullet One, Paragraph One
+
+	Paragraph Two
+
+2.	Bullet Two
+
+3.	Bullet Three
+"""
+
+        expected = [
+            'body',
+            ['ordered_list',
+             ['numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain', "Bullet One, Paragraph One"]],
+              ['paragraph',
+               ['plain', "Paragraph Two"]]],
+             ['numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain', "Bullet Two"]]],
+             ['numbered_bullet_with_paragraph',
+              ['paragraph',
+               ['plain', "Bullet Three"]]]]]
+
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected = """
+<ol>
+  <li><p>Bullet One, Paragraph One</p><p>Paragraph Two</p></li>
+  <li><p>Bullet Two</p></li>
+  <li><p>Bullet Three</p></li>
+</ol>""".strip()
+        result = markdown3.to_html(data)
+        assert expected == result
+
     def test_tab_indentation(self):
         data = """
 	1. Bullet One

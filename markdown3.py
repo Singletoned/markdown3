@@ -115,10 +115,16 @@ def numbered_bullet_with_paragraph():
                     paragraph))),
         initial_indent=pg.AllOf(
             pg.Optional(
-                pg.Ignore(linebreaks)),
-            digits,
-            ".",
-            pg.OneOf(" ", '\t')))
+                linebreaks),
+            pg.OneOf(
+                pg.AllOf(
+                    pg.Ignore(digits),
+                    pg.Ignore("."),
+                    pg.Many('\t')),
+                pg.AllOf(
+                    digits,
+                    ".",
+                    " "))))
 
 def _ordered_list_with_single_bullet():
     return pg.Indented(
