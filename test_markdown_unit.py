@@ -2,6 +2,9 @@
 
 import unittest
 
+import py.test
+
+import pegger as pg
 import markdown3
 
 class TestWords(unittest.TestCase):
@@ -124,4 +127,27 @@ class TestUnorderedList(unittest.TestCase):
               ['unordered_bullet',
                "bullet one, list two"]]]]
         result = markdown3.parse(data, markdown3.unordered_list)
+        assert expected == result
+
+
+class TestUnorderedListNested(unittest.TestCase):
+    """Unittests for unordered_list_nested"""
+
+    def test_unindented(self):
+        """Test that unindented doesn't match"""
+        with py.test.raises(pg.NoPatternFound):
+            data = """
+* bullet one
+* bullet two""".strip()
+            result = markdown3.parse(data, markdown3.unordered_list_nested)
+
+    def test_indented(self):
+        data = """    * bullet one\n    * bullet two"""
+        expected = [
+            'unordered_list_nested',
+            ['unordered_bullet',
+             "bullet one"],
+            ['unordered_bullet',
+             "bullet two"]]
+        result = markdown3.parse(data, markdown3.unordered_list_nested)
         assert expected == result
