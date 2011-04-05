@@ -78,6 +78,17 @@ def unordered_list_nested():
         _multiple_bullets,
         optional=False)
 
+def ordered_bullet():
+    return pg.AllOf(
+        pg.Ignore(
+            pg.AllOf(
+                pg.Words(letters="0123456789"),
+                ". ")),
+        span)
+
+def ordered_list():
+    return pg.AllOf(ordered_bullet)
+
 
 # def plain():
 #     return multiline_words

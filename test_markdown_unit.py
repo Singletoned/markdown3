@@ -151,3 +151,30 @@ class TestUnorderedListNested(unittest.TestCase):
              "bullet two"]]
         result = markdown3.parse(data, markdown3.unordered_list_nested)
         assert expected == result
+
+
+class TestOrderedBullet(unittest.TestCase):
+    """Unittests for ordered_bullet"""
+
+    def test_simple(self):
+        """Simplest tests that passes"""
+        data = """1. bullet one"""
+        expected = [
+            'ordered_bullet',
+            "bullet one"]
+        result = markdown3.parse(data, markdown3.ordered_bullet)
+        assert expected == result
+
+
+class TestOrderedList(unittest.TestCase):
+    """Unittests for ordered_list"""
+
+    def test_single_bullet(self):
+        """Test that a single bullet matches"""
+        data = """1. bullet one"""
+        expected = [
+            'ordered_list',
+            ['ordered_bullet',
+             "bullet one"]]
+        result = markdown3.parse(data, markdown3.ordered_list)
+        assert expected == result
