@@ -28,6 +28,18 @@ class TestEmphasis(unittest.TestCase):
         assert expected == result
 
 
+class TestMultilineWords(unittest.TestCase):
+    def test_simple(self):
+        data = "some words\nover two lines"
+        expected = [
+            '',
+            "some words",
+            " ",
+            "over two lines"]
+        result = markdown3.parse(data, markdown3.multiline_words)
+        assert expected == result
+
+
 class TestSpan(unittest.TestCase):
     def test_simple(self):
         data = "some words"
