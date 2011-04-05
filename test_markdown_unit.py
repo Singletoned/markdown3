@@ -77,12 +77,26 @@ class TestUnorderedBullet(unittest.TestCase):
 class TestUnorderedList(unittest.TestCase):
     """Unittests for unordered list"""
 
-    def test_simple(self):
-        """Test that the simplist case works"""
+    def test_single_bullet(self):
+        """Test that a single bullet matches"""
         data = "* a bullet"
         expected = [
             'unordered_list',
             ['unordered_bullet',
              "a bullet"]]
+        result = markdown3.parse(data, markdown3.unordered_list)
+        assert expected == result
+
+    def test_multiple_bullets(self):
+        """Test that multiple bullets match"""
+        data = """
+* bullet one
+* bullet two""".strip()
+        expected = [
+            'unordered_list',
+            ['unordered_bullet',
+             "bullet one"],
+            ['unordered_bullet',
+             "bullet two"]]
         result = markdown3.parse(data, markdown3.unordered_list)
         assert expected == result

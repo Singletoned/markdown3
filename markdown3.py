@@ -51,8 +51,14 @@ def unordered_bullet():
         pg.Ignore(" "),
         span)
 
+
 def unordered_list():
-    return pg.AllOf(unordered_bullet)
+    return pg.AllOf(
+        unordered_bullet,
+        pg.Optional(
+            pg.AllOf(
+                pg.Ignore("\n"),
+                unordered_bullet)))
 
 
 def plain():
