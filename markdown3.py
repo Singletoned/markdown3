@@ -23,8 +23,29 @@ def plain():
 def emphasis():
     return pg.AllOf(
         pg.Ignore('*'),
-        pg.Words(),
+        multiline_words,
         pg.Ignore('*'))
+
+multiline_words = pg.AllOf(
+    pg.Words(string.lowercase+string.uppercase+string.digits+"., :"),
+    pg.Optional(
+        pg.Many(
+            pg.AllOf(
+                pg.Ignore("\n"),
+                pg.Insert(" "),
+                pg.Words(string.lowercase+string.uppercase+string.digits+"., :")))))
+
+words = pg.Words(string.lowercase+string.uppercase+string.digits+"., :")
+
+span = pg.Many(
+    pg.OneOf(
+        words,
+        emphasis,
+        )
+    )
+
+def plain():
+    return multiline_words
 
 def link():
     return pg.AllOf(link_text, link_url)
