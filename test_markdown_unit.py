@@ -100,3 +100,12 @@ class TestUnorderedList(unittest.TestCase):
              "bullet two"]]
         result = markdown3.parse(data, markdown3.unordered_list)
         assert expected == result
+
+    def test_indented_single_bullet(self):
+        data = """  * a bullet"""
+        expected = [
+            'unordered_list',
+            ['unordered_bullet',
+             "a bullet"]]
+        result = markdown3.parse(data, markdown3.unordered_list)
+        assert expected == result
