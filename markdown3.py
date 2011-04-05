@@ -84,12 +84,14 @@ def ordered_bullet():
         span)
 
 def ordered_list():
-    return pg.AllOf(
-        ordered_bullet,
-        pg.Optional(
-            pg.AllOf(
-                pg.Ignore("\n"),
-                ordered_bullet)))
+    return pg.Indented(
+        pg.AllOf(
+            ordered_bullet,
+            pg.Optional(
+                pg.AllOf(
+                    pg.Ignore("\n"),
+                    ordered_bullet))),
+        optional=True)
 
 
 # def plain():

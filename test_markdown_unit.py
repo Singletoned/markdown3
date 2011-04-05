@@ -192,3 +192,12 @@ class TestOrderedList(unittest.TestCase):
              "bullet two"]]
         result = markdown3.parse(data, markdown3.ordered_list)
         assert expected == result
+
+    def test_indented_single_bullet(self):
+        data = """  1. a bullet"""
+        expected = [
+            'ordered_list',
+            ['ordered_bullet',
+             "a bullet"]]
+        result = markdown3.parse(data, markdown3.ordered_list)
+        assert expected == result
