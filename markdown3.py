@@ -51,6 +51,9 @@ def unordered_bullet():
         pg.Ignore(" "),
         span)
 
+def unordered_list():
+    return pg.AllOf(unordered_bullet)
+
 
 def plain():
     return multiline_words

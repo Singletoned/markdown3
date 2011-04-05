@@ -72,3 +72,17 @@ class TestUnorderedBullet(unittest.TestCase):
             "a bullet"]
         result = markdown3.parse(data, markdown3.unordered_bullet)
         assert expected == result
+
+
+class TestUnorderedList(unittest.TestCase):
+    """Unittests for unordered list"""
+
+    def test_simple(self):
+        """Test that the simplist case works"""
+        data = "* a bullet"
+        expected = [
+            'unordered_list',
+            ['unordered_bullet',
+             "a bullet"]]
+        result = markdown3.parse(data, markdown3.unordered_list)
+        assert expected == result
