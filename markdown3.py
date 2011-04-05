@@ -47,7 +47,6 @@ span = pg.Many(
         )
     )
 
-
 def unordered_bullet():
     return pg.AllOf(
         pg.Ignore("*"),
@@ -58,7 +57,6 @@ def unordered_bullet():
                 pg.Ignore("\n"),
                 unordered_list_nested)))
 
-
 def _multiple_bullets():
     return pg.AllOf(
         unordered_bullet,
@@ -66,7 +64,6 @@ def _multiple_bullets():
             pg.AllOf(
                 pg.Ignore("\n"),
                 unordered_bullet)))
-
 
 def unordered_list():
     return pg.Indented(
