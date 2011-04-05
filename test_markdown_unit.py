@@ -178,3 +178,17 @@ class TestOrderedList(unittest.TestCase):
              "bullet one"]]
         result = markdown3.parse(data, markdown3.ordered_list)
         assert expected == result
+
+    def test_multiple_bullets(self):
+        """Test that multiple bullets match"""
+        data = """
+1. bullet one
+2. bullet two""".strip()
+        expected = [
+            'ordered_list',
+            ['ordered_bullet',
+             "bullet one"],
+            ['ordered_bullet',
+             "bullet two"]]
+        result = markdown3.parse(data, markdown3.ordered_list)
+        assert expected == result
