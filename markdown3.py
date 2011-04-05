@@ -5,20 +5,23 @@ import string
 import pegger as pg
 
 def body():
-    return pg.Many(
-        linebreaks,
-        horizontal_rule,
-        title_level_2,
-        title_level_1,
-        ordered_list,
-        unordered_list,
-        code_block,
-        paragraph,
-        blockquote,
-        )
+    pass
 
-def plain():
-    return pg.Words(string.lowercase+string.uppercase+string.digits+"., :")
+# def body():
+#     return pg.Many(
+#         linebreaks,
+#         horizontal_rule,
+#         title_level_2,
+#         title_level_1,
+#         ordered_list,
+#         unordered_list,
+#         code_block,
+#         paragraph,
+#         blockquote,
+#         )
+
+# def plain():
+#     return pg.Words(string.lowercase+string.uppercase+string.digits+"., :")
 
 def emphasis():
     return pg.AllOf(
@@ -76,250 +79,250 @@ def unordered_list_nested():
         optional=False)
 
 
-def plain():
-    return multiline_words
+# def plain():
+#     return multiline_words
 
-def link():
-    return pg.AllOf(link_text, link_url)
+# def link():
+#     return pg.AllOf(link_text, link_url)
 
-def link_text():
-    return pg.AllOf(
-        pg.Ignore("["),
-        pg.Join(
-            pg.Many(
-                pg.Not("]"))),
-        pg.Ignore("]"))
+# def link_text():
+#     return pg.AllOf(
+#         pg.Ignore("["),
+#         pg.Join(
+#             pg.Many(
+#                 pg.Not("]"))),
+#         pg.Ignore("]"))
 
-def link_url():
-    return pg.AllOf(
-        pg.Ignore("("),
-        pg.Join(
-            pg.Many(
-                pg.Not(")"))),
-        pg.Ignore(")"))
+# def link_url():
+#     return pg.AllOf(
+#         pg.Ignore("("),
+#         pg.Join(
+#             pg.Many(
+#                 pg.Not(")"))),
+#         pg.Ignore(")"))
 
-def code():
-    return pg.AllOf(
-        pg.Ignore("`"),
-        pg.Join(
-            pg.Many(
-                pg.Not("`"))),
-        pg.Ignore("`"))
+# def code():
+#     return pg.AllOf(
+#         pg.Ignore("`"),
+#         pg.Join(
+#             pg.Many(
+#                 pg.Not("`"))),
+#         pg.Ignore("`"))
 
-def paragraph():
-    return pg.AllOf(
-        span_text)
+# def paragraph():
+#     return pg.AllOf(
+#         span_text)
 
-linebreaks = pg.Ignore(
-    pg.Many("\n"))
+# linebreaks = pg.Ignore(
+#     pg.Many("\n"))
 
-def title_level_1():
-    return pg.AllOf(
-        pg.Ignore("# "),
-        pg.Words(),
-        pg.Ignore(
-            pg.AllOf(
-                pg.Optional(" "),
-                pg.Optional("#"),
-                "\n")))
+# def title_level_1():
+#     return pg.AllOf(
+#         pg.Ignore("# "),
+#         pg.Words(),
+#         pg.Ignore(
+#             pg.AllOf(
+#                 pg.Optional(" "),
+#                 pg.Optional("#"),
+#                 "\n")))
 
-def title_level_2():
-    return pg.AllOf(
-        pg.Ignore("## "),
-        pg.Words(),
-        pg.Ignore(
-            pg.AllOf(
-                pg.Optional(" "),
-                pg.Optional("##"),
-                "\n")))
+# def title_level_2():
+#     return pg.AllOf(
+#         pg.Ignore("## "),
+#         pg.Words(),
+#         pg.Ignore(
+#             pg.AllOf(
+#                 pg.Optional(" "),
+#                 pg.Optional("##"),
+#                 "\n")))
 
-def digits():
-    return pg.Words(letters="1234567890")
+# def digits():
+#     return pg.Words(letters="1234567890")
 
-def ordered_list():
-    return pg.OneOf(
-        _ordered_list_without_paragraphs,
-        _ordered_list_with_paragraphs,
-        _ordered_list_with_single_bullet
-        )
+# def ordered_list():
+#     return pg.OneOf(
+#         _ordered_list_without_paragraphs,
+#         _ordered_list_with_paragraphs,
+#         _ordered_list_with_single_bullet
+#         )
 
-def ordered_list_nested():
-    return pg.OneOf(
-        _ordered_list_without_paragraphs_nested,
-        _ordered_list_with_paragraphs_nested,
-        _ordered_list_with_single_bullet_nested,
-        )
+# def ordered_list_nested():
+#     return pg.OneOf(
+#         _ordered_list_without_paragraphs_nested,
+#         _ordered_list_with_paragraphs_nested,
+#         _ordered_list_with_single_bullet_nested,
+#         )
 
-def numbered_bullet_without_paragraph():
-    return pg.AllOf(
-        pg.Ignore(digits),
-        pg.Ignore("."),
-        pg.Ignore(
-            pg.OneOf(" ", "\t")),
-        span_text)
+# def numbered_bullet_without_paragraph():
+#     return pg.AllOf(
+#         pg.Ignore(digits),
+#         pg.Ignore("."),
+#         pg.Ignore(
+#             pg.OneOf(" ", "\t")),
+#         span_text)
 
-def numbered_bullet_with_paragraph():
-    return pg.Indented(
-        pg.AllOf(
-            paragraph,
-            pg.Optional(
-                pg.AllOf(
-                    linebreaks,
-                    paragraph))),
-        initial_indent=pg.AllOf(
-            pg.Optional(
-                linebreaks),
-            pg.OneOf(
-                pg.AllOf(
-                    pg.Ignore(digits),
-                    pg.Ignore("."),
-                    pg.Many('\t')),
-                pg.AllOf(
-                    digits,
-                    ".",
-                    " "))))
+# def numbered_bullet_with_paragraph():
+#     return pg.Indented(
+#         pg.AllOf(
+#             paragraph,
+#             pg.Optional(
+#                 pg.AllOf(
+#                     linebreaks,
+#                     paragraph))),
+#         initial_indent=pg.AllOf(
+#             pg.Optional(
+#                 linebreaks),
+#             pg.OneOf(
+#                 pg.AllOf(
+#                     pg.Ignore(digits),
+#                     pg.Ignore("."),
+#                     pg.Many('\t')),
+#                 pg.AllOf(
+#                     digits,
+#                     ".",
+#                     " "))))
 
-def _ordered_list_with_single_bullet():
-    return pg.Indented(
-        numbered_bullet_without_paragraph,
-        optional=True)
+# def _ordered_list_with_single_bullet():
+#     return pg.Indented(
+#         numbered_bullet_without_paragraph,
+#         optional=True)
 
-def _ordered_list_with_single_bullet_nested():
-    return pg.Indented(
-        numbered_bullet_without_paragraph,
-        optional=False)
+# def _ordered_list_with_single_bullet_nested():
+#     return pg.Indented(
+#         numbered_bullet_without_paragraph,
+#         optional=False)
 
-def _ordered_list_template(bullet_type, spacing, optional=True):
-    return pg.Indented(
-        pg.AllOf(
-            bullet_type,
-            pg.Many(
-                pg.AllOf(
-                    pg.Ignore(
-                        spacing),
-                    pg.OneOf(
-                        bullet_type,
-                        ordered_list_nested,
-                        unordered_list)))),
-        optional=optional)
+# def _ordered_list_template(bullet_type, spacing, optional=True):
+#     return pg.Indented(
+#         pg.AllOf(
+#             bullet_type,
+#             pg.Many(
+#                 pg.AllOf(
+#                     pg.Ignore(
+#                         spacing),
+#                     pg.OneOf(
+#                         bullet_type,
+#                         ordered_list_nested,
+#                         unordered_list)))),
+#         optional=optional)
 
-def _ordered_list_without_paragraphs():
-    return _ordered_list_template(
-        bullet_type=numbered_bullet_without_paragraph,
-        spacing="\n")
+# def _ordered_list_without_paragraphs():
+#     return _ordered_list_template(
+#         bullet_type=numbered_bullet_without_paragraph,
+#         spacing="\n")
 
-def _ordered_list_without_paragraphs_nested():
-    return _ordered_list_template(
-        bullet_type=numbered_bullet_without_paragraph,
-        spacing="\n",
-        optional=False)
+# def _ordered_list_without_paragraphs_nested():
+#     return _ordered_list_template(
+#         bullet_type=numbered_bullet_without_paragraph,
+#         spacing="\n",
+#         optional=False)
 
-def _ordered_list_with_paragraphs():
-    return _ordered_list_template(
-        bullet_type=numbered_bullet_with_paragraph,
-        spacing="\n\n")
+# def _ordered_list_with_paragraphs():
+#     return _ordered_list_template(
+#         bullet_type=numbered_bullet_with_paragraph,
+#         spacing="\n\n")
 
-def _ordered_list_with_paragraphs_nested():
-    return _ordered_list_template(
-        bullet_type=numbered_bullet_with_paragraph,
-        spacing="\n\n",
-        optional=False)
+# def _ordered_list_with_paragraphs_nested():
+#     return _ordered_list_template(
+#         bullet_type=numbered_bullet_with_paragraph,
+#         spacing="\n\n",
+#         optional=False)
 
-def unordered_list():
-    return pg.OneOf(
-        _unordered_list_without_paragraphs,
-        _unordered_list_with_paragraphs,
-        _unordered_list_with_single_bullet
-        )
+# def unordered_list():
+#     return pg.OneOf(
+#         _unordered_list_without_paragraphs,
+#         _unordered_list_with_paragraphs,
+#         _unordered_list_with_single_bullet
+#         )
 
-def _unordered_list_with_single_bullet():
-    return pg.Indented(
-        bullet_without_paragraph,
-        optional=True)
+# def _unordered_list_with_single_bullet():
+#     return pg.Indented(
+#         bullet_without_paragraph,
+#         optional=True)
 
-def _unordered_list_template(bullet_type, spacing):
-    return pg.Indented(
-        pg.AllOf(
-            bullet_type,
-            pg.Many(
-                pg.AllOf(
-                    pg.Ignore(
-                        spacing),
-                    pg.OneOf(
-                        bullet_type,
-                        unordered_list,
-                        ordered_list)))),
-        optional=True)
+# def _unordered_list_template(bullet_type, spacing):
+#     return pg.Indented(
+#         pg.AllOf(
+#             bullet_type,
+#             pg.Many(
+#                 pg.AllOf(
+#                     pg.Ignore(
+#                         spacing),
+#                     pg.OneOf(
+#                         bullet_type,
+#                         unordered_list,
+#                         ordered_list)))),
+#         optional=True)
 
-def _unordered_list_without_paragraphs():
-    return _unordered_list_template(
-        bullet_type=bullet_without_paragraph,
-        spacing="\n")
+# def _unordered_list_without_paragraphs():
+#     return _unordered_list_template(
+#         bullet_type=bullet_without_paragraph,
+#         spacing="\n")
 
-def _unordered_list_with_paragraphs():
-    return _ordered_list_template(
-        bullet_type=bullet_with_paragraph,
-        spacing="\n\n")
+# def _unordered_list_with_paragraphs():
+#     return _ordered_list_template(
+#         bullet_type=bullet_with_paragraph,
+#         spacing="\n\n")
 
-def bullet_without_paragraph():
-    return pg.AllOf(
-        pg.Ignore(
-            pg.OneOf("*", "+", "-")),
-        pg.Ignore(
-            pg.OneOf(" ", "\t")),
-        span_text)
+# def bullet_without_paragraph():
+#     return pg.AllOf(
+#         pg.Ignore(
+#             pg.OneOf("*", "+", "-")),
+#         pg.Ignore(
+#             pg.OneOf(" ", "\t")),
+#         span_text)
 
-def bullet_with_paragraph():
-    return pg.AllOf(
-        pg.Ignore(
-            pg.OneOf("*", "+", "-")),
-        pg.Ignore(
-            pg.OneOf(" ", "\t")),
-        paragraph)
+# def bullet_with_paragraph():
+#     return pg.AllOf(
+#         pg.Ignore(
+#             pg.OneOf("*", "+", "-")),
+#         pg.Ignore(
+#             pg.OneOf(" ", "\t")),
+#         paragraph)
 
-span_text = pg.Many(
-    plain,
-    emphasis,
-    link,
-    code)
+# span_text = pg.Many(
+#     plain,
+#     emphasis,
+#     link,
+#     code)
 
-def code_line():
-    return pg.Escaped(
-        pg.Join(
-            pg.Many(
-                pg.Not("\n"))))
+# def code_line():
+#     return pg.Escaped(
+#         pg.Join(
+#             pg.Many(
+#                 pg.Not("\n"))))
 
-code_paragraph = pg.AllOf(
-    pg.Ignore(
-        pg.Optional(
-            pg.Many("\n"))),
-    pg.Many(
-        code_line))
+# code_paragraph = pg.AllOf(
+#     pg.Ignore(
+#         pg.Optional(
+#             pg.Many("\n"))),
+#     pg.Many(
+#         code_line))
 
-def code_block():
-    return pg.AllOf(
-        pg.Indented(
-            code_paragraph))
+# def code_block():
+#     return pg.AllOf(
+#         pg.Indented(
+#             code_paragraph))
 
-def horizontal_rule():
-    return pg.AllOf(
-        pg.OneOf(
-            "---",
-            "___",
-            "***",
-            "- - -",
-            "_ _ _",
-            "* * *"),
-        pg.Optional(
-            pg.Ignore(
-                pg.Many(
-                    pg.Not("\n")))))
+# def horizontal_rule():
+#     return pg.AllOf(
+#         pg.OneOf(
+#             "---",
+#             "___",
+#             "***",
+#             "- - -",
+#             "_ _ _",
+#             "* * *"),
+#         pg.Optional(
+#             pg.Ignore(
+#                 pg.Many(
+#                     pg.Not("\n")))))
 
-def blockquote():
-    return pg.AllOf(
-        pg.Ignore('> '),
-        paragraph
-        )
+# def blockquote():
+#     return pg.AllOf(
+#         pg.Ignore('> '),
+#         paragraph
+#         )
 
 
 lookups = {
