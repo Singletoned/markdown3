@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+import py.test
+py.test.skip()
+
 import pegger as pg
 
 import markdown3 as md
