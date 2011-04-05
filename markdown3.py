@@ -57,22 +57,22 @@ def unordered_bullet():
                 pg.Ignore("\n"),
                 unordered_list_nested)))
 
-def _multiple_bullets():
+def _multiple_bullets(bullet_type):
     return pg.AllOf(
-        unordered_bullet,
+        bullet_type,
         pg.Optional(
             pg.AllOf(
                 pg.Ignore("\n"),
-                unordered_bullet)))
+                bullet_type)))
 
 def unordered_list():
     return pg.Indented(
-        _multiple_bullets,
+        _multiple_bullets(unordered_bullet),
         optional=True)
 
 def unordered_list_nested():
     return pg.Indented(
-        _multiple_bullets,
+        _multiple_bullets(unordered_bullet),
         optional=False)
 
 def ordered_bullet():
@@ -81,18 +81,21 @@ def ordered_bullet():
             pg.AllOf(
                 pg.Words(letters="0123456789"),
                 ". ")),
-        span)
+        span,
+        pg.Optional(
+            pg.AllOf(
+                pg.Ignore("\n"),
+                ordered_list_nested)))
 
 def ordered_list():
     return pg.Indented(
-        pg.AllOf(
-            ordered_bullet,
-            pg.Optional(
-                pg.AllOf(
-                    pg.Ignore("\n"),
-                    ordered_bullet))),
+        _multiple_bullets(ordered_bullet),
         optional=True)
 
+def ordered_list_nested():
+    return pg.Indented(
+        _multiple_bullets(ordered_bullet),
+        optional=False)
 
 # def plain():
 #     return multiline_words

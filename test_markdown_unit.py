@@ -201,3 +201,19 @@ class TestOrderedList(unittest.TestCase):
              "a bullet"]]
         result = markdown3.parse(data, markdown3.ordered_list)
         assert expected == result
+
+    def test_nested_lists(self):
+        """Test that nested lists match"""
+        data = """
+1. bullet one, list one
+  1. bullet one, list two
+        """.strip()
+        expected = [
+            'ordered_list',
+            ['ordered_bullet',
+             "bullet one, list one",
+             ['ordered_list_nested',
+              ['ordered_bullet',
+               "bullet one, list two"]]]]
+        result = markdown3.parse(data, markdown3.ordered_list)
+        assert expected == result
