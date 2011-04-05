@@ -44,6 +44,14 @@ span = pg.Many(
         )
     )
 
+
+def unordered_bullet():
+    return pg.AllOf(
+        pg.Ignore("*"),
+        pg.Ignore(" "),
+        span)
+
+
 def plain():
     return multiline_words
 

@@ -62,3 +62,13 @@ class TestSpan(unittest.TestCase):
             " in them"]
         result = markdown3.parse(data, markdown3.span)
         assert expected == result
+
+
+class TestUnorderedBullet(unittest.TestCase):
+    def test_simple(self):
+        data = "* a bullet"
+        expected = [
+            'unordered_bullet',
+            "a bullet"]
+        result = markdown3.parse(data, markdown3.unordered_bullet)
+        assert expected == result
