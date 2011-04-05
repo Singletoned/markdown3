@@ -61,9 +61,10 @@ def _multiple_bullets(bullet_type):
     return pg.AllOf(
         bullet_type,
         pg.Optional(
-            pg.AllOf(
-                pg.Ignore("\n"),
-                bullet_type)))
+            pg.Many(
+                pg.AllOf(
+                    pg.Ignore("\n"),
+                    bullet_type))))
 
 def unordered_list():
     return pg.Indented(

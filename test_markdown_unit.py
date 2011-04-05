@@ -94,13 +94,16 @@ class TestUnorderedList(unittest.TestCase):
         """Test that multiple bullets match"""
         data = """
 * bullet one
-* bullet two""".strip()
+* bullet two
+* bullet three""".strip()
         expected = [
             'unordered_list',
             ['unordered_bullet',
              "bullet one"],
             ['unordered_bullet',
-             "bullet two"]]
+             "bullet two"],
+            ['unordered_bullet',
+             "bullet three"]]
         result = markdown3.parse(data, markdown3.unordered_list)
         assert expected == result
 
@@ -142,13 +145,15 @@ class TestUnorderedListNested(unittest.TestCase):
             result = markdown3.parse(data, markdown3.unordered_list_nested)
 
     def test_indented(self):
-        data = """    * bullet one\n    * bullet two"""
+        data = """    * bullet one\n    * bullet two\n    * bullet three"""
         expected = [
             'unordered_list_nested',
             ['unordered_bullet',
              "bullet one"],
             ['unordered_bullet',
-             "bullet two"]]
+             "bullet two"],
+            ['unordered_bullet',
+             "bullet three"]]
         result = markdown3.parse(data, markdown3.unordered_list_nested)
         assert expected == result
 
@@ -183,13 +188,16 @@ class TestOrderedList(unittest.TestCase):
         """Test that multiple bullets match"""
         data = """
 1. bullet one
-2. bullet two""".strip()
+2. bullet two
+3. bullet three""".strip()
         expected = [
             'ordered_list',
             ['ordered_bullet',
              "bullet one"],
             ['ordered_bullet',
-             "bullet two"]]
+             "bullet two"],
+            ['ordered_bullet',
+             "bullet three"]]
         result = markdown3.parse(data, markdown3.ordered_list)
         assert expected == result
 
