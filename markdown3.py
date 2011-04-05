@@ -49,18 +49,31 @@ def unordered_bullet():
     return pg.AllOf(
         pg.Ignore("*"),
         pg.Ignore(" "),
-        span)
+        span,
+        pg.Optional(
+            pg.AllOf(
+                pg.Ignore("\n"),
+                unordered_list_nested)))
+
+
+def _multiple_bullets():
+    return pg.AllOf(
+        unordered_bullet,
+        pg.Optional(
+            pg.AllOf(
+                pg.Ignore("\n"),
+                unordered_bullet)))
 
 
 def unordered_list():
     return pg.Indented(
-        pg.AllOf(
-            unordered_bullet,
-            pg.Optional(
-                pg.AllOf(
-                    pg.Ignore("\n"),
-                    unordered_bullet))),
+        _multiple_bullets,
         optional=True)
+
+def unordered_list_nested():
+    return pg.Indented(
+        _multiple_bullets,
+        optional=False)
 
 
 def plain():
