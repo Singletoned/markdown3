@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import contextlib
 
 import py.test
 import mock
@@ -10,16 +11,21 @@ import markdown3 as md
 import htmlise
 
 
-def test_register_tag():
+@contextlib.contextmanager
+def patch_tagname_lookups_and_htmliser_funcs():
     with mock.patch.dict(htmlise.tagname_lookups):
         with mock.patch.dict(htmlise.htmliser_funcs):
-            @htmlise.register_func(md.make_block, "foo")
-            def my_func():
-                pass
+            yield
 
-            assert htmlise.htmliser_funcs == {'my_func': md.make_block}
-            assert htmlise.tagname_lookups == {'my_func': "foo"}
-            assert callable(my_func)
+def test_register_tag():
+    with patch_tagname_lookups_and_htmliser_funcs():
+        @htmlise.register_func(md.make_block, "foo")
+        def my_func():
+            pass
+
+        assert htmlise.htmliser_funcs == {'my_func': md.make_block}
+        assert htmlise.tagname_lookups == {'my_func': "foo"}
+        assert callable(my_func)
 
 
 class TestDoRender(unittest.TestCase):
@@ -34,34 +40,33 @@ class TestDoRender(unittest.TestCase):
 
     def test_list(self):
         """Test that a list is passed to a renderer"""
-        with mock.patch.dict(htmlise.tagname_lookups):
-            with mock.patch.dict(htmlise.htmliser_funcs):
-                def make_foo(head, rest):
-                    return repr((head, rest))
+        with patch_tagname_lookups_and_htmliser_funcs():
+            def make_foo(head, rest):
+                return repr((head, rest))
 
-                htmlise.tagname_lookups['foo'] = "footag"
-                htmlise.htmliser_funcs['foo'] = make_foo
+            htmlise.tagname_lookups['foo'] = "footag"
+            htmlise.htmliser_funcs['foo'] = make_foo
 
-                data = ['foo', "bar"]
-                expected = "('foo', ['bar'])"
-                result = htmlise.do_render(data)
-                assert expected == result
+            data = ['foo', "bar"]
+            expected = "('foo', ['bar'])"
+            result = htmlise.do_render(data)
+            assert expected == result
 
 
 def test_make_block():
-    with mock.patch.dict(htmlise.tagname_lookups):
-        with mock.patch.dict(htmlise.htmliser_funcs):
-            @htmlise.register_func(htmlise.make_block, "footag")
-            def foo():
-                pass
+    with patch_tagname_lookups_and_htmliser_funcs():
+        @htmlise.register_func(htmlise.make_block, "footag")
+        def foo():
+            pass
 
-            data = ['foo', "bar", "baz"]
-            expected = [
-                "<footag>",
-                "barbaz",
-                "</footag>"]
-            result = htmlise.make_block(data[0], data[1:])
-            assert expected == result
+        data = ['foo', "bar", "baz"]
+        expected = [
+            "<footag>",
+            "barbaz",
+            "</footag>"]
+        result = htmlise.make_block(data[0], data[1:])
+        assert expected == result
+
 
 # def test_make_void_element():
 #     data = ['horizontal_rule', ""]
