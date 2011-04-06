@@ -18,13 +18,31 @@ def patch_tagname_lookups_and_htmliser_funcs():
             yield
 
 def test_register_tag():
-    with patch_tagname_lookups_and_htmliser_funcs():
-        @htmlise.register_func(md.make_block, "foo")
+    old_htmliser_funcs = htmlise.htmliser_funcs
+
+    with mock.patch.dict(htmlise.tagname_lookups):
+        @htmlise.tagname("foo")
         def my_func():
             pass
 
-        assert htmlise.htmliser_funcs == {'my_func': md.make_block}
+        assert htmlise.htmliser_funcs == old_htmliser_funcs
         assert htmlise.tagname_lookups == {'my_func': "foo"}
+        assert callable(my_func)
+
+
+def test_register_htmliser_func():
+    old_tagname_lookups = htmlise.tagname_lookups
+
+    with mock.patch.dict(htmlise.htmliser_funcs):
+        def make_foo(head, rest):
+            pass
+
+        @htmlise.htmliser(make_foo)
+        def my_func():
+            pass
+
+        assert htmlise.htmliser_funcs == {'my_func': make_foo}
+        assert htmlise.tagname_lookups == old_tagname_lookups
         assert callable(my_func)
 
 
@@ -55,7 +73,7 @@ class TestDoRender(unittest.TestCase):
 
 def test_make_block():
     with patch_tagname_lookups_and_htmliser_funcs():
-        @htmlise.register_func(htmlise.make_block, "footag")
+        @htmlise.tagname("footag")
         def foo():
             pass
 
