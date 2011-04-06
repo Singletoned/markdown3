@@ -137,16 +137,30 @@ class TestMakeSpan(unittest.TestCase):
         assert expected == result
 
 
-def test_make_void_element():
-    "Test that make_void_element returns a single tag"
-    @htmlise.tagname("tag")
-    def foo():
-        pass
+class TestMakeVoidElement(unittest.TestCase):
+    """Unittests for make_void_element"""
 
-    data = ['foo', ""]
-    expected = ['<tag/>']
-    result = htmlise.make_void_element(data[0], data[1:])
-    assert expected == result
+    def test_simple(self):
+        "Test that make_void_element returns a single tag"
+        @htmlise.tagname("tag")
+        def foo():
+            pass
+
+        data = ['foo', ""]
+        expected = ['<tag/>']
+        result = htmlise.make_void_element(data[0], data[1:])
+        assert expected == result
+
+    def test_ignores_content(self):
+        "Test that make_void_element ignores any content"
+        @htmlise.tagname("tag")
+        def foo():
+            pass
+
+        data = ['foo', "some content"]
+        expected = ['<tag/>']
+        result = htmlise.make_void_element(data[0], data[1:])
+        assert expected == result
 
 
 # def test_make_void_element_with_linebreak():
