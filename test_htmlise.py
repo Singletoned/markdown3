@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import unittest
+
 import py.test
 import mock
 
@@ -18,6 +20,32 @@ def test_register_tag():
             assert htmlise.htmliser_funcs == {'my_func': md.make_block}
             assert htmlise.tagname_lookups == {'my_func': "foo"}
             assert callable(my_func)
+
+
+class TestDoRender(unittest.TestCase):
+    """Unittests for do_render"""
+
+    def test_string(self):
+        """Test that a string returns itself in a list"""
+        data = """foo"""
+        expected = ['foo']
+        result = htmlise.do_render(data)
+        assert expected == result
+
+    def test_list(self):
+        """Test that a list is passed to a renderer"""
+        with mock.patch.dict(htmlise.tagname_lookups):
+            with mock.patch.dict(htmlise.htmliser_funcs):
+                def make_foo(head, rest):
+                    return repr((head, rest))
+
+                htmlise.tagname_lookups['foo'] = "footag"
+                htmlise.htmliser_funcs['foo'] = make_foo
+
+                data = ['foo', "bar"]
+                expected = "('foo', ['bar'])"
+                result = htmlise.do_render(data)
+                assert expected == result
 
 
 # def test_make_block():
