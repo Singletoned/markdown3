@@ -17,6 +17,7 @@ def patch_tagname_lookups_and_htmliser_funcs():
         with mock.patch.dict(htmlise.htmliser_funcs):
             yield
 
+
 def test_register_tag():
     old_htmliser_funcs = htmlise.htmliser_funcs
 
@@ -84,6 +85,7 @@ def test_make_block():
             "</footag>"]
         result = htmlise.make_block(data[0], data[1:])
         assert expected == result
+
 
 class TestMakeSpan(unittest.TestCase):
     """Unittests for make_span"""
