@@ -35,3 +35,17 @@ def make_block(head, rest):
     if single_line:
         content = ["".join(content)]
     return [start_tag] + content + [end_tag]
+
+def make_span(head, rest):
+    tag = tagname_lookups[head]
+    if tag:
+        start_tag = "<%s>" % tag
+        end_tag = "</%s>" % tag
+    else:
+        start_tag = ""
+        end_tag = ""
+    content = []
+    for item in rest:
+        content.extend(do_render(item))
+    content = "".join(content)
+    return ["%s%s%s" % (start_tag, content, end_tag)]

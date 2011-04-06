@@ -68,6 +68,29 @@ def test_make_block():
         assert expected == result
 
 
+def test_make_span():
+    with patch_tagname_lookups_and_htmliser_funcs():
+        @htmlise.register_func(htmlise.make_span, "footag")
+        def foo():
+            pass
+
+        data = ['foo', "flibble", "flammle"]
+        expected = ["<footag>flibbleflammle</footag>"]
+        result = htmlise.make_span(data[0], data[1:])
+        assert expected == result
+
+    # data = [
+    #     'plain',
+    #     "A paragraph with ",
+    #     ['emphasis', "some bold"],
+    #     " and ",
+    #     ['code', "code"],
+    #     " in it"]
+    # expected = ["A paragraph with <strong>some bold</strong> and <code>code</code> in it"]
+    # result = md.make_span(data[0], data[1:])
+    # assert expected == result
+
+
 # def test_make_void_element():
 #     data = ['horizontal_rule', ""]
 #     expected = ['<hr/>']
@@ -78,23 +101,6 @@ def test_make_block():
 #     data = ['horizontal_rule', ""]
 #     expected = ['<hr/>', ""]
 #     result = md.make_void_element_with_linebreak(data[0], data[1:])
-#     assert expected == result
-
-# def test_make_span():
-#     data = ['emphasis', "some bold"]
-#     expected = ["<strong>some bold</strong>"]
-#     result = md.make_span(data[0], data[1:])
-#     assert expected == result
-
-#     data = [
-#         'plain',
-#         "A paragraph with ",
-#         ['emphasis', "some bold"],
-#         " and ",
-#         ['code', "code"],
-#         " in it"]
-#     expected = ["A paragraph with <strong>some bold</strong> and <code>code</code> in it"]
-#     result = md.make_span(data[0], data[1:])
 #     assert expected == result
 
 # def test_make_span_with_linebreak():
