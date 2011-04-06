@@ -55,3 +55,8 @@ def make_span(head, rest):
         content.extend(do_render(item))
     content = "".join(content)
     return ["%s%s%s" % (start_tag, content, end_tag)]
+
+def make_void_element(head, rest):
+    tag = tagname_lookups[head]
+    tag = "<%s/>" % tag
+    return [tag]
