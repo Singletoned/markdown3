@@ -48,19 +48,20 @@ class TestDoRender(unittest.TestCase):
                 assert expected == result
 
 
-# def test_make_block():
-#     data = [
-#         'ordered_list',
-#         ['list_item', "A bullet"],
-#         ['list_item', "Another bullet"]]
-#     expected = [
-#         "<ol>",
-#         "  <li>A bullet</li>",
-#         "  <li>Another bullet</li>",
-#         "</ol>",
-#         ""]
-#     result = md.make_block(data[0], data[1:])
-#     assert expected == result
+def test_make_block():
+    with mock.patch.dict(htmlise.tagname_lookups):
+        with mock.patch.dict(htmlise.htmliser_funcs):
+            @htmlise.register_func(htmlise.make_block, "footag")
+            def foo():
+                pass
+
+            data = ['foo', "bar", "baz"]
+            expected = [
+                "<footag>",
+                "barbaz",
+                "</footag>"]
+            result = htmlise.make_block(data[0], data[1:])
+            assert expected == result
 
 # def test_make_void_element():
 #     data = ['horizontal_rule', ""]
