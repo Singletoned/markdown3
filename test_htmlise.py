@@ -137,6 +137,18 @@ class TestMakeSpan(unittest.TestCase):
         assert expected == result
 
 
+def test_make_span_with_linebreak():
+    "Test that make_span_with_linebreak adds a blank line"
+    @htmlise.tagname("tag")
+    def foo():
+        pass
+
+    data = ['foo', "flibble floozle"]
+    expected = ["<tag>flibble floozle</tag>", ""]
+    result = htmlise.make_span_with_linebreak(data[0], data[1:])
+    assert expected == result
+
+
 class TestMakeVoidElement(unittest.TestCase):
     """Unittests for make_void_element"""
 
@@ -174,14 +186,6 @@ def test_make_void_element_with_linebreak():
     result = htmlise.make_void_element_with_linebreak(data[0], data[1:])
     assert expected == result
 
-
-# def test_make_span_with_linebreak():
-#     data = [
-#         'title_level_1',
-#         "FooBar"]
-#     expected = ["<h1>FooBar</h1>", ""]
-#     result = md.make_span_with_linebreak(data[0], data[1:])
-#     assert expected == result
 
 # def test_do_render():
 #     data = [
