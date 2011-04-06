@@ -85,28 +85,54 @@ def test_make_block():
         result = htmlise.make_block(data[0], data[1:])
         assert expected == result
 
+class TestMakeSpan(unittest.TestCase):
+    """Unittests for make_span"""
 
-def test_make_span():
-    with patch_tagname_lookups_and_htmliser_funcs():
-        @htmlise.register_func(htmlise.make_span, "footag")
+    def test_simple(self):
+        """Test the simplest possible case"""
+        with patch_tagname_lookups_and_htmliser_funcs():
+            @htmlise.tagname("footag")
+            def foo():
+                pass
+
+            data = ['foo', "flibble", "flammle"]
+            expected = ["<footag>flibbleflammle</footag>"]
+            result = htmlise.make_span(data[0], data[1:])
+            assert expected == result
+
+    def test_nested_tagless(self):
+        "Test that nested lists work with tagless"
+        @htmlise.htmliser(htmlise.make_span)
+        @htmlise.tagname(None)
         def foo():
             pass
 
-        data = ['foo', "flibble", "flammle"]
-        expected = ["<footag>flibbleflammle</footag>"]
+        data = [
+            'foo',
+            ['foo', "flibble", " ", "flammle"],
+            " ",
+            "flooble ",
+            ['foo', "flotsit", " flamagan"]]
+        expected = ["flibble flammle flooble flotsit flamagan"]
         result = htmlise.make_span(data[0], data[1:])
         assert expected == result
 
-    # data = [
-    #     'plain',
-    #     "A paragraph with ",
-    #     ['emphasis', "some bold"],
-    #     " and ",
-    #     ['code', "code"],
-    #     " in it"]
-    # expected = ["A paragraph with <strong>some bold</strong> and <code>code</code> in it"]
-    # result = md.make_span(data[0], data[1:])
-    # assert expected == result
+    def test_nested_with_tags(self):
+        "Test that nested lists work with tags"
+        @htmlise.htmliser(htmlise.make_span)
+        @htmlise.tagname("tag")
+        def foo():
+            pass
+
+        data = [
+            'foo',
+            ['foo', "flibble", " ", "flammle"],
+            " ",
+            "flooble ",
+            ['foo', "flotsit", " flamagan"]]
+        expected = ["<tag><tag>flibble flammle</tag> flooble <tag>flotsit flamagan</tag></tag>"]
+        result = htmlise.make_span(data[0], data[1:])
+        assert expected == result
 
 
 # def test_make_void_element():
