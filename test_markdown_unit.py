@@ -233,6 +233,6 @@ class TestLinebreaks(unittest.TestCase):
     def test_single_line(self):
         """Test that linebreaks matches a single blank line """
         data = "\n"
-        expected = []
-        result = markdown3.parse(data, markdown3.linebreaks)
+        expected = ([], "")
+        result = markdown3.parse(data, markdown3.linebreaks, with_rest=True)
         assert expected == result

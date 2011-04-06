@@ -473,10 +473,13 @@ def do_render(data):
 def htmlise(node, depth=0):
     return "\n".join(do_render(node))
 
-def parse(text, pattern=body):
+def parse(text, pattern=body, with_rest=False):
     if not text.endswith("\n\n"):
         text = text + "\n\n"
-    return pg.parse_string(text, pattern)
+    if not with_rest:
+        return pg.parse_string(text, pattern)
+    else:
+        return pg.do_parse(text, pattern)
 
 def to_html(text, pattern=body):
     if not text.endswith("\n\n"):
