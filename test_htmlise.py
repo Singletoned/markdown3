@@ -1,11 +1,24 @@
 # -*- coding: utf-8 -*-
 
 import py.test
-py.test.skip()
+import mock
 
 import pegger as pg
-
 import markdown3 as md
+import htmlise
+
+
+def test_register_tag():
+    with mock.patch.dict(htmlise.tagname_lookups):
+        with mock.patch.dict(htmlise.htmliser_funcs):
+            @htmlise.register_func(md.make_block, "foo")
+            def my_func():
+                pass
+
+            assert htmlise.htmliser_funcs == {'my_func': md.make_block}
+            assert htmlise.tagname_lookups == {'my_func': "foo"}
+            assert callable(my_func)
+
 
 # def test_make_block():
 #     data = [
