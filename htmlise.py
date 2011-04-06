@@ -60,3 +60,6 @@ def make_void_element(head, rest):
     tag = tagname_lookups[head]
     tag = "<%s/>" % tag
     return [tag]
+
+def make_void_element_with_linebreak(head, rest):
+    return make_void_element(head, rest) + [""]

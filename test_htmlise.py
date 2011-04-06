@@ -163,11 +163,17 @@ class TestMakeVoidElement(unittest.TestCase):
         assert expected == result
 
 
-# def test_make_void_element_with_linebreak():
-#     data = ['horizontal_rule', ""]
-#     expected = ['<hr/>', ""]
-#     result = md.make_void_element_with_linebreak(data[0], data[1:])
-#     assert expected == result
+def test_make_void_element_with_linebreak():
+    "Test that make_void_element_with_linebreak adds an empty line"
+    @htmlise.tagname("tag")
+    def foo():
+        pass
+
+    data = ['foo', ""]
+    expected = ['<tag/>', ""]
+    result = htmlise.make_void_element_with_linebreak(data[0], data[1:])
+    assert expected == result
+
 
 # def test_make_span_with_linebreak():
 #     data = [
