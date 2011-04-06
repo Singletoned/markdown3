@@ -98,6 +98,9 @@ def ordered_list_nested():
         _multiple_bullets(ordered_bullet),
         optional=False)
 
+def linebreaks():
+    return pg.Ignore("\n")
+
 # def plain():
 #     return multiline_words
 

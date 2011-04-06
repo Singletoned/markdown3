@@ -225,3 +225,14 @@ class TestOrderedList(unittest.TestCase):
                "bullet one, list two"]]]]
         result = markdown3.parse(data, markdown3.ordered_list)
         assert expected == result
+
+
+class TestLinebreaks(unittest.TestCase):
+    """Unittests for linebreaks"""
+
+    def test_single_line(self):
+        """Test that linebreaks matches a single blank line """
+        data = "\n"
+        expected = []
+        result = markdown3.parse(data, markdown3.linebreaks)
+        assert expected == result
