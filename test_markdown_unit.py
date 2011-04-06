@@ -236,3 +236,10 @@ class TestLinebreaks(unittest.TestCase):
         expected = ([], "")
         result = markdown3.parse(data, markdown3.linebreaks, with_rest=True)
         assert expected == result
+
+    def test_multiple_lines(self):
+        """Test that linebreaks matches multiple blank lines"""
+        data = "\n\n"
+        expected = ([], "")
+        result = markdown3.parse(data, markdown3.linebreaks, with_rest=True)
+        assert expected == result

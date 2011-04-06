@@ -99,7 +99,8 @@ def ordered_list_nested():
         optional=False)
 
 def linebreaks():
-    return pg.Ignore("\n")
+    return pg.Ignore(
+        pg.Many("\n"))
 
 # def plain():
 #     return multiline_words
