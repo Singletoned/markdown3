@@ -7,6 +7,25 @@ import py.test
 import pegger as pg
 import markdown3
 
+
+class TestCharacters(unittest.TestCase):
+    """Unittests for characters"""
+
+    def test_simple(self):
+        """Test that characters matches some text"""
+        data = "word"
+        expected = ['', "word"]
+        result = markdown3.parse(data, markdown3.characters)
+        assert expected == result
+
+    def test_whitespace(self):
+        """Test that characters doesn't match whitespace"""
+        data = "two words"
+        expected = ['', "two"]
+        result = markdown3.parse(data, markdown3.characters)
+        assert expected == result
+
+
 class TestWords(unittest.TestCase):
     """Unittests for words"""
     def test_simple(self):
@@ -16,9 +35,23 @@ class TestWords(unittest.TestCase):
         result = markdown3.parse(data, markdown3.words)
         assert expected == result
 
+    def test_many_words(self):
+        """Test that words matches multiple words"""
+        data = "quite a few words in a row"
+        expected = ['', "quite a few words in a row"]
+        result = markdown3.parse(data, markdown3.words)
+        assert expected == result
+
     def test_multiline(self):
         """Test that words doesn't match multiple lines"""
         data = "some words\nover two lines"
+        expected = ['', "some words"]
+        result = markdown3.parse(data, markdown3.words)
+        assert expected == result
+
+    def test_trailing_whitespace(self):
+        """Test that words doesn't match trailing whitespace"""
+        data = "some words "
         expected = ['', "some words"]
         result = markdown3.parse(data, markdown3.words)
         assert expected == result
@@ -63,9 +96,11 @@ class TestSpan(unittest.TestCase):
         data = "some words with *emphasis* in them"
         expected = [
             '',
-            "some words with ",
+            "some words with",
+            " ",
             ['emphasis', "emphasis"],
-            " in them"]
+            " ",
+            "in them"]
         result = markdown3.parse(data, markdown3.span)
         assert expected == result
 
@@ -256,7 +291,7 @@ class TestHeading(unittest.TestCase):
         data = "# Heading 1 #"
         expected = [
             'heading_1',
-            "Heading 1 "]
+            "Heading 1"]
         result = markdown3.parse(data, markdown3.heading_1)
         assert expected == result
 

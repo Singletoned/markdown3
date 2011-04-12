@@ -38,12 +38,24 @@ multiline_words = pg.AllOf(
                 pg.Insert(" "),
                 pg.Words(string.lowercase+string.uppercase+string.digits+"., :")))))
 
-words = pg.Words(string.lowercase+string.uppercase+string.digits+"., :")
+characters = pg.Words(string.lowercase+string.uppercase+string.digits+".,:")
+
+words = pg.Join(
+    pg.AllOf(
+        pg.Many(
+            characters),
+        pg.Many(
+            pg.Optional(
+                pg.AllOf(
+                    pg.Many(" "),
+                    pg.Many(
+                        characters))))))
 
 span = pg.Many(
     pg.OneOf(
         words,
         emphasis,
+        " "
         )
     )
 
