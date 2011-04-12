@@ -8,13 +8,16 @@ import pegger as pg
 import markdown3
 
 class TestWords(unittest.TestCase):
+    """Unittests for words"""
     def test_simple(self):
+        """Test that words matches some words"""
         data = "some words"
         expected = ['', "some words"]
         result = markdown3.parse(data, markdown3.words)
         assert expected == result
 
     def test_multiline(self):
+        """Test that words doesn't match multiple lines"""
         data = "some words\nover two lines"
         expected = ['', "some words"]
         result = markdown3.parse(data, markdown3.words)
