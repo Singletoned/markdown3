@@ -376,30 +376,30 @@ def heading_2():
 
 
 lookups = {
-    '': None,
-    'nested_list': "ol",
-    'ordered_list': "ol",
-    'ordered_list_nested': "ol",
-    'list_item': "li",
-    'body': "body",
-    'numbered_bullet_with_paragraph': "li",
-    'numbered_bullet_without_paragraph': "li",
-    'plain': None,
-    'emphasis': "strong",
-    'code': "code",
-    'link_text': None,
-    'link_url': None,
-    'link': "a",
-    'paragraph': "p",
-    'title_level_1': "h1",
-    'title_level_2': "h2",
-    'code_block': "code",
-    'code_line': None,
-    'unordered_list': "ul",
-    'bullet_with_paragraph': "li",
-    'bullet_without_paragraph': "li",
-    'horizontal_rule': "hr",
-    'blockquote': "blockquote",
+    # '': None,
+    # 'nested_list': "ol",
+    # 'ordered_list': "ol",
+    # 'ordered_list_nested': "ol",
+    # 'list_item': "li",
+    # 'body': "body",
+    # 'numbered_bullet_with_paragraph': "li",
+    # 'numbered_bullet_without_paragraph': "li",
+    # 'plain': None,
+    # 'emphasis': "strong",
+    # 'code': "code",
+    # 'link_text': None,
+    # 'link_url': None,
+    # 'link': "a",
+    # 'paragraph': "p",
+    # 'title_level_1': "h1",
+    # 'title_level_2': "h2",
+    # 'code_block': "code",
+    # 'code_line': None,
+    # 'unordered_list': "ul",
+    # 'bullet_with_paragraph': "li",
+    # 'bullet_without_paragraph': "li",
+    # 'horizontal_rule': "hr",
+    # 'blockquote': "blockquote",
     }
 
 def indent_tags(data):
@@ -465,41 +465,41 @@ def make_anchor(head, rest):
     return [result]
 
 tag_funcs = {
-    'list_item': make_span,
-    'emphasis': make_span,
-    'ordered_list': make_block,
-    'ordered_list_nested': make_block,
-    'code': make_span,
-    '': make_tagless,
-    'nested_list': make_block,
-    'plain': make_span,
-    'link': make_anchor,
-    'link_text': make_span,
-    'body': make_tagless,
-    'numbered_bullet_with_paragraph': make_span,
-    'numbered_bullet_without_paragraph': make_span,
-    'paragraph': make_span_with_linebreak,
-    'title_level_1': make_span_with_linebreak,
-    'title_level_2': make_span_with_linebreak,
-    'code_block': make_block,
-    'code_line': make_span,
-    'unordered_list': make_block,
-    'bullet_with_paragraph': make_span,
-    'bullet_without_paragraph': make_span,
-    'horizontal_rule': make_void_element_with_linebreak,
-    'blockquote': make_block,
+    # 'list_item': make_span,
+    # 'emphasis': make_span,
+    # 'ordered_list': make_block,
+    # 'ordered_list_nested': make_block,
+    # 'code': make_span,
+    # '': make_tagless,
+    # 'nested_list': make_block,
+    # 'plain': make_span,
+    # 'link': make_anchor,
+    # 'link_text': make_span,
+    # 'body': make_tagless,
+    # 'numbered_bullet_with_paragraph': make_span,
+    # 'numbered_bullet_without_paragraph': make_span,
+    # 'paragraph': make_span_with_linebreak,
+    # 'title_level_1': make_span_with_linebreak,
+    # 'title_level_2': make_span_with_linebreak,
+    # 'code_block': make_block,
+    # 'code_line': make_span,
+    # 'unordered_list': make_block,
+    # 'bullet_with_paragraph': make_span,
+    # 'bullet_without_paragraph': make_span,
+    # 'horizontal_rule': make_void_element_with_linebreak,
+    # 'blockquote': make_block,
     }
 
-def do_render(data):
-    if isinstance(data, basestring):
-        return [data]
-    else:
-        head, rest = data[0], data[1:]
-        func = tag_funcs[head]
-        return func(head, rest)
+# def do_render(data):
+#     if isinstance(data, basestring):
+#         return [data]
+#     else:
+#         head, rest = data[0], data[1:]
+#         func = tag_funcs[head]
+#         return func(head, rest)
 
-def htmlise(node, depth=0):
-    return "\n".join(do_render(node))
+# def htmlise(node, depth=0):
+#     return "\n".join(do_render(node))
 
 def parse(text, pattern=body, with_rest=False):
     if not text.endswith("\n\n"):
@@ -513,3 +513,11 @@ def to_html(text, pattern=body):
     if not text.endswith("\n\n"):
         text = text + "\n\n"
     return htmlise(pg.parse_string(text, pattern)).strip()
+# def to_html(text, pattern=body):
+#     if not text.endswith("\n\n"):
+#         text = text + "\n\n"
+#     return htmlise(pg.parse_string(text, pattern)).strip()
+
+# def htmlise(node, depth=0):
+#     return "\n".join(do_render(node))
+
