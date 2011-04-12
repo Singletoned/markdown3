@@ -22,6 +22,18 @@ class TestHeading1(unittest.TestCase):
         result = markdown3.to_html(data)
         assert expected_html == result
 
+    def test_without_closing_tag(self):
+        """Test heading_1 without closing tag"""
+        data = """# A level one heading"""
+        expected = [
+            'body',
+            ['heading_1', "A level one heading"]]
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """<h1>A level one heading</h1>"""
+        result = markdown3.to_html(data)
+        assert expected_html == result
 
 # def test_title_level_1():
 #     data = """
