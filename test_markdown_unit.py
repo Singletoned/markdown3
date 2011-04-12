@@ -256,3 +256,12 @@ class TestHeading(unittest.TestCase):
             "Heading 1 "]
         result = markdown3.parse(data, markdown3.heading_1)
         assert expected == result
+
+    def test_level_1_without_end_tag(self):
+        """Test level one heading without closing hash"""
+        data = "# Heading 1"
+        expected = [
+            'heading_1',
+            "Heading 1"]
+        result = markdown3.parse(data, markdown3.heading_1)
+        assert expected == result

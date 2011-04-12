@@ -106,7 +106,8 @@ def heading_1():
     return pg.AllOf(
         pg.Ignore("# "),
         words,
-        pg.Ignore("#"))
+        pg.Optional(
+            pg.Ignore("#")))
 
 
 # def plain():
