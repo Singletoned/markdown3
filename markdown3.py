@@ -13,7 +13,9 @@ htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
 
 @htmliser(htmlise.make_tagless)
 def body():
-    return pg.AllOf(heading_1)
+    return pg.OneOf(
+        heading_1,
+        heading_2)
 
 # def body():
 #     return pg.Many(
@@ -131,6 +133,8 @@ def heading_1():
         pg.Optional(
             pg.Ignore("#")))
 
+@htmliser(htmlise.make_span)
+@tagname("h2")
 def heading_2():
     return pg.AllOf(
         pg.Ignore("## "),
