@@ -239,6 +239,27 @@ def test_make_void_element_with_linebreak():
     assert expected == result
 
 
+def test_make_tagless():
+    "Test that make_tagless doesn't put a tag round something"
+    tagname_lookups = dict()
+    tagname = htmlise.make_tagname_decorator(tagname_lookups)
+    htmliser_funcs = dict()
+    htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
+
+    @htmliser(htmlise.make_tagless)
+    @tagname("footag")
+    def foo():
+        pass
+
+    data = ['foo', "blah"]
+    expected = ["blah"]
+    result = htmlise.make_tagless(
+        data[0],
+        data[1:],
+        tagname_lookups,
+        htmliser_funcs)
+    assert expected == result
+
 # def test_do_render():
 #     data = [
 #         'list_item',

@@ -67,3 +67,9 @@ def make_void_element(head, rest, tagname_lookups, htmliser_funcs):
 
 def make_void_element_with_linebreak(head, rest, tagname_lookups, htmliser_funcs):
     return make_void_element(head, rest, tagname_lookups, htmliser_funcs) + [""]
+
+def make_tagless(head, rest, tagname_lookups, htmliser_funcs):
+    content = []
+    for item in rest:
+        content.extend(do_render(item, tagname_lookups, htmliser_funcs))
+    return content
