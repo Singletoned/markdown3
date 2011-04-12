@@ -52,8 +52,8 @@ words = pg.Join(
     pg.AllOf(
         pg.Many(
             characters),
-        pg.Many(
-            pg.Optional(
+        pg.Optional(
+            pg.Many(
                 pg.AllOf(
                     pg.Many(" "),
                     pg.Many(

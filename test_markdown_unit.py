@@ -42,6 +42,13 @@ class TestWords(unittest.TestCase):
         result = markdown3.parse(data, markdown3.words)
         assert expected == result
 
+    def test_one_word(self):
+        """Test that words matches one word"""
+        data = "flibble"
+        expected = ['', "flibble"]
+        result = markdown3.parse(data, markdown3.words)
+        assert expected == result
+
     def test_multiline(self):
         """Test that words doesn't match multiple lines"""
         data = "some words\nover two lines"
@@ -295,6 +302,15 @@ class TestHeading1(unittest.TestCase):
         result = markdown3.parse(data, markdown3.heading_1)
         assert expected == result
 
+    def test_level_1_one_word(self):
+        """Test level one heading with only one word"""
+        data = "# Heading #"
+        expected = [
+            'heading_1',
+            "Heading"]
+        result = markdown3.parse(data, markdown3.heading_1)
+        assert expected == result
+
     def test_level_1_without_end_tag(self):
         """Test level one heading without closing hash"""
         data = "# Heading 1"
@@ -313,6 +329,15 @@ class TestHeading2(unittest.TestCase):
         expected = [
             'heading_2',
             "Heading 2"]
+        result = markdown3.parse(data, markdown3.heading_2)
+        assert expected == result
+
+    def test_level_2_one_word(self):
+        """Test level two heading with only one word"""
+        data = "## Heading ##"
+        expected = [
+            'heading_2',
+            "Heading"]
         result = markdown3.parse(data, markdown3.heading_2)
         assert expected == result
 
