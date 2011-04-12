@@ -121,6 +121,13 @@ def heading_1():
         pg.Optional(
             pg.Ignore("#")))
 
+def heading_2():
+    return pg.AllOf(
+        pg.Ignore("## "),
+        words,
+        pg.Optional(
+            pg.Ignore("##")))
+
 
 # def plain():
 #     return multiline_words

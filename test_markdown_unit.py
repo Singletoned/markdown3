@@ -283,7 +283,7 @@ class TestLinebreaks(unittest.TestCase):
         assert expected == result
 
 
-class TestHeading(unittest.TestCase):
+class TestHeading1(unittest.TestCase):
     """Unittests for Heading"""
 
     def test_level_1(self):
@@ -302,4 +302,25 @@ class TestHeading(unittest.TestCase):
             'heading_1',
             "Heading 1"]
         result = markdown3.parse(data, markdown3.heading_1)
+        assert expected == result
+
+
+class TestHeading2(unittest.TestCase):
+    """Unittests for Heading"""
+    def test_level_2(self):
+        """Test level two heading"""
+        data = "## Heading 2 ##"
+        expected = [
+            'heading_2',
+            "Heading 2"]
+        result = markdown3.parse(data, markdown3.heading_2)
+        assert expected == result
+
+    def test_level_2_without_end_tag(self):
+        """Test level two heading without closing hash"""
+        data = "## Heading 2"
+        expected = [
+            'heading_2',
+            "Heading 2"]
+        result = markdown3.parse(data, markdown3.heading_2)
         assert expected == result
