@@ -3,9 +3,17 @@
 import string
 
 import pegger as pg
+import htmlise
 
+tagname_lookups = dict()
+tagname = htmlise.make_tagname_decorator(tagname_lookups)
+htmliser_funcs = dict()
+htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
+
+
+@htmliser(htmlise.make_tagless)
 def body():
-    pass
+    return pg.AllOf(heading_1)
 
 # def body():
 #     return pg.Many(
@@ -114,6 +122,8 @@ def linebreaks():
     return pg.Ignore(
         pg.Many("\n"))
 
+@htmliser(htmlise.make_span)
+@tagname("h1")
 def heading_1():
     return pg.AllOf(
         pg.Ignore("# "),
@@ -509,10 +519,6 @@ def parse(text, pattern=body, with_rest=False):
     else:
         return pg.do_parse(text, pattern)
 
-def to_html(text, pattern=body):
-    if not text.endswith("\n\n"):
-        text = text + "\n\n"
-    return htmlise(pg.parse_string(text, pattern)).strip()
 # def to_html(text, pattern=body):
 #     if not text.endswith("\n\n"):
 #         text = text + "\n\n"
@@ -521,3 +527,6 @@ def to_html(text, pattern=body):
 # def htmlise(node, depth=0):
 #     return "\n".join(do_render(node))
 
+def to_html(text, pattern=body):
+    data = pg.parse_string(text, pattern)
+    return "\n".join(htmlise.do_render(data, tagname_lookups, htmliser_funcs))

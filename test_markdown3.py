@@ -4,7 +4,23 @@ import py.test
 
 import unittest
 
-import markdown3
+import markdown3, htmlise
+
+class TestHeading1(unittest.TestCase):
+    """General tests for heading_1"""
+
+    def test_simple(self):
+        """test simplest case"""
+        data = """# A level one heading #"""
+        expected = [
+            'body',
+            ['heading_1', "A level one heading"]]
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """<h1>A level one heading</h1>"""
+        result = markdown3.to_html(data)
+        assert expected_html == result
 
 
 # def test_title_level_1():
