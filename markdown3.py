@@ -102,6 +102,13 @@ def linebreaks():
     return pg.Ignore(
         pg.Many("\n"))
 
+def heading_1():
+    return pg.AllOf(
+        pg.Ignore("# "),
+        words,
+        pg.Ignore("#"))
+
+
 # def plain():
 #     return multiline_words
 

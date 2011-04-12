@@ -243,3 +243,16 @@ class TestLinebreaks(unittest.TestCase):
         expected = ([], "")
         result = markdown3.parse(data, markdown3.linebreaks, with_rest=True)
         assert expected == result
+
+
+class TestHeading(unittest.TestCase):
+    """Unittests for Heading"""
+
+    def test_level_1(self):
+        """Test level one heading"""
+        data = "# Heading 1 #"
+        expected = [
+            'heading_1',
+            "Heading 1 "]
+        result = markdown3.parse(data, markdown3.heading_1)
+        assert expected == result
