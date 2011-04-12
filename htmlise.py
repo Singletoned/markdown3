@@ -1,32 +1,33 @@
 # -*- coding: utf-8 -*-
 
-htmliser_funcs = dict()
-tagname_lookups = dict()
 
+def make_tagname_decorator(tagname_lookups):
+    def tagname_decorator(tagname):
+        def inner(func):
+            func_name = func.__name__
+            tagname_lookups[func_name] = tagname
+            return func
+        return inner
+    return tagname_decorator
 
-def tagname(tagname):
-    def inner(func):
-        func_name = func.__name__
-        tagname_lookups[func_name] = tagname
-        return func
-    return inner
+def make_htmlise_decorator(htmliser_funcs):
+    def htmliser_decorator(htmliser_func):
+        def inner(func):
+            func_name = func.__name__
+            htmliser_funcs[func_name] = htmliser_func
+            return func
+        return inner
+    return htmliser_decorator
 
-def htmliser(htmliser_func):
-    def inner(func):
-        func_name = func.__name__
-        htmliser_funcs[func_name] = htmliser_func
-        return func
-    return inner
-
-def do_render(data):
+def do_render(data, tagname_lookups, htmliser_funcs):
     if isinstance(data, basestring):
         return [data]
     else:
         head, rest = data[0], data[1:]
         func = htmliser_funcs[head]
-        return func(head, rest)
+        return func(head, rest, tagname_lookups, htmliser_funcs)
 
-def make_block(head, rest):
+def make_block(head, rest, tagname_lookups, htmliser_funcs):
     tag = tagname_lookups[head]
     start_tag = "<%s>" % tag
     end_tag = "</%s>" % tag
@@ -37,12 +38,12 @@ def make_block(head, rest):
         single_line = False
     content = []
     for item in rest:
-        content.extend(do_render(item))
+        content.extend(do_render(item, tagname_lookups, htmliser_funcs))
     if single_line:
         content = ["".join(content)]
     return [start_tag] + content + [end_tag]
 
-def make_span(head, rest):
+def make_span(head, rest, tagname_lookups, htmliser_funcs):
     tag = tagname_lookups[head]
     if tag:
         start_tag = "<%s>" % tag
@@ -52,17 +53,17 @@ def make_span(head, rest):
         end_tag = ""
     content = []
     for item in rest:
-        content.extend(do_render(item))
+        content.extend(do_render(item, tagname_lookups, htmliser_funcs))
     content = "".join(content)
     return ["%s%s%s" % (start_tag, content, end_tag)]
 
-def make_span_with_linebreak(head, rest):
-    return make_span(head, rest) + [""]
+def make_span_with_linebreak(head, rest, tagname_lookups, htmliser_funcs):
+    return make_span(head, rest, tagname_lookups, htmliser_funcs) + [""]
 
-def make_void_element(head, rest):
+def make_void_element(head, rest, tagname_lookups, htmliser_funcs):
     tag = tagname_lookups[head]
     tag = "<%s/>" % tag
     return [tag]
 
-def make_void_element_with_linebreak(head, rest):
-    return make_void_element(head, rest) + [""]
+def make_void_element_with_linebreak(head, rest, tagname_lookups, htmliser_funcs):
+    return make_void_element(head, rest, tagname_lookups, htmliser_funcs) + [""]

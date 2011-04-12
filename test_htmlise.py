@@ -19,32 +19,30 @@ def patch_tagname_lookups_and_htmliser_funcs():
 
 
 def test_register_tag():
-    old_htmliser_funcs = htmlise.htmliser_funcs
+    tagname_lookups = dict()
+    tagname = htmlise.make_tagname_decorator(tagname_lookups)
 
-    with mock.patch.dict(htmlise.tagname_lookups):
-        @htmlise.tagname("foo")
-        def my_func():
-            pass
+    @tagname("foo")
+    def my_func():
+        pass
 
-        assert htmlise.htmliser_funcs == old_htmliser_funcs
-        assert htmlise.tagname_lookups == {'my_func': "foo"}
-        assert callable(my_func)
+    assert tagname_lookups == {'my_func': "foo"}
+    assert callable(my_func)
 
 
 def test_register_htmliser_func():
-    old_tagname_lookups = htmlise.tagname_lookups
+    htmliser_funcs = dict()
+    htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
 
-    with mock.patch.dict(htmlise.htmliser_funcs):
-        def make_foo(head, rest):
-            pass
+    def make_foo(head, rest):
+        pass
 
-        @htmlise.htmliser(make_foo)
-        def my_func():
-            pass
+    @htmliser(make_foo)
+    def my_func():
+        pass
 
-        assert htmlise.htmliser_funcs == {'my_func': make_foo}
-        assert htmlise.tagname_lookups == old_tagname_lookups
-        assert callable(my_func)
+    assert htmliser_funcs == {'my_func': make_foo}
+    assert callable(my_func)
 
 
 class TestDoRender(unittest.TestCase):
@@ -54,37 +52,46 @@ class TestDoRender(unittest.TestCase):
         """Test that a string returns itself in a list"""
         data = """foo"""
         expected = ['foo']
-        result = htmlise.do_render(data)
+        result = htmlise.do_render(data, None, None)
         assert expected == result
 
     def test_list(self):
         """Test that a list is passed to a renderer"""
-        with patch_tagname_lookups_and_htmliser_funcs():
-            def make_foo(head, rest):
-                return repr((head, rest))
+        tagname_lookups = dict()
+        tagname = htmlise.make_tagname_decorator(tagname_lookups)
+        htmliser_funcs = dict()
+        htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
 
-            htmlise.tagname_lookups['foo'] = "footag"
-            htmlise.htmliser_funcs['foo'] = make_foo
+        def make_foo(head, rest, *args, **kwargs):
+            return repr((head, rest))
 
-            data = ['foo', "bar"]
-            expected = "('foo', ['bar'])"
-            result = htmlise.do_render(data)
-            assert expected == result
-
-
-def test_make_block():
-    with patch_tagname_lookups_and_htmliser_funcs():
-        @htmlise.tagname("footag")
+        @tagname("footag")
+        @htmliser(make_foo)
         def foo():
             pass
 
-        data = ['foo', "bar", "baz"]
-        expected = [
-            "<footag>",
-            "barbaz",
-            "</footag>"]
-        result = htmlise.make_block(data[0], data[1:])
+        data = ['foo', "bar"]
+        expected = "('foo', ['bar'])"
+        result = htmlise.do_render(data, tagname_lookups, htmliser_funcs)
         assert expected == result
+
+
+def test_make_block():
+    tagname_lookups = dict()
+    tagname = htmlise.make_tagname_decorator(tagname_lookups)
+    htmliser_funcs = dict()
+
+    @tagname("footag")
+    def foo():
+        pass
+
+    data = ['foo', "bar", "baz"]
+    expected = [
+        "<footag>",
+        "barbaz",
+        "</footag>"]
+    result = htmlise.make_block(data[0], data[1:], tagname_lookups, htmliser_funcs)
+    assert expected == result
 
 
 class TestMakeSpan(unittest.TestCase):
@@ -92,20 +99,28 @@ class TestMakeSpan(unittest.TestCase):
 
     def test_simple(self):
         """Test the simplest possible case"""
-        with patch_tagname_lookups_and_htmliser_funcs():
-            @htmlise.tagname("footag")
-            def foo():
-                pass
+        tagname_lookups = dict()
+        tagname = htmlise.make_tagname_decorator(tagname_lookups)
+        htmliser_funcs = dict()
 
-            data = ['foo', "flibble", "flammle"]
-            expected = ["<footag>flibbleflammle</footag>"]
-            result = htmlise.make_span(data[0], data[1:])
-            assert expected == result
+        @tagname("footag")
+        def foo():
+            pass
+
+        data = ['foo', "flibble", "flammle"]
+        expected = ["<footag>flibbleflammle</footag>"]
+        result = htmlise.make_span(data[0], data[1:], tagname_lookups, htmliser_funcs)
+        assert expected == result
 
     def test_nested_tagless(self):
         "Test that nested lists work with tagless"
-        @htmlise.htmliser(htmlise.make_span)
-        @htmlise.tagname(None)
+        tagname_lookups = dict()
+        tagname = htmlise.make_tagname_decorator(tagname_lookups)
+        htmliser_funcs = dict()
+        htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
+
+        @htmliser(htmlise.make_span)
+        @tagname(None)
         def foo():
             pass
 
@@ -116,13 +131,18 @@ class TestMakeSpan(unittest.TestCase):
             "flooble ",
             ['foo', "flotsit", " flamagan"]]
         expected = ["flibble flammle flooble flotsit flamagan"]
-        result = htmlise.make_span(data[0], data[1:])
+        result = htmlise.make_span(data[0], data[1:], tagname_lookups, htmliser_funcs)
         assert expected == result
 
     def test_nested_with_tags(self):
         "Test that nested lists work with tags"
-        @htmlise.htmliser(htmlise.make_span)
-        @htmlise.tagname("tag")
+        tagname_lookups = dict()
+        tagname = htmlise.make_tagname_decorator(tagname_lookups)
+        htmliser_funcs = dict()
+        htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
+
+        @htmliser(htmlise.make_span)
+        @tagname("tag")
         def foo():
             pass
 
@@ -133,19 +153,27 @@ class TestMakeSpan(unittest.TestCase):
             "flooble ",
             ['foo', "flotsit", " flamagan"]]
         expected = ["<tag><tag>flibble flammle</tag> flooble <tag>flotsit flamagan</tag></tag>"]
-        result = htmlise.make_span(data[0], data[1:])
+        result = htmlise.make_span(data[0], data[1:], tagname_lookups, htmliser_funcs)
         assert expected == result
 
 
 def test_make_span_with_linebreak():
     "Test that make_span_with_linebreak adds a blank line"
-    @htmlise.tagname("tag")
+    tagname_lookups = dict()
+    tagname = htmlise.make_tagname_decorator(tagname_lookups)
+    htmliser_funcs = dict()
+
+    @tagname("tag")
     def foo():
         pass
 
     data = ['foo', "flibble floozle"]
     expected = ["<tag>flibble floozle</tag>", ""]
-    result = htmlise.make_span_with_linebreak(data[0], data[1:])
+    result = htmlise.make_span_with_linebreak(
+        data[0],
+        data[1:],
+        tagname_lookups,
+        htmliser_funcs)
     assert expected == result
 
 
@@ -154,36 +182,60 @@ class TestMakeVoidElement(unittest.TestCase):
 
     def test_simple(self):
         "Test that make_void_element returns a single tag"
-        @htmlise.tagname("tag")
+        tagname_lookups = dict()
+        tagname = htmlise.make_tagname_decorator(tagname_lookups)
+        htmliser_funcs = dict()
+
+        @tagname("tag")
         def foo():
             pass
 
         data = ['foo', ""]
         expected = ['<tag/>']
-        result = htmlise.make_void_element(data[0], data[1:])
+        result = htmlise.make_void_element(
+            data[0],
+            data[1:],
+            tagname_lookups,
+            htmliser_funcs)
         assert expected == result
 
     def test_ignores_content(self):
         "Test that make_void_element ignores any content"
-        @htmlise.tagname("tag")
+        tagname_lookups = dict()
+        tagname = htmlise.make_tagname_decorator(tagname_lookups)
+        htmliser_funcs = dict()
+
+        @tagname("tag")
         def foo():
             pass
 
         data = ['foo', "some content"]
         expected = ['<tag/>']
-        result = htmlise.make_void_element(data[0], data[1:])
+        result = htmlise.make_void_element(
+            data[0],
+            data[1:],
+            tagname_lookups,
+            htmliser_funcs)
         assert expected == result
 
 
 def test_make_void_element_with_linebreak():
     "Test that make_void_element_with_linebreak adds an empty line"
-    @htmlise.tagname("tag")
+    tagname_lookups = dict()
+    tagname = htmlise.make_tagname_decorator(tagname_lookups)
+    htmliser_funcs = dict()
+
+    @tagname("tag")
     def foo():
         pass
 
     data = ['foo', ""]
     expected = ['<tag/>', ""]
-    result = htmlise.make_void_element_with_linebreak(data[0], data[1:])
+    result = htmlise.make_void_element_with_linebreak(
+        data[0],
+        data[1:],
+        tagname_lookups,
+        htmliser_funcs)
     assert expected == result
 
 
