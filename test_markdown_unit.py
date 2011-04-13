@@ -349,3 +349,12 @@ class TestHeading2(unittest.TestCase):
             "Heading 2"]
         result = markdown3.parse(data, markdown3.heading_2)
         assert expected == result
+
+def test_paragraph():
+    """Test that paragraphs match"""
+    data = """A paragraph."""
+    expected = [
+        'paragraph',
+        "A paragraph."]
+    result = markdown3.parse(data, markdown3.paragraph)
+    assert expected == result

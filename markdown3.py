@@ -71,6 +71,9 @@ span = pg.Many(
         )
     )
 
+def paragraph():
+    return words
+
 def unordered_bullet():
     return pg.AllOf(
         pg.Ignore("*"),
