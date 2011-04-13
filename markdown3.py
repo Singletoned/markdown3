@@ -72,7 +72,7 @@ span = pg.Many(
     )
 
 def paragraph():
-    return words
+    return span
 
 def unordered_bullet():
     return pg.AllOf(

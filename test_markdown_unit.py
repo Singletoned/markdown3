@@ -350,11 +350,29 @@ class TestHeading2(unittest.TestCase):
         result = markdown3.parse(data, markdown3.heading_2)
         assert expected == result
 
-def test_paragraph():
-    """Test that paragraphs match"""
-    data = """A paragraph."""
-    expected = [
-        'paragraph',
-        "A paragraph."]
-    result = markdown3.parse(data, markdown3.paragraph)
-    assert expected == result
+
+class TestParagraph(unittest.TestCase):
+    """Unittests for paragraph"""
+
+    def test_simple(self):
+        """Simplest possible test"""
+        data = """A paragraph."""
+        expected = [
+            'paragraph',
+            "A paragraph."]
+        result = markdown3.parse(data, markdown3.paragraph)
+        assert expected == result
+
+    def test_with_emphasis(self):
+        """Test that paragraph matches emphasis"""
+        data = """A paragraph with *some emphasis* in it"""
+        expected = [
+            'paragraph',
+            "A paragraph with",
+            " ",
+            ['emphasis',
+             "some emphasis"],
+            " ",
+            "in it"]
+        result = markdown3.parse(data, markdown3.paragraph)
+        assert expected == result
