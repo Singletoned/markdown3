@@ -35,6 +35,19 @@ class TestHeading1(unittest.TestCase):
         result = markdown3.to_html(data)
         assert expected_html == result
 
+    def test_with_leading_linebreaks(self):
+        """Test heading_1 with leading linebreaks"""
+        data = """\n\n# A level one heading"""
+        expected = [
+            'body',
+            ['heading_1', "A level one heading"]]
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """<h1>A level one heading</h1>"""
+        result = markdown3.to_html(data)
+        assert expected_html == result
+
 
 class TestHeading2(unittest.TestCase):
     """General tests for heading_2"""
@@ -55,6 +68,19 @@ class TestHeading2(unittest.TestCase):
     def test_without_closing_tag(self):
         """Test heading_2 without closing tag"""
         data = """## A level two heading"""
+        expected = [
+            'body',
+            ['heading_2', "A level two heading"]]
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """<h2>A level two heading</h2>"""
+        result = markdown3.to_html(data)
+        assert expected_html == result
+
+    def test_with_leading_linebreaks(self):
+        """Test heading_2 with leading linebreaks"""
+        data = """\n\n## A level two heading"""
         expected = [
             'body',
             ['heading_2', "A level two heading"]]
