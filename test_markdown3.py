@@ -66,6 +66,14 @@ class TestHeading2(unittest.TestCase):
         assert expected_html == result
 
 
+def test_linebreaks():
+    """Check that body matches linebreaks"""
+    data = "\n\n"
+    expected = ['body', ""]
+    result = markdown3.parse(data)
+    assert expected == result
+
+
 # def test_title_level_1():
 #     data = """
 # # A level one title #

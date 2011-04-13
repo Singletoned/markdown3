@@ -14,6 +14,7 @@ htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
 @htmliser(htmlise.make_tagless)
 def body():
     return pg.OneOf(
+        linebreaks,
         heading_1,
         heading_2)
 
