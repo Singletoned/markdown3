@@ -136,7 +136,7 @@ def heading_1():
         pg.Ignore("# "),
         words,
         pg.Optional(
-            pg.Ignore("#")))
+            pg.Ignore(" #")))
 
 @htmliser(htmlise.make_span)
 @tagname("h2")
@@ -145,7 +145,7 @@ def heading_2():
         pg.Ignore("## "),
         words,
         pg.Optional(
-            pg.Ignore("##")))
+            pg.Ignore(" ##")))
 
 
 # def plain():

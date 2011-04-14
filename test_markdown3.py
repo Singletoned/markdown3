@@ -15,8 +15,9 @@ class TestHeading1(unittest.TestCase):
         expected = [
             'body',
             ['heading_1', "A level one heading"]]
-        result = markdown3.parse(data)
+        result, rest = markdown3.parse(data, with_rest=True)
         assert expected == result
+        assert rest == ""
 
         expected_html = """<h1>A level one heading</h1>"""
         result = markdown3.to_html(data)
@@ -28,8 +29,9 @@ class TestHeading1(unittest.TestCase):
         expected = [
             'body',
             ['heading_1', "A level one heading"]]
-        result = markdown3.parse(data)
+        result, rest = markdown3.parse(data, with_rest=True)
         assert expected == result
+        assert rest == ""
 
         expected_html = """<h1>A level one heading</h1>"""
         result = markdown3.to_html(data)
@@ -41,8 +43,9 @@ class TestHeading1(unittest.TestCase):
         expected = [
             'body',
             ['heading_1', "A level one heading"]]
-        result = markdown3.parse(data)
+        result, rest = markdown3.parse(data, with_rest=True)
         assert expected == result
+        assert rest == ""
 
         expected_html = """<h1>A level one heading</h1>"""
         result = markdown3.to_html(data)
@@ -58,8 +61,9 @@ class TestHeading2(unittest.TestCase):
         expected = [
             'body',
             ['heading_2', "A level two heading"]]
-        result = markdown3.parse(data)
+        result, rest = markdown3.parse(data, with_rest=True)
         assert expected == result
+        assert rest == ""
 
         expected_html = """<h2>A level two heading</h2>"""
         result = markdown3.to_html(data)
@@ -71,8 +75,9 @@ class TestHeading2(unittest.TestCase):
         expected = [
             'body',
             ['heading_2', "A level two heading"]]
-        result = markdown3.parse(data)
+        result, rest = markdown3.parse(data, with_rest=True)
         assert expected == result
+        assert rest == ""
 
         expected_html = """<h2>A level two heading</h2>"""
         result = markdown3.to_html(data)
@@ -84,8 +89,9 @@ class TestHeading2(unittest.TestCase):
         expected = [
             'body',
             ['heading_2', "A level two heading"]]
-        result = markdown3.parse(data)
+        result, rest = markdown3.parse(data, with_rest=True)
         assert expected == result
+        assert rest == ""
 
         expected_html = """<h2>A level two heading</h2>"""
         result = markdown3.to_html(data)
@@ -96,8 +102,9 @@ def test_linebreaks():
     """Check that body matches linebreaks"""
     data = "\n\n"
     expected = ['body', ""]
-    result = markdown3.parse(data)
+    result, rest = markdown3.parse(data, with_rest=True)
     assert expected == result
+    assert rest == ""
 
 
 # def test_title_level_1():
