@@ -17,7 +17,8 @@ def body():
         pg.OneOf(
             linebreaks,
             heading_1,
-            heading_2))
+            heading_2,
+            paragraph))
 
 # def body():
 #     return pg.Many(
@@ -71,6 +72,8 @@ span = pg.Many(
         )
     )
 
+@htmliser(htmlise.make_span)
+@tagname("p")
 def paragraph():
     return span
 

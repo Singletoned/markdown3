@@ -107,6 +107,24 @@ def test_linebreaks():
     assert rest == ""
 
 
+class TestParagraph(unittest.TestCase):
+    """General tests for paragraph"""
+
+    def test_simple(self):
+        """Simplest possible test"""
+        data = """A paragraph."""
+        expected = [
+            'body',
+            ['paragraph',
+             "A paragraph."]]
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """<p>A paragraph.</p>"""
+        result = markdown3.to_html(data)
+        assert expected_html == result
+
+
 # def test_title_level_1():
 #     data = """
 # # A level one title #
