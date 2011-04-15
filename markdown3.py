@@ -78,6 +78,14 @@ span = pg.Many(
 def paragraph():
     return span
 
+def _list_with_paragraphs(bullet_type):
+    return pg.AllOf(
+        bullet_type,
+        pg.Many(
+            pg.AllOf(
+                pg.Ignore("\n\n"),
+                bullet_type)))
+
 @htmliser(htmlise.make_span)
 @tagname("li")
 def unordered_bullet(content):
@@ -104,21 +112,13 @@ def _multiple_bullets(bullet_type):
                     pg.Ignore("\n"),
                     bullet_type))))
 
-def _unordered_list_with_paragraphs():
-    return pg.AllOf(
-        unordered_bullet(paragraph),
-        pg.Many(
-            pg.AllOf(
-                pg.Ignore("\n\n"),
-                unordered_bullet(paragraph))))
-
 @htmliser(htmlise.make_block)
 @tagname("ul")
 def unordered_list():
     return pg.Indented(
         pg.OneOf(
-            _unordered_list_with_paragraphs,
-            _multiple_bullets(unordered_bullet(span))),
+            _list_with_paragraphs(bullet_type=unordered_bullet(paragraph)),
+            _multiple_bullets(bullet_type=unordered_bullet(span))),
         optional=True)
 
 def unordered_list_nested():
@@ -140,19 +140,11 @@ def ordered_bullet(content):
                     ordered_list_nested)))
     return ordered_bullet
 
-def _ordered_list_with_paragraphs():
-    return pg.AllOf(
-        ordered_bullet(paragraph),
-        pg.Many(
-            pg.AllOf(
-                pg.Ignore("\n\n"),
-                ordered_bullet(paragraph))))
-
 def ordered_list():
     return pg.Indented(
         pg.OneOf(
-            _ordered_list_with_paragraphs,
-            _multiple_bullets(ordered_bullet(span))),
+            _list_with_paragraphs(bullet_type=ordered_bullet(paragraph)),
+            _multiple_bullets(bullet_type=ordered_bullet(span))),
         optional=True)
 
 def ordered_list_nested():
