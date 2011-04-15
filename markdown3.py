@@ -110,41 +110,51 @@ def unordered_list():
 def ordered_list():
     return _make_list(ordered_bullet)
 
+def _make_bullet(bullet_start, content, nested_list_type):
+    return pg.AllOf(
+        bullet_start,
+        content,
+        pg.Optional(
+            pg.AllOf(
+                pg.Ignore("\n"),
+                nested_list_type)))
+
+def _unordered_bullet_start():
+    return pg.AllOf(
+        pg.Ignore("*"),
+        pg.Ignore(
+            pg.OneOf(
+                " ",
+                "\t")))
+
 @htmliser(htmlise.make_span)
 @tagname("li")
 def unordered_bullet(content):
     def unordered_bullet():
-        return pg.AllOf(
-            pg.Ignore("*"),
-            pg.Ignore(
-                pg.OneOf(
-                    " ",
-                    "\t")),
+        return _make_bullet(
+            _unordered_bullet_start,
             content,
-            pg.Optional(
-                pg.AllOf(
-                    pg.Ignore("\n"),
-                    unordered_list_nested)))
+            unordered_list_nested)
     return unordered_bullet
+
+def _ordered_bullet_start():
+    return pg.Ignore(
+        pg.AllOf(
+            pg.Words(letters="0123456789"),
+            ". "))
+
+def ordered_bullet(content):
+    def ordered_bullet():
+        return _make_bullet(
+            _ordered_bullet_start,
+            content,
+            ordered_list_nested)
+    return ordered_bullet
 
 def unordered_list_nested():
     return pg.Indented(
         _multiple_bullets(unordered_bullet(span)),
         optional=False)
-
-def ordered_bullet(content):
-    def ordered_bullet():
-        return pg.AllOf(
-            pg.Ignore(
-                pg.AllOf(
-                    pg.Words(letters="0123456789"),
-                    ". ")),
-            content,
-            pg.Optional(
-                pg.AllOf(
-                    pg.Ignore("\n"),
-                    ordered_list_nested)))
-    return ordered_bullet
 
 def ordered_list_nested():
     return pg.Indented(
