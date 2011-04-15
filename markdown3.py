@@ -126,48 +126,38 @@ def unordered_list_nested():
         _multiple_bullets(unordered_bullet(span)),
         optional=False)
 
-def ordered_bullet():
-    return pg.AllOf(
-        pg.Ignore(
-            pg.AllOf(
-                pg.Words(letters="0123456789"),
-                ". ")),
-        span,
-        pg.Optional(
-            pg.AllOf(
-                pg.Ignore("\n"),
-                ordered_list_nested)))
-
-def ordered_bullet_with_paragraph():
-    return pg.AllOf(
-        pg.Ignore(
-            pg.AllOf(
-                pg.Words(letters="0123456789"),
-                ". ")),
-        paragraph,
-        pg.Optional(
-            pg.AllOf(
-                pg.Ignore("\n"),
-                ordered_list_nested)))
+def ordered_bullet(content):
+    def ordered_bullet():
+        return pg.AllOf(
+            pg.Ignore(
+                pg.AllOf(
+                    pg.Words(letters="0123456789"),
+                    ". ")),
+            content,
+            pg.Optional(
+                pg.AllOf(
+                    pg.Ignore("\n"),
+                    ordered_list_nested)))
+    return ordered_bullet
 
 def _ordered_list_with_paragraphs():
     return pg.AllOf(
-        ordered_bullet_with_paragraph,
+        ordered_bullet(paragraph),
         pg.Many(
             pg.AllOf(
                 pg.Ignore("\n\n"),
-                ordered_bullet_with_paragraph)))
+                ordered_bullet(paragraph))))
 
 def ordered_list():
     return pg.Indented(
         pg.OneOf(
             _ordered_list_with_paragraphs,
-            _multiple_bullets(ordered_bullet)),
+            _multiple_bullets(ordered_bullet(span))),
         optional=True)
 
 def ordered_list_nested():
     return pg.Indented(
-        _multiple_bullets(ordered_bullet),
+        _multiple_bullets(ordered_bullet(span)),
         optional=False)
 
 def linebreaks():

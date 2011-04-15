@@ -295,13 +295,30 @@ class TestUnorderedListNested(unittest.TestCase):
 class TestOrderedBullet(unittest.TestCase):
     """Unittests for ordered_bullet"""
 
-    def test_simple(self):
-        """Simplest tests that passes"""
+    def test_span(self):
+        """Test ordered_bullet with span content"""
         data = """1. bullet one"""
         expected = [
             'ordered_bullet',
             "bullet one"]
-        result, rest = markdown3.parse(data, markdown3.ordered_bullet, with_rest=True)
+        result, rest = markdown3.parse(
+            data,
+            markdown3.ordered_bullet(markdown3.span),
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_paragraph(self):
+        """Test ordered_bullet with paragraph content"""
+        data = """1. bullet one"""
+        expected = [
+            'ordered_bullet',
+            ['paragraph',
+             "bullet one"]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3.ordered_bullet(markdown3.paragraph),
+            with_rest=True)
         assert expected == result
         assert rest == ""
 
@@ -375,11 +392,11 @@ class TestOrderedList(unittest.TestCase):
 3. item 3""".strip()
         expected = [
             'ordered_list',
-            ['ordered_bullet_with_paragraph',
+            ['ordered_bullet',
              ['paragraph', "item 1"]],
-            ['ordered_bullet_with_paragraph',
+            ['ordered_bullet',
              ['paragraph', "item 2"]],
-            ['ordered_bullet_with_paragraph',
+            ['ordered_bullet',
              ['paragraph', "item 3"]]]
 
         result, rest = markdown3.parse(data, markdown3.ordered_list, with_rest=True)
