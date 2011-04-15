@@ -96,7 +96,7 @@ def test_make_block():
     data = ['foo', "bar", "baz"]
     expected = [
         "<footag>",
-        "barbaz",
+        "  barbaz",
         "</footag>"]
     result = htmlise.make_block(data[0], data[1:], tagname_lookups, htmliser_funcs)
     assert expected == result

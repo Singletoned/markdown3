@@ -48,6 +48,7 @@ def make_block(head, rest, tagname_lookups, htmliser_funcs):
         content.extend(do_render(item, tagname_lookups, htmliser_funcs))
     if single_line:
         content = ["".join(content)]
+    content = indent_tags(content)
     return [start_tag] + content + [end_tag]
 
 def make_span(head, rest, tagname_lookups, htmliser_funcs):
