@@ -343,6 +343,27 @@ class TestOrderedList(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
+    def test_with_paragraphs(self):
+        """Test that padding between lines creates paragraphs"""
+        data = """
+1. item 1
+
+2. item 2
+
+3. item 3""".strip()
+        expected = [
+            'ordered_list',
+            ['ordered_bullet_with_paragraph',
+             ['paragraph', "item 1"]],
+            ['ordered_bullet_with_paragraph',
+             ['paragraph', "item 2"]],
+            ['ordered_bullet_with_paragraph',
+             ['paragraph', "item 3"]]]
+
+        result, rest = markdown3.parse(data, markdown3.ordered_list, with_rest=True)
+        assert expected == result
+        assert rest == ""
+
 
 class TestLinebreaks(unittest.TestCase):
     """Unittests for linebreaks"""
