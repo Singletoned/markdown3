@@ -95,20 +95,34 @@ def _multiple_bullets(bullet_type):
                     pg.Ignore("\n"),
                     bullet_type))))
 
-def _make_list(bullet_type):
+def _make_list(bullet_type, optional):
     return pg.Indented(
         pg.OneOf(
             _list_with_paragraphs(bullet_type=bullet_type(paragraph)),
             _multiple_bullets(bullet_type=bullet_type(span))),
-        optional=True)
+        optional=optional)
 
 @htmliser(htmlise.make_block)
 @tagname("ul")
 def unordered_list():
-    return _make_list(unordered_bullet)
+    return _make_list(
+        bullet_type=unordered_bullet,
+        optional=True)
 
 def ordered_list():
-    return _make_list(ordered_bullet)
+    return _make_list(
+        bullet_type=ordered_bullet,
+        optional=True)
+
+def unordered_list_nested():
+    return _make_list(
+        bullet_type=unordered_bullet,
+        optional=False)
+
+def ordered_list_nested():
+    return _make_list(
+        bullet_type=ordered_bullet,
+        optional=False)
 
 def _make_bullet(bullet_start, content, nested_list_type):
     return pg.AllOf(
@@ -150,16 +164,6 @@ def ordered_bullet(content):
             content,
             ordered_list_nested)
     return ordered_bullet
-
-def unordered_list_nested():
-    return pg.Indented(
-        _multiple_bullets(unordered_bullet(span)),
-        optional=False)
-
-def ordered_list_nested():
-    return pg.Indented(
-        _multiple_bullets(ordered_bullet(span)),
-        optional=False)
 
 def linebreaks():
     return pg.Ignore(
