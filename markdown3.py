@@ -15,6 +15,7 @@ htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
 def body():
     return pg.Many(
         pg.OneOf(
+            unordered_list,
             linebreaks,
             heading_1,
             heading_2,
@@ -77,6 +78,8 @@ span = pg.Many(
 def paragraph():
     return span
 
+@htmliser(htmlise.make_span)
+@tagname("li")
 def unordered_bullet():
     return pg.AllOf(
         pg.Ignore("*"),
@@ -96,6 +99,8 @@ def _multiple_bullets(bullet_type):
                     pg.Ignore("\n"),
                     bullet_type))))
 
+@htmliser(htmlise.make_block)
+@tagname("ul")
 def unordered_list():
     return pg.Indented(
         _multiple_bullets(unordered_bullet),
