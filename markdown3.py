@@ -83,7 +83,10 @@ def paragraph():
 def unordered_bullet():
     return pg.AllOf(
         pg.Ignore("*"),
-        pg.Ignore(" "),
+        pg.Ignore(
+            pg.OneOf(
+                " ",
+                "\t")),
         span,
         pg.Optional(
             pg.AllOf(

@@ -156,6 +156,34 @@ class TestUnorderedList(unittest.TestCase):
         result = markdown3.to_html(data)
         assert expected_html == result
 
+    def test_with_tabs(self):
+        """Test bullet with tabs after bullet"""
+        data = """
+*	item 1
+*	item 2
+*	item 3
+""".strip()
+
+        expected = [
+            'body',
+            ['unordered_list',
+             ['unordered_bullet', "item 1"],
+             ['unordered_bullet', "item 2"],
+             ['unordered_bullet', "item 3"]]]
+
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """
+<ul>
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+""".strip()
+        result = markdown3.to_html(data)
+        assert expected_html == result
+
 
 # def test_title_level_1():
 #     data = """

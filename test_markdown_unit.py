@@ -136,6 +136,15 @@ class TestUnorderedBullet(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
+    def test_with_tab(self):
+        data = "*	a bullet"
+        expected = [
+            'unordered_bullet',
+            "a bullet"]
+        result, rest = markdown3.parse(data, markdown3.unordered_bullet, with_rest=True)
+        assert expected == result
+        assert rest == ""
+
 
 class TestUnorderedList(unittest.TestCase):
     """Unittests for unordered list"""
@@ -157,6 +166,24 @@ class TestUnorderedList(unittest.TestCase):
 * bullet one
 * bullet two
 * bullet three""".strip()
+        expected = [
+            'unordered_list',
+            ['unordered_bullet',
+             "bullet one"],
+            ['unordered_bullet',
+             "bullet two"],
+            ['unordered_bullet',
+             "bullet three"]]
+        result, rest = markdown3.parse(data, markdown3.unordered_list, with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_multiple_bullets_with_tabs(self):
+        """Test that multiple bullets match"""
+        data = """
+*	bullet one
+*	bullet two
+*	bullet three""".strip()
         expected = [
             'unordered_list',
             ['unordered_bullet',
