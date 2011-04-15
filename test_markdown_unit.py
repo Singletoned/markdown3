@@ -223,6 +223,26 @@ class TestUnorderedList(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
+    def test_with_paragraphs(self):
+        """Test that padding between lines creates paragraphs"""
+        data = """
+* item 1
+
+* item 2
+
+* item 3""".strip()
+        expected = [
+            'unordered_list',
+            ['unordered_bullet_with_paragraph',
+             ['paragraph', "item 1"]],
+            ['unordered_bullet_with_paragraph',
+             ['paragraph', "item 2"]],
+            ['unordered_bullet_with_paragraph',
+             ['paragraph', "item 3"]]]
+
+        result, rest = markdown3.parse(data, markdown3.unordered_list, with_rest=True)
+        assert expected == result
+        assert rest == ""
 
 class TestUnorderedListNested(unittest.TestCase):
     """Unittests for unordered_list_nested"""
