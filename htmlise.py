@@ -27,6 +27,13 @@ def do_render(data, tagname_lookups, htmliser_funcs):
         func = htmliser_funcs[head]
         return func(head, rest, tagname_lookups, htmliser_funcs)
 
+def indent_tags(data):
+    "Indent the tags"
+    result = []
+    for item in data:
+        result.append("  "+item)
+    return result
+
 def make_block(head, rest, tagname_lookups, htmliser_funcs):
     tag = tagname_lookups[head]
     start_tag = "<%s>" % tag

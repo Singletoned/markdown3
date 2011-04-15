@@ -76,6 +76,14 @@ class TestDoRender(unittest.TestCase):
         assert expected == result
 
 
+def test_indent_tags():
+    "Test that indent_tags indents tags"
+    data = ["a", "b", "c"]
+    expected = ["  a", "  b", "  c"]
+    result = htmlise.indent_tags(data)
+    assert expected == result
+
+
 def test_make_block():
     tagname_lookups = dict()
     tagname = htmlise.make_tagname_decorator(tagname_lookups)
