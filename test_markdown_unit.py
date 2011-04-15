@@ -127,21 +127,43 @@ class TestSpan(unittest.TestCase):
 
 
 class TestUnorderedBullet(unittest.TestCase):
-    def test_simple(self):
+    def test_span(self):
+        """Test unordered_bullet with span content"""
         data = "* a bullet"
         expected = [
             'unordered_bullet',
             "a bullet"]
-        result, rest = markdown3.parse(data, markdown3.unordered_bullet, with_rest=True)
+        result, rest = markdown3.parse(
+            data,
+            markdown3.unordered_bullet(markdown3.span),
+            with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_with_tab(self):
+        """Test unordered_bullet with tab after the bullet"""
         data = "*	a bullet"
         expected = [
             'unordered_bullet',
             "a bullet"]
-        result, rest = markdown3.parse(data, markdown3.unordered_bullet, with_rest=True)
+        result, rest = markdown3.parse(
+            data,
+            markdown3.unordered_bullet(markdown3.span),
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_paragraph(self):
+        """Test unordered_bullet with paragraph content"""
+        data = "* a bullet"
+        expected = [
+            'unordered_bullet',
+            ['paragraph',
+             "a bullet"]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3.unordered_bullet(markdown3.paragraph),
+            with_rest=True)
         assert expected == result
         assert rest == ""
 
@@ -233,11 +255,11 @@ class TestUnorderedList(unittest.TestCase):
 * item 3""".strip()
         expected = [
             'unordered_list',
-            ['unordered_bullet_with_paragraph',
+            ['unordered_bullet',
              ['paragraph', "item 1"]],
-            ['unordered_bullet_with_paragraph',
+            ['unordered_bullet',
              ['paragraph', "item 2"]],
-            ['unordered_bullet_with_paragraph',
+            ['unordered_bullet',
              ['paragraph', "item 3"]]]
 
         result, rest = markdown3.parse(data, markdown3.unordered_list, with_rest=True)

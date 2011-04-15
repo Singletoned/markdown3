@@ -80,33 +80,20 @@ def paragraph():
 
 @htmliser(htmlise.make_span)
 @tagname("li")
-def unordered_bullet():
-    return pg.AllOf(
-        pg.Ignore("*"),
-        pg.Ignore(
-            pg.OneOf(
-                " ",
-                "\t")),
-        span,
-        pg.Optional(
-            pg.AllOf(
-                pg.Ignore("\n"),
-                unordered_list_nested)))
-
-@htmliser(htmlise.make_span)
-@tagname("li")
-def unordered_bullet_with_paragraph():
-    return pg.AllOf(
-        pg.Ignore("*"),
-        pg.Ignore(
-            pg.OneOf(
-                " ",
-                "\t")),
-        paragraph,
-        pg.Optional(
-            pg.AllOf(
-                pg.Ignore("\n"),
-                unordered_list_nested)))
+def unordered_bullet(content):
+    def unordered_bullet():
+        return pg.AllOf(
+            pg.Ignore("*"),
+            pg.Ignore(
+                pg.OneOf(
+                    " ",
+                    "\t")),
+            content,
+            pg.Optional(
+                pg.AllOf(
+                    pg.Ignore("\n"),
+                    unordered_list_nested)))
+    return unordered_bullet
 
 def _multiple_bullets(bullet_type):
     return pg.AllOf(
@@ -119,11 +106,11 @@ def _multiple_bullets(bullet_type):
 
 def _unordered_list_with_paragraphs():
     return pg.AllOf(
-        unordered_bullet_with_paragraph,
+        unordered_bullet(paragraph),
         pg.Many(
             pg.AllOf(
                 pg.Ignore("\n\n"),
-                unordered_bullet_with_paragraph)))
+                unordered_bullet(paragraph))))
 
 @htmliser(htmlise.make_block)
 @tagname("ul")
@@ -131,12 +118,12 @@ def unordered_list():
     return pg.Indented(
         pg.OneOf(
             _unordered_list_with_paragraphs,
-            _multiple_bullets(unordered_bullet)),
+            _multiple_bullets(unordered_bullet(span))),
         optional=True)
 
 def unordered_list_nested():
     return pg.Indented(
-        _multiple_bullets(unordered_bullet),
+        _multiple_bullets(unordered_bullet(span)),
         optional=False)
 
 def ordered_bullet():
