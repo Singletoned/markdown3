@@ -134,10 +134,9 @@ def _make_bullet(bullet_start, content, nested_list_type):
                 nested_list_type)))
 
 def _unordered_bullet_start():
-    return pg.AllOf(
-        pg.Ignore(
-            pg.OneOf("*", "+")),
-        pg.Ignore(
+    return pg.Ignore(
+        pg.AllOf(
+            pg.OneOf("*", "+"),
             pg.OneOf(
                 " ",
                 "\t")))
