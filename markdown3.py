@@ -187,6 +187,10 @@ def heading_2():
         pg.Optional(
             pg.Ignore(" ##")))
 
+def horizontal_rule():
+    return pg.AllOf(
+        pg.Ignore("***"))
+
 
 # def plain():
 #     return multiline_words

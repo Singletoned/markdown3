@@ -566,3 +566,20 @@ class TestParagraph(unittest.TestCase):
         result, rest = markdown3.parse(data, markdown3.paragraph, with_rest=True)
         assert expected == result
         assert rest == ""
+
+
+class TestHorizontalRule(unittest.TestCase):
+    """Unittests for horizontal rule"""
+
+    def test_simple(self):
+        """Simplest test that can pass"""
+        data = """***"""
+        expected = [
+            'horizontal_rule',
+            ""]
+        result, rest = markdown3.parse(
+            data,
+            markdown3.horizontal_rule,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
