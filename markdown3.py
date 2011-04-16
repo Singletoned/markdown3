@@ -15,6 +15,7 @@ htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
 def body():
     return pg.Many(
         pg.OneOf(
+            horizontal_rule,
             unordered_list,
             linebreaks,
             heading_1,
@@ -187,6 +188,8 @@ def heading_2():
         pg.Optional(
             pg.Ignore(" ##")))
 
+@htmliser(htmlise.make_void_element_with_linebreak)
+@tagname("hr")
 def horizontal_rule():
     return pg.AllOf(
         pg.Ignore(

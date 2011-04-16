@@ -185,6 +185,50 @@ class TestUnorderedList(unittest.TestCase):
         assert expected_html == result
 
 
+def test_horizontal_rules():
+    data = """
+---
+
+- - - -
+
+____
+
+_ _ _ _ _
+
+***
+
+* * * *
+"""
+
+    expected = [
+        'body',
+        [ 'horizontal_rule', ""],
+        [ 'horizontal_rule', ""],
+        [ 'horizontal_rule', ""],
+        [ 'horizontal_rule', ""],
+        [ 'horizontal_rule', ""],
+        [ 'horizontal_rule', ""]]
+
+    result = markdown3.parse(data)
+    assert expected == result
+
+    expected = """<hr/>
+
+<hr/>
+
+<hr/>
+
+<hr/>
+
+<hr/>
+
+<hr/>
+"""
+
+    result = markdown3.to_html(data)
+    assert expected == result
+
+
 # def test_title_level_1():
 #     data = """
 # # A level one title #
@@ -1007,51 +1051,6 @@ class TestUnorderedList(unittest.TestCase):
 #     result = markdown3.to_html(data)
 #     assert expected == result
 
-
-# def test_horizontal_rules():
-#     data = """
-# ---
-
-# - - - -
-
-# ____
-
-# _ _ _ _ _
-
-# ***
-
-# * * * *
-# """
-
-#     expected = [
-#         'body',
-#         [ 'horizontal_rule', "---"],
-#         [ 'horizontal_rule', "- - -"],
-#         [ 'horizontal_rule', "___"],
-#         [ 'horizontal_rule', "_ _ _"],
-#         [ 'horizontal_rule', "***"],
-#         [ 'horizontal_rule', "* * *"]]
-
-#     result = markdown3.parse(data)
-#     assert expected == result
-
-#     expected = """
-# <hr/>
-
-# <hr/>
-
-# <hr/>
-
-# <hr/>
-
-# <hr/>
-
-# <hr/>
-
-#     """.strip()
-
-#     result = markdown3.to_html(data)
-#     assert expected == result
 
 
 # def test_quoted_paragraph():
