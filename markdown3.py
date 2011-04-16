@@ -189,7 +189,14 @@ def heading_2():
 
 def horizontal_rule():
     return pg.AllOf(
-        pg.Ignore("***"))
+        pg.Ignore(
+            pg.OneOf(
+                "***",
+                "* * *",
+                "---",
+                "- - -",
+                "___",
+                "_ _ _")))
 
 
 # def plain():
