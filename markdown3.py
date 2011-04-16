@@ -196,7 +196,11 @@ def horizontal_rule():
                 "---",
                 "- - -",
                 "___",
-                "_ _ _")))
+                "_ _ _")),
+        pg.Ignore(
+            pg.Optional(
+                pg.Many(
+                    pg.Not("\n")))))
 
 
 # def plain():

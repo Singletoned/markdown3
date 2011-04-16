@@ -591,4 +591,10 @@ class TestHorizontalRule(unittest.TestCase):
             "- - -",
             "___",
             "_ _ _"]:
-            do_test(data)
+            for suffix in [
+                "",
+                "**",
+                "--",
+                "__",
+                "foo"]:
+                do_test(data+suffix)
