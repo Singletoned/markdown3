@@ -141,7 +141,7 @@ class TestUnorderedBullet(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_with_tab(self):
@@ -158,7 +158,7 @@ class TestUnorderedBullet(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_paragraph(self):
@@ -176,7 +176,7 @@ class TestUnorderedBullet(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
 
@@ -195,7 +195,7 @@ class TestUnorderedList(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_multiple_bullets(self):
@@ -217,7 +217,7 @@ class TestUnorderedList(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_multiple_bullets_with_tabs(self):
@@ -242,7 +242,7 @@ class TestUnorderedList(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_indented_single_bullet(self):
@@ -256,7 +256,7 @@ class TestUnorderedList(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_nested_lists(self):
@@ -277,7 +277,7 @@ class TestUnorderedList(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_with_paragraphs(self):
@@ -302,7 +302,7 @@ class TestUnorderedList(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
 
@@ -318,7 +318,7 @@ class TestUnorderedListNested(unittest.TestCase):
 %(bullet)s bullet two""".strip() % dict(bullet=bullet)
                 result = markdown3.parse(data, markdown3.unordered_list_nested)
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_indented(self):
@@ -336,7 +336,7 @@ class TestUnorderedListNested(unittest.TestCase):
             assert expected == result
             assert rest == ""
 
-        for bullet in ["*", "+"]:
+        for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
 
