@@ -156,7 +156,10 @@ def _ordered_bullet_start():
     return pg.Ignore(
         pg.AllOf(
             pg.Words(letters="0123456789"),
-            ". "))
+            ".",
+            pg.OneOf(
+                " ",
+                "\t")))
 
 def ordered_bullet(content):
     def ordered_bullet():

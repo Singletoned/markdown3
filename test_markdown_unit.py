@@ -345,31 +345,38 @@ class TestOrderedBullet(unittest.TestCase):
 
     def test_span(self):
         """Test ordered_bullet with span content"""
-        data = """1. bullet one"""
-        expected = [
-            'ordered_bullet',
-            "bullet one"]
-        result, rest = markdown3.parse(
-            data,
-            markdown3.ordered_bullet(markdown3.span),
-            with_rest=True)
-        assert expected == result
-        assert rest == ""
+        def do_test(indent):
+            data = """1.%sbullet one""" % indent
+            expected = [
+                'ordered_bullet',
+                "bullet one"]
+            result, rest = markdown3.parse(
+                data,
+                markdown3.ordered_bullet(markdown3.span),
+                with_rest=True)
+            assert expected == result
+            assert rest == ""
+
+        for indent in [" ", "\t"]:
+            do_test(indent)
 
     def test_paragraph(self):
         """Test ordered_bullet with paragraph content"""
-        data = """1. bullet one"""
-        expected = [
-            'ordered_bullet',
-            ['paragraph',
-             "bullet one"]]
-        result, rest = markdown3.parse(
-            data,
-            markdown3.ordered_bullet(markdown3.paragraph),
-            with_rest=True)
-        assert expected == result
-        assert rest == ""
+        def do_test(indent):
+            data = """1.%sbullet one""" % indent
+            expected = [
+                'ordered_bullet',
+                ['paragraph',
+                 "bullet one"]]
+            result, rest = markdown3.parse(
+                data,
+                markdown3.ordered_bullet(markdown3.paragraph),
+                with_rest=True)
+            assert expected == result
+            assert rest == ""
 
+        for indent in [" ", "\t"]:
+            do_test(indent)
 
 class TestOrderedList(unittest.TestCase):
     """Unittests for ordered_list"""
