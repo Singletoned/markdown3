@@ -213,6 +213,66 @@ class TestUnorderedList(unittest.TestCase):
         assert expected_html == result
 
 
+class TestOrderedList(unittest.TestCase):
+    """General tests for ordered list"""
+
+    def test_simple(self):
+        """Test simplest bulleted list"""
+        data = """
+1. item 1
+2. item 2
+3. item 3
+""".strip()
+
+        expected = [
+            'body',
+            ['ordered_list',
+             ['ordered_bullet', "item 1"],
+             ['ordered_bullet', "item 2"],
+             ['ordered_bullet', "item 3"]]]
+
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """
+<ol>
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ol>
+""".strip()
+        result = markdown3.to_html(data)
+        assert expected_html == result
+
+    def test_with_tabs(self):
+        """Test bullet with tabs after bullet"""
+        data = """
+1.	item 1
+2.	item 2
+3.	item 3
+""".strip()
+
+        expected = [
+            'body',
+            ['ordered_list',
+             ['ordered_bullet', "item 1"],
+             ['ordered_bullet', "item 2"],
+             ['ordered_bullet', "item 3"]]]
+
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """
+<ol>
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ol>
+""".strip()
+        result = markdown3.to_html(data)
+        assert expected_html == result
+
+
 def test_horizontal_rules():
     data = """
 ---

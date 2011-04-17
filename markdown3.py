@@ -17,6 +17,7 @@ def body():
         pg.OneOf(
             horizontal_rule,
             unordered_list,
+            ordered_list,
             linebreaks,
             heading_1,
             heading_2,
@@ -110,6 +111,8 @@ def unordered_list():
         bullet_type=unordered_bullet,
         optional=True)
 
+@htmliser(htmlise.make_block)
+@tagname("ol")
 def ordered_list():
     return _make_list(
         bullet_type=ordered_bullet,
@@ -161,6 +164,8 @@ def _ordered_bullet_start():
                 " ",
                 "\t")))
 
+@htmliser(htmlise.make_span)
+@tagname("li")
 def ordered_bullet(content):
     def ordered_bullet():
         return _make_bullet(
