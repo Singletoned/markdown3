@@ -80,6 +80,15 @@ span = pg.Many(
 def paragraph():
     return span
 
+def _multiple_paragraphs():
+    return pg.AllOf(
+        paragraph,
+        pg.Optional(
+            pg.Many(
+                pg.AllOf(
+                    pg.Ignore("\n\n"),
+                    paragraph))))
+
 def _list_with_paragraphs(bullet_type):
     return pg.AllOf(
         bullet_type,

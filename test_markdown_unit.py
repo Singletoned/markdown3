@@ -575,6 +575,54 @@ class TestParagraph(unittest.TestCase):
         assert rest == ""
 
 
+class TestMultipleParagraphs(unittest.TestCase):
+    """Unittests for _multiple_paragraphs"""
+
+    def test_simple(self):
+        """Simplest test"""
+        data = """Paragraph 1"""
+        expected = [
+            '_multiple_paragraphs',
+            ['paragraph',
+             "Paragraph 1"]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3._multiple_paragraphs,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_multiple_paragraphs(self):
+        """Test that it matches multiple paragraphs"""
+        data = """Paragraph 1\n\nParagraph 2"""
+        expected = [
+            '_multiple_paragraphs',
+            ['paragraph',
+             "Paragraph 1"],
+            ['paragraph',
+             "Paragraph 2"]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3._multiple_paragraphs,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_single_paragraph_with_rest(self):
+        """Test that matching a single paragraph returns any trailing linebreaks"""
+        data = """Paragraph 1\n\n"""
+        expected = [
+            '_multiple_paragraphs',
+            ['paragraph',
+             "Paragraph 1"]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3._multiple_paragraphs,
+            with_rest=True)
+        assert expected == result
+        assert rest == "\n\n"
+
+
 class TestHorizontalRule(unittest.TestCase):
     """Unittests for horizontal rule"""
 
