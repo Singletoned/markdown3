@@ -179,6 +179,47 @@ class TestUnorderedBullet(unittest.TestCase):
         for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
+    def test_nested_list_in_bullet(self):
+        """Test that a bullet can match a nested list"""
+        data = """
+* list 1, bullet 1
+   * list 2, bullet 1
+   * list 2, bullet 2""".strip()
+        expected = [
+            'unordered_bullet',
+            "list 1, bullet 1",
+            ['unordered_list_nested',
+             ['unordered_bullet',
+              "list 2, bullet 1"],
+             ['unordered_bullet',
+              "list 2, bullet 2"]]]
+
+        result, rest = markdown3.parse(
+            data,
+            markdown3.unordered_bullet(markdown3.span),
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_multi_paragraph_bullet(self):
+        data = """
+* bullet one, paragraph one
+
+  bullet one, paragraph two""".strip()
+
+        expected = [
+            'unordered_bullet',
+            ['paragraph',
+             "bullet one, paragraph one"],
+            ['paragraph',
+             "bullet one, paragraph two"]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3.unordered_bullet(markdown3._multiple_paragraphs),
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
 
 class TestUnorderedList(unittest.TestCase):
     """Unittests for unordered list"""
@@ -305,6 +346,36 @@ class TestUnorderedList(unittest.TestCase):
         for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
+    def test_multi_paragraph_list(self):
+        data = """
+* bullet one, paragraph one
+
+  bullet one, paragraph two
+
+* bullet two, paragraph one
+
+* bullet three, paragraph one""".strip()
+
+        expected = [
+            'unordered_list',
+            ['unordered_bullet',
+             ['paragraph',
+              "bullet one, paragraph one"],
+             ['paragraph',
+              "bullet one, paragraph two"]],
+            ['unordered_bullet',
+             ['paragraph',
+              "bullet two, paragraph one"]],
+            ['unordered_bullet',
+             ['paragraph',
+              "bullet three, paragraph one"]]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3.unordered_list,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
 
 class TestUnorderedListNested(unittest.TestCase):
     """Unittests for unordered_list_nested"""
@@ -377,6 +448,48 @@ class TestOrderedBullet(unittest.TestCase):
 
         for indent in [" ", "\t"]:
             do_test(indent)
+
+    def test_nested_list_in_bullet(self):
+        """Test that a bullet can match a nested list"""
+        data = """
+1. list 1, bullet 1
+   2. list 2, bullet 1
+   3. list 2, bullet 2""".strip()
+        expected = [
+            'ordered_bullet',
+            "list 1, bullet 1",
+            ['ordered_list_nested',
+             ['ordered_bullet',
+              "list 2, bullet 1"],
+             ['ordered_bullet',
+              "list 2, bullet 2"]]]
+
+        result, rest = markdown3.parse(
+            data,
+            markdown3.ordered_bullet(markdown3.span),
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_multi_paragraph_bullet(self):
+        data = """
+1. bullet one, paragraph one
+
+   bullet one, paragraph two""".strip()
+
+        expected = [
+            'ordered_bullet',
+            ['paragraph',
+             "bullet one, paragraph one"],
+            ['paragraph',
+             "bullet one, paragraph two"]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3.ordered_bullet(markdown3._multiple_paragraphs),
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
 
 class TestOrderedList(unittest.TestCase):
     """Unittests for ordered_list"""
@@ -455,6 +568,36 @@ class TestOrderedList(unittest.TestCase):
              ['paragraph', "item 3"]]]
 
         result, rest = markdown3.parse(data, markdown3.ordered_list, with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_multi_paragraph_list(self):
+        data = """
+1. bullet one, paragraph one
+
+   bullet one, paragraph two
+
+2. bullet two, paragraph one
+
+3. bullet three, paragraph one""".strip()
+
+        expected = [
+            'ordered_list',
+            ['ordered_bullet',
+             ['paragraph',
+              "bullet one, paragraph one"],
+             ['paragraph',
+              "bullet one, paragraph two"]],
+            ['ordered_bullet',
+             ['paragraph',
+              "bullet two, paragraph one"]],
+            ['ordered_bullet',
+             ['paragraph',
+              "bullet three, paragraph one"]]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3.ordered_list,
+            with_rest=True)
         assert expected == result
         assert rest == ""
 

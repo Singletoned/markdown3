@@ -109,7 +109,7 @@ def _multiple_bullets(bullet_type):
 def _make_list(bullet_type, optional):
     return pg.Indented(
         pg.OneOf(
-            _list_with_paragraphs(bullet_type=bullet_type(paragraph)),
+            _list_with_paragraphs(bullet_type=bullet_type(_multiple_paragraphs)),
             _multiple_bullets(bullet_type=bullet_type(span))),
         optional=optional)
 
@@ -139,20 +139,20 @@ def ordered_list_nested():
 
 def _make_bullet(bullet_start, content, nested_list_type):
     return pg.AllOf(
-        bullet_start,
-        content,
+        pg.Indented(
+            content,
+            initial_indent=bullet_start),
         pg.Optional(
             pg.AllOf(
                 pg.Ignore("\n"),
                 nested_list_type)))
 
 def _unordered_bullet_start():
-    return pg.Ignore(
-        pg.AllOf(
-            pg.OneOf("*", "+", "-"),
-            pg.OneOf(
-                " ",
-                "\t")))
+    return pg.AllOf(
+        pg.OneOf("*", "+", "-"),
+        pg.OneOf(
+            " ",
+            "\t"))
 
 @htmliser(htmlise.make_span)
 @tagname("li")
@@ -165,13 +165,12 @@ def unordered_bullet(content):
     return unordered_bullet
 
 def _ordered_bullet_start():
-    return pg.Ignore(
-        pg.AllOf(
-            pg.Words(letters="0123456789"),
-            ".",
-            pg.OneOf(
-                " ",
-                "\t")))
+    return pg.AllOf(
+        pg.Words(letters="0123456789"),
+        ".",
+        pg.OneOf(
+            " ",
+            "\t"))
 
 @htmliser(htmlise.make_span)
 @tagname("li")
