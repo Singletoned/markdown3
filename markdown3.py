@@ -155,11 +155,14 @@ def _make_bullet(bullet_start, content, nested_list_type):
                 nested_list_type)))
 
 def _unordered_bullet_start():
-    return pg.AllOf(
-        pg.OneOf("*", "+", "-"),
-        pg.OneOf(
-            " ",
-            "\t"))
+    return pg.OneOf(
+        pg.AllOf(
+            pg.Ignore(
+                pg.OneOf("*", "+", "-")),
+            "\t"),
+        pg.AllOf(
+            pg.OneOf("*", "+", "-"),
+            " "))
 
 @htmliser(htmlise.make_span)
 @tagname("li")
