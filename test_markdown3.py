@@ -19,7 +19,7 @@ class TestHeading1(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h1>A level one heading</h1>"""
+        expected_html = """<h1>A level one heading</h1>\n"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -33,7 +33,7 @@ class TestHeading1(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h1>A level one heading</h1>"""
+        expected_html = """<h1>A level one heading</h1>\n"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -47,7 +47,7 @@ class TestHeading1(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h1>A level one heading</h1>"""
+        expected_html = """<h1>A level one heading</h1>\n"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -65,7 +65,7 @@ class TestHeading2(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h2>A level two heading</h2>"""
+        expected_html = """<h2>A level two heading</h2>\n"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -79,7 +79,7 @@ class TestHeading2(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h2>A level two heading</h2>"""
+        expected_html = """<h2>A level two heading</h2>\n"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -93,7 +93,7 @@ class TestHeading2(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h2>A level two heading</h2>"""
+        expected_html = """<h2>A level two heading</h2>\n"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -120,7 +120,7 @@ class TestParagraph(unittest.TestCase):
         result = markdown3.parse(data)
         assert expected == result
 
-        expected_html = """<p>A paragraph.</p>"""
+        expected_html = """<p>A paragraph.</p>\n"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -146,13 +146,12 @@ class TestUnorderedList(unittest.TestCase):
         result = markdown3.parse(data)
         assert expected == result
 
-        expected_html = """
-<ul>
+        expected_html = """<ul>
   <li>item 1</li>
   <li>item 2</li>
   <li>item 3</li>
 </ul>
-""".strip()
+"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -174,13 +173,12 @@ class TestUnorderedList(unittest.TestCase):
         result = markdown3.parse(data)
         assert expected == result
 
-        expected_html = """
-<ul>
+        expected_html = """<ul>
   <li>item 1</li>
   <li>item 2</li>
   <li>item 3</li>
 </ul>
-""".strip()
+"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -202,13 +200,12 @@ class TestUnorderedList(unittest.TestCase):
         result = markdown3.parse(data)
         assert expected == result
 
-        expected_html = """
-<ul>
+        expected_html = """<ul>
   <li>item 1</li>
   <li>item 2</li>
   <li>item 3</li>
 </ul>
-""".strip()
+"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -234,13 +231,12 @@ class TestOrderedList(unittest.TestCase):
         result = markdown3.parse(data)
         assert expected == result
 
-        expected_html = """
-<ol>
+        expected_html = """<ol>
   <li>item 1</li>
   <li>item 2</li>
   <li>item 3</li>
 </ol>
-""".strip()
+"""
         result = markdown3.to_html(data)
         assert expected_html == result
 
@@ -262,13 +258,12 @@ class TestOrderedList(unittest.TestCase):
         result = markdown3.parse(data)
         assert expected == result
 
-        expected_html = """
-<ol>
+        expected_html = """<ol>
   <li>item 1</li>
   <li>item 2</li>
   <li>item 3</li>
 </ol>
-""".strip()
+"""
         result = markdown3.to_html(data)
         assert expected_html == result
 

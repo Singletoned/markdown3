@@ -75,7 +75,7 @@ span = pg.Many(
         )
     )
 
-@htmliser(htmlise.make_span)
+@htmliser(htmlise.make_span_with_linebreak)
 @tagname("p")
 def paragraph():
     return span
@@ -113,14 +113,14 @@ def _make_list(bullet_type, optional):
             _multiple_bullets(bullet_type=bullet_type(span))),
         optional=optional)
 
-@htmliser(htmlise.make_block)
+@htmliser(htmlise.make_block_with_linebreak)
 @tagname("ul")
 def unordered_list():
     return _make_list(
         bullet_type=unordered_bullet,
         optional=True)
 
-@htmliser(htmlise.make_block)
+@htmliser(htmlise.make_block_with_linebreak)
 @tagname("ol")
 def ordered_list():
     return _make_list(
@@ -186,7 +186,7 @@ def linebreaks():
     return pg.Ignore(
         pg.Many("\n"))
 
-@htmliser(htmlise.make_span)
+@htmliser(htmlise.make_span_with_linebreak)
 @tagname("h1")
 def heading_1():
     return pg.AllOf(
@@ -195,7 +195,7 @@ def heading_1():
         pg.Optional(
             pg.Ignore(" #")))
 
-@htmliser(htmlise.make_span)
+@htmliser(htmlise.make_span_with_linebreak)
 @tagname("h2")
 def heading_2():
     return pg.AllOf(
