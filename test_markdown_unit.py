@@ -717,6 +717,20 @@ class TestParagraph(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
+    def test_multiline(self):
+        """Test that a paragraph can contain single linebreaks"""
+        data = """A paragraph that spans\nmultiple lines."""
+        expected = [
+            'paragraph',
+            "A paragraph that spans",
+            " ",
+            "multiple lines."]
+        result, rest = markdown3.parse(
+            data,
+            markdown3.paragraph,
+            with_rest=True)
+        assert expected == result
+
 
 class TestMultipleParagraphs(unittest.TestCase):
     """Unittests for _multiple_paragraphs"""
@@ -764,6 +778,30 @@ class TestMultipleParagraphs(unittest.TestCase):
             with_rest=True)
         assert expected == result
         assert rest == "\n\n"
+
+    def test_multiline(self):
+        """Test that paragraphs can contain single linebreaks"""
+        data = """
+A paragraph that spans
+multiple lines.
+
+Another paragraph
+over multiple lines.""".strip()
+        expected = [
+            '_multiple_paragraphs',
+            ['paragraph',
+             "A paragraph that spans",
+             " ",
+             "multiple lines."],
+            ['paragraph',
+             "Another paragraph",
+             " ",
+             "over multiple lines."]]
+        result, rest = markdown3.parse(
+            data,
+            markdown3._multiple_paragraphs,
+            with_rest=True)
+        assert expected == result
 
 
 class TestHorizontalRule(unittest.TestCase):

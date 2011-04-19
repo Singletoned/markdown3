@@ -78,7 +78,14 @@ span = pg.Many(
 @htmliser(htmlise.make_span_with_linebreak)
 @tagname("p")
 def paragraph():
-    return span
+    return pg.AllOf(
+        span,
+        pg.Optional(
+            pg.Many(
+                pg.AllOf(
+                    pg.Ignore("\n"),
+                    pg.Insert(" "),
+                    span))))
 
 def _multiple_paragraphs():
     return pg.AllOf(

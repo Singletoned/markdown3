@@ -124,6 +124,22 @@ class TestParagraph(unittest.TestCase):
         result = markdown3.to_html(data)
         assert expected_html == result
 
+    def test_multiline(self):
+        """Test that a paragraph can contain single linebreaks"""
+        data = """A paragraph that spans\nmultiple lines."""
+        expected = [
+            'body',
+            ['paragraph',
+             "A paragraph that spans",
+             " ",
+             "multiple lines."]]
+        result = markdown3.parse(data)
+        assert expected == result
+
+        expected_html = """<p>A paragraph that spans multiple lines.</p>\n"""
+        result = markdown3.to_html(data)
+        assert expected_html == result
+
 
 class TestUnorderedList(unittest.TestCase):
     """General tests for unordered list"""
