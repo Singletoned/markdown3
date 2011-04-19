@@ -51,6 +51,9 @@ def make_block(head, rest, tagname_lookups, htmliser_funcs):
     content = indent_tags(content)
     return [start_tag] + content + [end_tag]
 
+def make_block_with_linebreak(head, rest, tagname_lookups, htmliser_funcs):
+    return make_block(head, rest, tagname_lookups, htmliser_funcs) + [""]
+
 def make_span(head, rest, tagname_lookups, htmliser_funcs):
     tag = tagname_lookups[head]
     if tag:

@@ -101,6 +101,28 @@ def test_make_block():
     result = htmlise.make_block(data[0], data[1:], tagname_lookups, htmliser_funcs)
     assert expected == result
 
+def test_make_block_with_linebreak():
+    tagname_lookups = dict()
+    tagname = htmlise.make_tagname_decorator(tagname_lookups)
+    htmliser_funcs = dict()
+
+    @tagname("footag")
+    def foo():
+        pass
+
+    data = ['foo', "bar", "baz"]
+    expected = [
+        "<footag>",
+        "  barbaz",
+        "</footag>",
+        ""]
+    result = htmlise.make_block_with_linebreak(
+        data[0],
+        data[1:],
+        tagname_lookups,
+        htmliser_funcs)
+    assert expected == result
+
 
 class TestMakeSpan(unittest.TestCase):
     """Unittests for make_span"""
