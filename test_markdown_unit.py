@@ -72,6 +72,7 @@ class TestWords(unittest.TestCase):
 
 
 class TestEmphasis(unittest.TestCase):
+    """Unittests for emphasis"""
     def test_simple(self):
         data = "*some emphasis*"
         expected = [
@@ -83,6 +84,7 @@ class TestEmphasis(unittest.TestCase):
 
 
 class TestMultilineWords(unittest.TestCase):
+    """Unittests for multiline_words"""
     def test_simple(self):
         data = "some words\nover two lines"
         expected = [
@@ -96,6 +98,7 @@ class TestMultilineWords(unittest.TestCase):
 
 
 class TestSpan(unittest.TestCase):
+    """Unittests for span"""
     def test_simple(self):
         data = "some words"
         expected = ['', "some words"]
@@ -127,6 +130,7 @@ class TestSpan(unittest.TestCase):
 
 
 class TestUnorderedBullet(unittest.TestCase):
+    """Unittests for unordered_bullet"""
     def test_span(self):
         """Test unordered_bullet with span content"""
         def do_test(bullet):
