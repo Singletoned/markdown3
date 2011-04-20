@@ -878,3 +878,43 @@ class TestHorizontalRule(unittest.TestCase):
                 "__",
                 "foo"]:
                 do_test(data+suffix)
+
+
+class TestBlankLine(unittest.TestCase):
+    """Unittests for _blankline"""
+
+    def test_matches(self):
+        """Test that blank line matches newline+whitespace+newline"""
+        def do_test(data):
+            expected = []
+            result, rest = markdown3.parse(
+                data,
+                markdown3._blank_line,
+                with_rest=True)
+            assert expected == result
+            assert rest == ""
+
+        datas = [
+            "\n  \n",
+            "\n \n",
+            "\n\n",
+            "\n	\n",
+            "\n		\n"]
+
+        for data in datas:
+            do_test(data)
+
+    def test_failures(self):
+        """Test that _blank_line doesn't match various things"""
+        def do_test(data):
+            with py.test.raises(pg.NoPatternFound):
+                result, rest = markdown3.parse(
+                    data,
+                    markdown3._blank_line,
+                    with_rest=True)
+        datas = [
+            "\n",
+            "\na\n"]
+
+        for data in datas:
+            do_test(data)

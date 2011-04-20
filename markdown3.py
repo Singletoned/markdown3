@@ -201,6 +201,17 @@ def linebreaks():
     return pg.Ignore(
         pg.Many("\n"))
 
+def _blank_line():
+    return pg.Ignore(
+        pg.AllOf(
+            "\n",
+            pg.Optional(
+                pg.Many(
+                    pg.OneOf(
+                        " ",
+                        "\t"))),
+            "\n"))
+
 @htmliser(htmlise.make_span_with_linebreak)
 @tagname("h1")
 def heading_1():
