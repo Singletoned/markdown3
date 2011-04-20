@@ -54,7 +54,7 @@ multiline_words = pg.AllOf(
                 pg.Insert(" "),
                 pg.Words(string.lowercase+string.uppercase+string.digits+"., :")))))
 
-characters = pg.Words(string.lowercase+string.uppercase+string.digits+".,:")
+characters = pg.Words(string.lowercase+string.uppercase+string.digits+""".,:\"'""")
 
 words = pg.Join(
     pg.AllOf(

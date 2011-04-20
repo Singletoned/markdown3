@@ -27,6 +27,14 @@ class TestCharacters(unittest.TestCase):
         assert expected == result
         assert rest == " words"
 
+    def test_quoted_text(self):
+        """Test that characters matches quotes"""
+        datum = "'word'"
+        expected = ['', "'word'"]
+        result, rest = markdown3.parse(datum, markdown3.characters, with_rest=True)
+        assert expected == result
+        assert rest == ""
+
 
 class TestWords(unittest.TestCase):
     """Unittests for words"""
@@ -69,6 +77,14 @@ class TestWords(unittest.TestCase):
         result, rest = markdown3.parse(datum, markdown3.words, with_rest=True)
         assert expected == result
         assert rest == " "
+
+    def test_quoted_text(self):
+        """Test that words matches quotes"""
+        datum = """Some words, some of which are "quoted", and some 'not'."""
+        expected = ['', """Some words, some of which are "quoted", and some 'not'."""]
+        result, rest = markdown3.parse(datum, markdown3.words, with_rest=True)
+        assert expected == result
+        assert rest == ""
 
 
 class TestEmphasis(unittest.TestCase):
