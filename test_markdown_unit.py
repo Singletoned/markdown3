@@ -13,17 +13,17 @@ class TestCharacters(unittest.TestCase):
 
     def test_simple(self):
         """Test that characters matches some text"""
-        data = "word"
+        datum = "word"
         expected = ['', "word"]
-        result, rest = markdown3.parse(data, markdown3.characters, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.characters, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_whitespace(self):
         """Test that characters doesn't match whitespace"""
-        data = "two words"
+        datum = "two words"
         expected = ['', "two"]
-        result, rest = markdown3.parse(data, markdown3.characters, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.characters, with_rest=True)
         assert expected == result
         assert rest == " words"
 
@@ -32,41 +32,41 @@ class TestWords(unittest.TestCase):
     """Unittests for words"""
     def test_simple(self):
         """Test that words matches some words"""
-        data = "some words"
+        datum = "some words"
         expected = ['', "some words"]
-        result, rest = markdown3.parse(data, markdown3.words, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.words, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_many_words(self):
         """Test that words matches multiple words"""
-        data = "quite a few words in a row"
+        datum = "quite a few words in a row"
         expected = ['', "quite a few words in a row"]
-        result, rest = markdown3.parse(data, markdown3.words, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.words, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_one_word(self):
         """Test that words matches one word"""
-        data = "flibble"
+        datum = "flibble"
         expected = ['', "flibble"]
-        result, rest = markdown3.parse(data, markdown3.words, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.words, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_multiline(self):
         """Test that words doesn't match multiple lines"""
-        data = "some words\nover two lines"
+        datum = "some words\nover two lines"
         expected = ['', "some words"]
-        result, rest = markdown3.parse(data, markdown3.words, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.words, with_rest=True)
         assert expected == result
         assert rest == "\nover two lines"
 
     def test_trailing_whitespace(self):
         """Test that words doesn't match trailing whitespace"""
-        data = "some words "
+        datum = "some words "
         expected = ['', "some words"]
-        result, rest = markdown3.parse(data, markdown3.words, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.words, with_rest=True)
         assert expected == result
         assert rest == " "
 
@@ -74,11 +74,11 @@ class TestWords(unittest.TestCase):
 class TestEmphasis(unittest.TestCase):
     """Unittests for emphasis"""
     def test_simple(self):
-        data = "*some emphasis*"
+        datum = "*some emphasis*"
         expected = [
             'emphasis',
             "some emphasis"]
-        result, rest = markdown3.parse(data, markdown3.emphasis, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.emphasis, with_rest=True)
         assert expected == result
         assert rest == ""
 
@@ -86,13 +86,13 @@ class TestEmphasis(unittest.TestCase):
 class TestMultilineWords(unittest.TestCase):
     """Unittests for multiline_words"""
     def test_simple(self):
-        data = "some words\nover two lines"
+        datum = "some words\nover two lines"
         expected = [
             '',
             "some words",
             " ",
             "over two lines"]
-        result, rest = markdown3.parse(data, markdown3.multiline_words, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.multiline_words, with_rest=True)
         assert expected == result
         assert rest == ""
 
@@ -100,23 +100,23 @@ class TestMultilineWords(unittest.TestCase):
 class TestSpan(unittest.TestCase):
     """Unittests for span"""
     def test_simple(self):
-        data = "some words"
+        datum = "some words"
         expected = ['', "some words"]
-        result, rest = markdown3.parse(data, markdown3.span, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.span, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_multiline(self):
         "Test that a span only matches one line"
-        data = "some words\nover two lines"
+        datum = "some words\nover two lines"
         expected = ['', "some words"]
-        result = markdown3.parse(data, markdown3.span)
-        result, rest = markdown3.parse(data, markdown3.span, with_rest=True)
+        result = markdown3.parse(datum, markdown3.span)
+        result, rest = markdown3.parse(datum, markdown3.span, with_rest=True)
         assert expected == result
         assert rest == "\nover two lines"
 
     def test_emphasis(self):
-        data = "some words with *emphasis* in them"
+        datum = "some words with *emphasis* in them"
         expected = [
             '',
             "some words with",
@@ -124,7 +124,7 @@ class TestSpan(unittest.TestCase):
             ['emphasis', "emphasis"],
             " ",
             "in them"]
-        result, rest = markdown3.parse(data, markdown3.span, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.span, with_rest=True)
         assert expected == result
         assert rest == ""
 
@@ -134,12 +134,12 @@ class TestUnorderedBullet(unittest.TestCase):
     def test_span(self):
         """Test unordered_bullet with span content"""
         def do_test(bullet):
-            data = "%s a bullet" % bullet
+            datum = "%s a bullet" % bullet
             expected = [
                 'unordered_bullet',
                 "a bullet"]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.unordered_bullet(markdown3.span),
                 with_rest=True)
             assert expected == result
@@ -151,12 +151,12 @@ class TestUnorderedBullet(unittest.TestCase):
     def test_with_tab(self):
         """Test unordered_bullet with tab after the bullet"""
         def do_test(bullet):
-            data = "%s	a bullet" % bullet
+            datum = "%s	a bullet" % bullet
             expected = [
                 'unordered_bullet',
                 "a bullet"]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.unordered_bullet(markdown3.span),
                 with_rest=True)
             assert expected == result
@@ -168,13 +168,13 @@ class TestUnorderedBullet(unittest.TestCase):
     def test_paragraph(self):
         """Test unordered_bullet with paragraph content"""
         def do_test(bullet):
-            data = "%s a bullet" % bullet
+            datum = "%s a bullet" % bullet
             expected = [
                 'unordered_bullet',
                 ['paragraph',
                  "a bullet"]]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.unordered_bullet(markdown3.paragraph),
                 with_rest=True)
             assert expected == result
@@ -185,7 +185,7 @@ class TestUnorderedBullet(unittest.TestCase):
 
     def test_nested_list_in_bullet(self):
         """Test that a bullet can match a nested list"""
-        data = """
+        datum = """
 * list 1, bullet 1
    * list 2, bullet 1
    * list 2, bullet 2""".strip()
@@ -199,14 +199,14 @@ class TestUnorderedBullet(unittest.TestCase):
               "list 2, bullet 2"]]]
 
         result, rest = markdown3.parse(
-            data,
+            datum,
             markdown3.unordered_bullet(markdown3.span),
             with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_multi_paragraph_bullet(self):
-        def do_test(data):
+        def do_test(datum):
             expected = [
                 'unordered_bullet',
                 ['paragraph',
@@ -214,13 +214,13 @@ class TestUnorderedBullet(unittest.TestCase):
                 ['paragraph',
                  "bullet one, paragraph two"]]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.unordered_bullet(markdown3._multiple_paragraphs),
                 with_rest=True)
             assert expected == result
             assert rest == ""
 
-        datas = [
+        data = [
 """
 * bullet one, paragraph one
 
@@ -230,8 +230,8 @@ class TestUnorderedBullet(unittest.TestCase):
 
 	bullet one, paragraph two""".strip()]
 
-        for data in datas:
-            do_test(data)
+        for datum in data:
+            do_test(datum)
 
 
 class TestUnorderedList(unittest.TestCase):
@@ -240,12 +240,12 @@ class TestUnorderedList(unittest.TestCase):
     def test_single_bullet(self):
         """Test that a single bullet matches"""
         def do_test(bullet):
-            data = "%s a bullet" % bullet
+            datum = "%s a bullet" % bullet
             expected = [
                 'unordered_list',
                 ['unordered_bullet',
                  "a bullet"]]
-            result, rest = markdown3.parse(data, markdown3.unordered_list, with_rest=True)
+            result, rest = markdown3.parse(datum, markdown3.unordered_list, with_rest=True)
             assert expected == result
             assert rest == ""
 
@@ -255,7 +255,7 @@ class TestUnorderedList(unittest.TestCase):
     def test_multiple_bullets(self):
         """Test that multiple bullets match"""
         def do_test(bullet):
-            data = """
+            datum = """
 %(bullet)s bullet one
 %(bullet)s bullet two
 %(bullet)s bullet three""".strip() % dict(bullet=bullet)
@@ -267,7 +267,7 @@ class TestUnorderedList(unittest.TestCase):
                  "bullet two"],
                 ['unordered_bullet',
                  "bullet three"]]
-            result, rest = markdown3.parse(data, markdown3.unordered_list, with_rest=True)
+            result, rest = markdown3.parse(datum, markdown3.unordered_list, with_rest=True)
             assert expected == result
             assert rest == ""
 
@@ -277,7 +277,7 @@ class TestUnorderedList(unittest.TestCase):
     def test_multiple_bullets_with_tabs(self):
         """Test that multiple bullets match"""
         def do_test(bullet):
-            data = """
+            datum = """
 %(bullet)s	bullet one
 %(bullet)s	bullet two
 %(bullet)s	bullet three""".strip() % dict(bullet=bullet)
@@ -290,7 +290,7 @@ class TestUnorderedList(unittest.TestCase):
                 ['unordered_bullet',
                  "bullet three"]]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.unordered_list,
                 with_rest=True)
             assert expected == result
@@ -301,12 +301,12 @@ class TestUnorderedList(unittest.TestCase):
 
     def test_indented_single_bullet(self):
         def do_test(bullet):
-            data = """  %s a bullet""" % bullet
+            datum = """  %s a bullet""" % bullet
             expected = [
                 'unordered_list',
                 ['unordered_bullet',
                  "a bullet"]]
-            result, rest = markdown3.parse(data, markdown3.unordered_list, with_rest=True)
+            result, rest = markdown3.parse(datum, markdown3.unordered_list, with_rest=True)
             assert expected == result
             assert rest == ""
 
@@ -316,7 +316,7 @@ class TestUnorderedList(unittest.TestCase):
     def test_nested_lists(self):
         """Test that nested lists match"""
         def do_test(bullet):
-            data = """
+            datum = """
     %(bullet)s bullet one, list one
       %(bullet)s bullet one, list two
             """.strip() % dict(bullet=bullet)
@@ -327,7 +327,7 @@ class TestUnorderedList(unittest.TestCase):
                  ['unordered_list_nested',
                   ['unordered_bullet',
                    "bullet one, list two"]]]]
-            result, rest = markdown3.parse(data, markdown3.unordered_list, with_rest=True)
+            result, rest = markdown3.parse(datum, markdown3.unordered_list, with_rest=True)
             assert expected == result
             assert rest == ""
 
@@ -337,7 +337,7 @@ class TestUnorderedList(unittest.TestCase):
     def test_with_paragraphs(self):
         """Test that padding between lines creates paragraphs"""
         def do_test(bullet):
-            data = """
+            datum = """
 %(bullet)s item 1
 
 %(bullet)s item 2
@@ -352,7 +352,7 @@ class TestUnorderedList(unittest.TestCase):
                 ['unordered_bullet',
                  ['paragraph', "item 3"]]]
 
-            result, rest = markdown3.parse(data, markdown3.unordered_list, with_rest=True)
+            result, rest = markdown3.parse(datum, markdown3.unordered_list, with_rest=True)
             assert expected == result
             assert rest == ""
 
@@ -360,7 +360,7 @@ class TestUnorderedList(unittest.TestCase):
             do_test(bullet)
 
     def test_multi_paragraph_list(self):
-        def do_test(data):
+        def do_test(datum):
             expected = [
                 'unordered_list',
                 ['unordered_bullet',
@@ -375,13 +375,13 @@ class TestUnorderedList(unittest.TestCase):
                  ['paragraph',
                   "bullet three, paragraph one"]]]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.unordered_list,
                 with_rest=True)
             assert expected == result
             assert rest == ""
 
-        datas = [
+        data = [
 """
 * bullet one, paragraph one
 
@@ -398,8 +398,8 @@ class TestUnorderedList(unittest.TestCase):
 *	bullet two, paragraph one
 
 *	bullet three, paragraph one""".strip()]
-        for data in datas:
-            do_test(data)
+        for datum in data:
+            do_test(datum)
 
 
 class TestUnorderedListNested(unittest.TestCase):
@@ -409,17 +409,17 @@ class TestUnorderedListNested(unittest.TestCase):
         """Test that unindented doesn't match"""
         def do_test(bullet):
             with py.test.raises(pg.NoPatternFound):
-                data = """
+                datum = """
 %(bullet)s bullet one
 %(bullet)s bullet two""".strip() % dict(bullet=bullet)
-                result = markdown3.parse(data, markdown3.unordered_list_nested)
+                result = markdown3.parse(datum, markdown3.unordered_list_nested)
 
         for bullet in ["*", "+", "-"]:
             do_test(bullet)
 
     def test_indented(self):
         def do_test(bullet):
-            data = """    %(bullet)s bullet one\n    %(bullet)s bullet two\n    %(bullet)s bullet three""" % dict(bullet=bullet)
+            datum = """    %(bullet)s bullet one\n    %(bullet)s bullet two\n    %(bullet)s bullet three""" % dict(bullet=bullet)
             expected = [
                 'unordered_list_nested',
                 ['unordered_bullet',
@@ -428,7 +428,7 @@ class TestUnorderedListNested(unittest.TestCase):
                  "bullet two"],
                 ['unordered_bullet',
                  "bullet three"]]
-            result, rest = markdown3.parse(data, markdown3.unordered_list_nested, with_rest=True)
+            result, rest = markdown3.parse(datum, markdown3.unordered_list_nested, with_rest=True)
             assert expected == result
             assert rest == ""
 
@@ -442,12 +442,12 @@ class TestOrderedBullet(unittest.TestCase):
     def test_span(self):
         """Test ordered_bullet with span content"""
         def do_test(indent):
-            data = """1.%sbullet one""" % indent
+            datum = """1.%sbullet one""" % indent
             expected = [
                 'ordered_bullet',
                 "bullet one"]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.ordered_bullet(markdown3.span),
                 with_rest=True)
             assert expected == result
@@ -459,13 +459,13 @@ class TestOrderedBullet(unittest.TestCase):
     def test_paragraph(self):
         """Test ordered_bullet with paragraph content"""
         def do_test(indent):
-            data = """1.%sbullet one""" % indent
+            datum = """1.%sbullet one""" % indent
             expected = [
                 'ordered_bullet',
                 ['paragraph',
                  "bullet one"]]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.ordered_bullet(markdown3.paragraph),
                 with_rest=True)
             assert expected == result
@@ -476,7 +476,7 @@ class TestOrderedBullet(unittest.TestCase):
 
     def test_nested_list_in_bullet(self):
         """Test that a bullet can match a nested list"""
-        data = """
+        datum = """
 1. list 1, bullet 1
    2. list 2, bullet 1
    3. list 2, bullet 2""".strip()
@@ -490,14 +490,14 @@ class TestOrderedBullet(unittest.TestCase):
               "list 2, bullet 2"]]]
 
         result, rest = markdown3.parse(
-            data,
+            datum,
             markdown3.ordered_bullet(markdown3.span),
             with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_multi_paragraph_bullet(self):
-        def do_test(data):
+        def do_test(datum):
             expected = [
                 'ordered_bullet',
                 ['paragraph',
@@ -505,13 +505,13 @@ class TestOrderedBullet(unittest.TestCase):
                 ['paragraph',
                  "bullet one, paragraph two"]]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.ordered_bullet(markdown3._multiple_paragraphs),
                 with_rest=True)
             assert expected == result
             assert rest == ""
 
-        datas = [
+        data = [
 """
 1. bullet one, paragraph one
 
@@ -520,8 +520,8 @@ class TestOrderedBullet(unittest.TestCase):
 1.	bullet one, paragraph one
 
 	bullet one, paragraph two""".strip()]
-        for data in datas:
-            do_test(data)
+        for datum in data:
+            do_test(datum)
 
 
 class TestOrderedList(unittest.TestCase):
@@ -529,18 +529,18 @@ class TestOrderedList(unittest.TestCase):
 
     def test_single_bullet(self):
         """Test that a single bullet matches"""
-        data = """1. bullet one"""
+        datum = """1. bullet one"""
         expected = [
             'ordered_list',
             ['ordered_bullet',
              "bullet one"]]
-        result, rest = markdown3.parse(data, markdown3.ordered_list, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.ordered_list, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_multiple_bullets(self):
         """Test that multiple bullets match"""
-        data = """
+        datum = """
 1. bullet one
 2. bullet two
 3. bullet three""".strip()
@@ -552,23 +552,23 @@ class TestOrderedList(unittest.TestCase):
              "bullet two"],
             ['ordered_bullet',
              "bullet three"]]
-        result, rest = markdown3.parse(data, markdown3.ordered_list, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.ordered_list, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_indented_single_bullet(self):
-        data = """  1. a bullet"""
+        datum = """  1. a bullet"""
         expected = [
             'ordered_list',
             ['ordered_bullet',
              "a bullet"]]
-        result, rest = markdown3.parse(data, markdown3.ordered_list, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.ordered_list, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_nested_lists(self):
         """Test that nested lists match"""
-        data = """
+        datum = """
 1. bullet one, list one
   1. bullet one, list two
         """.strip()
@@ -579,13 +579,13 @@ class TestOrderedList(unittest.TestCase):
              ['ordered_list_nested',
               ['ordered_bullet',
                "bullet one, list two"]]]]
-        result, rest = markdown3.parse(data, markdown3.ordered_list, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.ordered_list, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_with_paragraphs(self):
         """Test that padding between lines creates paragraphs"""
-        data = """
+        datum = """
 1. item 1
 
 2. item 2
@@ -600,12 +600,12 @@ class TestOrderedList(unittest.TestCase):
             ['ordered_bullet',
              ['paragraph', "item 3"]]]
 
-        result, rest = markdown3.parse(data, markdown3.ordered_list, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.ordered_list, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_multi_paragraph_list(self):
-        def do_test(data):
+        def do_test(datum):
             expected = [
                 'ordered_list',
                 ['ordered_bullet',
@@ -620,13 +620,13 @@ class TestOrderedList(unittest.TestCase):
                  ['paragraph',
                   "bullet three, paragraph one"]]]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.ordered_list,
                 with_rest=True)
             assert expected == result
             assert rest == ""
 
-        datas = ["""
+        data = ["""
 1. bullet one, paragraph one
 
    bullet one, paragraph two
@@ -642,8 +642,8 @@ class TestOrderedList(unittest.TestCase):
 2.	bullet two, paragraph one
 
 3.	bullet three, paragraph one""".strip()]
-        for data in datas:
-            do_test(data)
+        for datum in data:
+            do_test(datum)
 
 
 class TestLinebreaks(unittest.TestCase):
@@ -651,17 +651,17 @@ class TestLinebreaks(unittest.TestCase):
 
     def test_single_line(self):
         """Test that linebreaks matches a single blank line """
-        data = "\n"
+        datum = "\n"
         expected = []
-        result, rest = markdown3.parse(data, markdown3.linebreaks, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.linebreaks, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_multiple_lines(self):
         """Test that linebreaks matches multiple blank lines"""
-        data = "\n\n"
+        datum = "\n\n"
         expected = []
-        result, rest = markdown3.parse(data, markdown3.linebreaks, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.linebreaks, with_rest=True)
         assert expected == result
         assert rest == ""
 
@@ -671,31 +671,31 @@ class TestHeading1(unittest.TestCase):
 
     def test_level_1(self):
         """Test level one heading"""
-        data = "# Heading 1 #"
+        datum = "# Heading 1 #"
         expected = [
             'heading_1',
             "Heading 1"]
-        result, rest = markdown3.parse(data, markdown3.heading_1, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.heading_1, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_level_1_one_word(self):
         """Test level one heading with only one word"""
-        data = "# Heading #"
+        datum = "# Heading #"
         expected = [
             'heading_1',
             "Heading"]
-        result, rest = markdown3.parse(data, markdown3.heading_1, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.heading_1, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_level_1_without_end_tag(self):
         """Test level one heading without closing hash"""
-        data = "# Heading 1"
+        datum = "# Heading 1"
         expected = [
             'heading_1',
             "Heading 1"]
-        result, rest = markdown3.parse(data, markdown3.heading_1, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.heading_1, with_rest=True)
         assert expected == result
         assert rest == ""
 
@@ -704,31 +704,31 @@ class TestHeading2(unittest.TestCase):
     """Unittests for Heading"""
     def test_level_2(self):
         """Test level two heading"""
-        data = "## Heading 2 ##"
+        datum = "## Heading 2 ##"
         expected = [
             'heading_2',
             "Heading 2"]
-        result, rest = markdown3.parse(data, markdown3.heading_2, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.heading_2, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_level_2_one_word(self):
         """Test level two heading with only one word"""
-        data = "## Heading ##"
+        datum = "## Heading ##"
         expected = [
             'heading_2',
             "Heading"]
-        result, rest = markdown3.parse(data, markdown3.heading_2, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.heading_2, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_level_2_without_end_tag(self):
         """Test level two heading without closing hash"""
-        data = "## Heading 2"
+        datum = "## Heading 2"
         expected = [
             'heading_2',
             "Heading 2"]
-        result, rest = markdown3.parse(data, markdown3.heading_2, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.heading_2, with_rest=True)
         assert expected == result
         assert rest == ""
 
@@ -738,17 +738,17 @@ class TestParagraph(unittest.TestCase):
 
     def test_simple(self):
         """Simplest possible test"""
-        data = """A paragraph."""
+        datum = """A paragraph."""
         expected = [
             'paragraph',
             "A paragraph."]
-        result, rest = markdown3.parse(data, markdown3.paragraph, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.paragraph, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_with_emphasis(self):
         """Test that paragraph matches emphasis"""
-        data = """A paragraph with *some emphasis* in it"""
+        datum = """A paragraph with *some emphasis* in it"""
         expected = [
             'paragraph',
             "A paragraph with",
@@ -757,20 +757,20 @@ class TestParagraph(unittest.TestCase):
              "some emphasis"],
             " ",
             "in it"]
-        result, rest = markdown3.parse(data, markdown3.paragraph, with_rest=True)
+        result, rest = markdown3.parse(datum, markdown3.paragraph, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_multiline(self):
         """Test that a paragraph can contain single linebreaks"""
-        data = """A paragraph that spans\nmultiple lines."""
+        datum = """A paragraph that spans\nmultiple lines."""
         expected = [
             'paragraph',
             "A paragraph that spans",
             " ",
             "multiple lines."]
         result, rest = markdown3.parse(
-            data,
+            datum,
             markdown3.paragraph,
             with_rest=True)
         assert expected == result
@@ -781,13 +781,13 @@ class TestMultipleParagraphs(unittest.TestCase):
 
     def test_simple(self):
         """Simplest test"""
-        data = """Paragraph 1"""
+        datum = """Paragraph 1"""
         expected = [
             '_multiple_paragraphs',
             ['paragraph',
              "Paragraph 1"]]
         result, rest = markdown3.parse(
-            data,
+            datum,
             markdown3._multiple_paragraphs,
             with_rest=True)
         assert expected == result
@@ -795,7 +795,7 @@ class TestMultipleParagraphs(unittest.TestCase):
 
     def test_multiple_paragraphs(self):
         """Test that it matches multiple paragraphs"""
-        data = """Paragraph 1\n\nParagraph 2"""
+        datum = """Paragraph 1\n\nParagraph 2"""
         expected = [
             '_multiple_paragraphs',
             ['paragraph',
@@ -803,7 +803,7 @@ class TestMultipleParagraphs(unittest.TestCase):
             ['paragraph',
              "Paragraph 2"]]
         result, rest = markdown3.parse(
-            data,
+            datum,
             markdown3._multiple_paragraphs,
             with_rest=True)
         assert expected == result
@@ -811,13 +811,13 @@ class TestMultipleParagraphs(unittest.TestCase):
 
     def test_single_paragraph_with_rest(self):
         """Test that matching a single paragraph returns any trailing linebreaks"""
-        data = """Paragraph 1\n\n"""
+        datum = """Paragraph 1\n\n"""
         expected = [
             '_multiple_paragraphs',
             ['paragraph',
              "Paragraph 1"]]
         result, rest = markdown3.parse(
-            data,
+            datum,
             markdown3._multiple_paragraphs,
             with_rest=True)
         assert expected == result
@@ -825,7 +825,7 @@ class TestMultipleParagraphs(unittest.TestCase):
 
     def test_multiline(self):
         """Test that paragraphs can contain single linebreaks"""
-        data = """
+        datum = """
 A paragraph that spans
 multiple lines.
 
@@ -842,7 +842,7 @@ over multiple lines.""".strip()
              " ",
              "over multiple lines."]]
         result, rest = markdown3.parse(
-            data,
+            datum,
             markdown3._multiple_paragraphs,
             with_rest=True)
         assert expected == result
@@ -853,31 +853,34 @@ class TestHorizontalRule(unittest.TestCase):
 
     def test_simple(self):
         """Simplest test that can pass"""
-        def do_test(data):
+        def do_test(datum):
             expected = [
                 'horizontal_rule',
                 ""]
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3.horizontal_rule,
                 with_rest=True)
             assert expected == result
             assert rest == ""
 
-        for data in [
+        data = [
             "***",
             "* * *",
             "---",
             "- - -",
             "___",
-            "_ _ _"]:
+            "_ _ _"]
+
+        for datum in data:
             for suffix in [
                 "",
                 "**",
                 "--",
                 "__",
                 "foo"]:
-                do_test(data+suffix)
+                do_test(datum+suffix)
+
 
 
 class TestBlankLine(unittest.TestCase):
@@ -885,36 +888,36 @@ class TestBlankLine(unittest.TestCase):
 
     def test_matches(self):
         """Test that blank line matches newline+whitespace+newline"""
-        def do_test(data):
+        def do_test(datum):
             expected = []
             result, rest = markdown3.parse(
-                data,
+                datum,
                 markdown3._blank_line,
                 with_rest=True)
             assert expected == result
             assert rest == ""
 
-        datas = [
+        data = [
             "\n  \n",
             "\n \n",
             "\n\n",
             "\n	\n",
             "\n		\n"]
 
-        for data in datas:
-            do_test(data)
+        for datum in data:
+            do_test(datum)
 
     def test_failures(self):
         """Test that _blank_line doesn't match various things"""
-        def do_test(data):
+        def do_test(datum):
             with py.test.raises(pg.NoPatternFound):
                 result, rest = markdown3.parse(
-                    data,
+                    datum,
                     markdown3._blank_line,
                     with_rest=True)
-        datas = [
+        data = [
             "\n",
             "\na\n"]
 
-        for data in datas:
-            do_test(data)
+        for datum in data:
+            do_test(datum)

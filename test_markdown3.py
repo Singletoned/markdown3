@@ -11,44 +11,44 @@ class TestHeading1(unittest.TestCase):
 
     def test_simple(self):
         """test simplest case"""
-        data = """# A level one heading #"""
+        datum = """# A level one heading #"""
         expected = [
             'body',
             ['heading_1', "A level one heading"]]
-        result, rest = markdown3.parse(data, with_rest=True)
+        result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
         expected_html = """<h1>A level one heading</h1>\n"""
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_without_closing_tag(self):
         """Test heading_1 without closing tag"""
-        data = """# A level one heading"""
+        datum = """# A level one heading"""
         expected = [
             'body',
             ['heading_1', "A level one heading"]]
-        result, rest = markdown3.parse(data, with_rest=True)
+        result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
         expected_html = """<h1>A level one heading</h1>\n"""
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_with_leading_linebreaks(self):
         """Test heading_1 with leading linebreaks"""
-        data = """\n\n# A level one heading"""
+        datum = """\n\n# A level one heading"""
         expected = [
             'body',
             ['heading_1', "A level one heading"]]
-        result, rest = markdown3.parse(data, with_rest=True)
+        result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
         expected_html = """<h1>A level one heading</h1>\n"""
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
 
@@ -57,52 +57,52 @@ class TestHeading2(unittest.TestCase):
 
     def test_simple(self):
         """test simplest case"""
-        data = """## A level two heading ##"""
+        datum = """## A level two heading ##"""
         expected = [
             'body',
             ['heading_2', "A level two heading"]]
-        result, rest = markdown3.parse(data, with_rest=True)
+        result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
         expected_html = """<h2>A level two heading</h2>\n"""
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_without_closing_tag(self):
         """Test heading_2 without closing tag"""
-        data = """## A level two heading"""
+        datum = """## A level two heading"""
         expected = [
             'body',
             ['heading_2', "A level two heading"]]
-        result, rest = markdown3.parse(data, with_rest=True)
+        result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
         expected_html = """<h2>A level two heading</h2>\n"""
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_with_leading_linebreaks(self):
         """Test heading_2 with leading linebreaks"""
-        data = """\n\n## A level two heading"""
+        datum = """\n\n## A level two heading"""
         expected = [
             'body',
             ['heading_2', "A level two heading"]]
-        result, rest = markdown3.parse(data, with_rest=True)
+        result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
         expected_html = """<h2>A level two heading</h2>\n"""
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
 
 def test_linebreaks():
     """Check that body matches linebreaks"""
-    data = "\n\n"
+    datum = "\n\n"
     expected = ['body', ""]
-    result, rest = markdown3.parse(data, with_rest=True)
+    result, rest = markdown3.parse(datum, with_rest=True)
     assert expected == result
     assert rest == ""
 
@@ -112,32 +112,32 @@ class TestParagraph(unittest.TestCase):
 
     def test_simple(self):
         """Simplest possible test"""
-        data = """A paragraph."""
+        datum = """A paragraph."""
         expected = [
             'body',
             ['paragraph',
              "A paragraph."]]
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<p>A paragraph.</p>\n"""
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_multiline(self):
         """Test that a paragraph can contain single linebreaks"""
-        data = """A paragraph that spans\nmultiple lines."""
+        datum = """A paragraph that spans\nmultiple lines."""
         expected = [
             'body',
             ['paragraph',
              "A paragraph that spans",
              " ",
              "multiple lines."]]
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<p>A paragraph that spans multiple lines.</p>\n"""
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
 
@@ -146,7 +146,7 @@ class TestUnorderedList(unittest.TestCase):
 
     def test_simple(self):
         """Test simplest bulleted list"""
-        data = """
+        datum = """
 * item 1
 * item 2
 * item 3
@@ -159,7 +159,7 @@ class TestUnorderedList(unittest.TestCase):
              ['unordered_bullet', "item 2"],
              ['unordered_bullet', "item 3"]]]
 
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<ul>
@@ -168,12 +168,12 @@ class TestUnorderedList(unittest.TestCase):
   <li>item 3</li>
 </ul>
 """
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_with_tabs(self):
         """Test bullet with tabs after bullet"""
-        data = """
+        datum = """
 *	item 1
 *	item 2
 *	item 3
@@ -186,7 +186,7 @@ class TestUnorderedList(unittest.TestCase):
              ['unordered_bullet', "item 2"],
              ['unordered_bullet', "item 3"]]]
 
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<ul>
@@ -195,12 +195,12 @@ class TestUnorderedList(unittest.TestCase):
   <li>item 3</li>
 </ul>
 """
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_minus_with_tabs(self):
         """Test bullet with tabs after bullet"""
-        data = """
+        datum = """
 -	item 1
 -	item 2
 -	item 3
@@ -213,7 +213,7 @@ class TestUnorderedList(unittest.TestCase):
              ['unordered_bullet', "item 2"],
              ['unordered_bullet', "item 3"]]]
 
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<ul>
@@ -222,12 +222,12 @@ class TestUnorderedList(unittest.TestCase):
   <li>item 3</li>
 </ul>
 """
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_multiple_paragraphs(self):
         """Test that a bullet can match multiple paragraphs"""
-        data = """
+        datum = """
 * bullet one, paragraph one
 
   bullet one, paragraph two.  Spans
@@ -252,7 +252,7 @@ class TestUnorderedList(unittest.TestCase):
              ['unordered_bullet',
               ['paragraph',
                "bullet three"]]]]
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<ul>
@@ -261,7 +261,7 @@ class TestUnorderedList(unittest.TestCase):
   <li><p>bullet three</p></li>
 </ul>
 """
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
 
@@ -270,7 +270,7 @@ class TestOrderedList(unittest.TestCase):
 
     def test_simple(self):
         """Test simplest bulleted list"""
-        data = """
+        datum = """
 1. item 1
 2. item 2
 3. item 3
@@ -283,7 +283,7 @@ class TestOrderedList(unittest.TestCase):
              ['ordered_bullet', "item 2"],
              ['ordered_bullet', "item 3"]]]
 
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<ol>
@@ -292,12 +292,12 @@ class TestOrderedList(unittest.TestCase):
   <li>item 3</li>
 </ol>
 """
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_with_tabs(self):
         """Test bullet with tabs after bullet"""
-        data = """
+        datum = """
 1.	item 1
 2.	item 2
 3.	item 3
@@ -310,7 +310,7 @@ class TestOrderedList(unittest.TestCase):
              ['ordered_bullet', "item 2"],
              ['ordered_bullet', "item 3"]]]
 
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<ol>
@@ -319,12 +319,12 @@ class TestOrderedList(unittest.TestCase):
   <li>item 3</li>
 </ol>
 """
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_multiple_paragraphs(self):
         """Test that a bullet can match multiple paragraphs"""
-        data = """
+        datum = """
 1. bullet one, paragraph one
 
    bullet one, paragraph two.  Spans
@@ -349,7 +349,7 @@ class TestOrderedList(unittest.TestCase):
              ['ordered_bullet',
               ['paragraph',
                "bullet three"]]]]
-        result = markdown3.parse(data)
+        result = markdown3.parse(datum)
         assert expected == result
 
         expected_html = """<ol>
@@ -358,12 +358,12 @@ class TestOrderedList(unittest.TestCase):
   <li><p>bullet three</p></li>
 </ol>
 """
-        result = markdown3.to_html(data)
+        result = markdown3.to_html(datum)
         assert expected_html == result
 
 
 def test_horizontal_rules():
-    data = """
+    datum = """
 ---
 
 - - - -
@@ -386,7 +386,7 @@ _ _ _ _ _
         [ 'horizontal_rule', ""],
         [ 'horizontal_rule', ""]]
 
-    result = markdown3.parse(data)
+    result = markdown3.parse(datum)
     assert expected == result
 
     expected = """<hr/>
@@ -402,145 +402,145 @@ _ _ _ _ _
 <hr/>
 """
 
-    result = markdown3.to_html(data)
+    result = markdown3.to_html(datum)
     assert expected == result
 
 
 # def test_title_level_1():
-#     data = """
+#     datum = """
 # # A level one title #
 # """
 #     expected = [
 #         'body',
 #         ['title_level_1', "A level one title "]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h1>A level one title </h1>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 #     # Without linebreaks
-#     data = """
+#     datum = """
 # # A level one title
 # """.strip()
 #     expected = [
 #         'body',
 #         ['title_level_1', "A level one title"]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h1>A level one title</h1>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 #     # With extra linebreaks
 
-#     data = """
+#     datum = """
 
 # # A level one title
 # """
 #     expected = [
 #         'body',
 #         ['title_level_1', "A level one title"]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h1>A level one title</h1>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 
 # def test_body():
-#     data = "Hello World"
+#     datum = "Hello World"
 #     expected = [
 #         'body',
 #         ['paragraph',
 #          ['plain', "Hello World"]]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = """
 # <p>Hello World</p>
 #     """.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_plain():
-#     data = "Name: Mr Flibble"
+#     datum = "Name: Mr Flibble"
 #     expected = [
 #         'body',
 #         ['paragraph',
 #          ['plain', "Name: Mr Flibble"]]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = """
 # <p>Name: Mr Flibble</p>
 #     """.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_emphasis():
-#     data = "Hello *World*"
+#     datum = "Hello *World*"
 #     expected = [
 #         'body',
 #         ['paragraph',
 #          ['plain', "Hello "],
 #          ['emphasis', "World"]]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = """
 # <p>Hello <strong>World</strong></p>
 #     """.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
-#     data = "Text with *some bold* in it"
+#     datum = "Text with *some bold* in it"
 #     expected = [
 #         'body',
 #         ['paragraph',
 #          ['plain', "Text with "],
 #          ['emphasis', "some bold"],
 #          ['plain', ' in it']]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = """
 # <p>Text with <strong>some bold</strong> in it</p>
 #     """.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_link():
-#     data = "[a link to Google with * in it](http://www.google.com)"
+#     datum = "[a link to Google with * in it](http://www.google.com)"
 #     expected = [
 #         'body',
 #         ['paragraph',
 #          ['link',
 #           ['link_text', "a link to Google with * in it"],
 #           ['link_url', "http://www.google.com"]]]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <p><a href="http://www.google.com">a link to Google with * in it</a></p>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
-#     data = "Text with [a link to Google](http://www.google.com) in it"
+#     datum = "Text with [a link to Google](http://www.google.com) in it"
 #     expected = [
 #         'body',
 #         ['paragraph',
@@ -550,52 +550,52 @@ _ _ _ _ _
 #           ['link_url',
 #            "http://www.google.com"]],
 #          ['plain', " in it"]]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <p>Text with <a href="http://www.google.com">a link to Google</a> in it</p>
 #     '''.strip()
 
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 # def test_code():
-#     data = "text with `some code` in it"
+#     datum = "text with `some code` in it"
 #     expected = [
 #         'body',
 #         ['paragraph',
 #          ['plain', "text with "],
 #          ['code', "some code"],
 #          ['plain', " in it"]]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <p>text with <code>some code</code> in it</p>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_paragraph():
-#     data = """
+#     datum = """
 # A paragraph.
 # """
 #     expected = [
 #         'body',
 #         ['paragraph',
 #          ['plain', "A paragraph."]]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <p>A paragraph.</p>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
-#     data = """
+#     datum = """
 # A paragraph with *some bold*, `some code` and [a link to Google](http://www.google.com) in it.
 # """
 #     expected = [
@@ -610,121 +610,121 @@ _ _ _ _ _
 #           ['link_text', "a link to Google"],
 #           ['link_url', "http://www.google.com"]],
 #          ['plain', " in it."]]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <p>A paragraph with <strong>some bold</strong>, <code>some code</code> and <a href="http://www.google.com">a link to Google</a> in it.</p>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_title_level_1():
-#     data = """
+#     datum = """
 # # A level one title #
 # """
 #     expected = [
 #         'body',
 #         ['title_level_1', "A level one title "]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h1>A level one title </h1>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 #     # Without linebreaks
-#     data = """
+#     datum = """
 # # A level one title
 # """.strip()
 #     expected = [
 #         'body',
 #         ['title_level_1', "A level one title"]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h1>A level one title</h1>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 #     # With extra linebreaks
 
-#     data = """
+#     datum = """
 
 # # A level one title
 # """
 #     expected = [
 #         'body',
 #         ['title_level_1', "A level one title"]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h1>A level one title</h1>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_title_level_2():
-#     data = """
+#     datum = """
 # ## A level two title ##
 # """
 #     expected = [
 #         'body',
 #         ['title_level_2', "A level two title "]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h2>A level two title </h2>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 #     # Without linebreaks
 
-#     data = """
+#     datum = """
 # ## A level two title
 # """.strip()
 #     expected = [
 #         'body',
 #         ['title_level_2', "A level two title"]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h2>A level two title</h2>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 #     # With extra linebreaks
 
-#     data = """
+#     datum = """
 
 # ## A level two title
 # """
 #     expected = [
 #         'body',
 #         ['title_level_2', "A level two title"]]
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
 # <h2>A level two title</h2>
 #     '''.strip()
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_title_level_1_and_2():
-#     data = """
+#     datum = """
 # # A Header
 
 # ## A SubHeader
@@ -737,7 +737,7 @@ _ _ _ _ _
 # <h2>A SubHeader</h2>
 #     """.strip()
 
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
@@ -747,7 +747,7 @@ _ _ _ _ _
 
 #     def test_simple(self):
 #         "Test that basic numbered bullets work"
-#         data = """
+#         datum = """
 # 1. A numbered bullet
 # 2. Another numbered bullet"""
 
@@ -759,7 +759,7 @@ _ _ _ _ _
 #              ['numbered_bullet_without_paragraph',
 #               ['plain', "Another numbered bullet"]]]]
 
-#         result = markdown3.parse(data)
+#         result = markdown3.parse(datum)
 #         assert expected == result
 
 #         expected = '''
@@ -768,12 +768,12 @@ _ _ _ _ _
 #   <li>Another numbered bullet</li>
 # </ol>
 #         '''.strip()
-#         result = markdown3.to_html(data).strip()
+#         result = markdown3.to_html(datum).strip()
 #         assert expected == result
 
 #     def test_with_tabs(self):
 #         "Test that tabs between the bullet and text work"
-#         data = """
+#         datum = """
 # 1.	A numbered bullet
 # 2.	Another numbered bullet"""
 
@@ -785,7 +785,7 @@ _ _ _ _ _
 #              ['numbered_bullet_without_paragraph',
 #               ['plain', "Another numbered bullet"]]]]
 
-#         result = markdown3.parse(data)
+#         result = markdown3.parse(datum)
 #         assert expected == result
 
 #         expected = '''
@@ -794,12 +794,12 @@ _ _ _ _ _
 #   <li>Another numbered bullet</li>
 # </ol>
 #         '''.strip()
-#         result = markdown3.to_html(data).strip()
+#         result = markdown3.to_html(datum).strip()
 #         assert expected == result
 
 #     def test_indented(self):
 #         "Test that an indented bullet works"
-#         data = """
+#         datum = """
 #     1. An indented numbered bullet"""
 
 #         expected = [
@@ -808,7 +808,7 @@ _ _ _ _ _
 #              ['numbered_bullet_without_paragraph',
 #               ['plain', "An indented numbered bullet"]]]]
 
-#         result = markdown3.parse(data)
+#         result = markdown3.parse(datum)
 #         assert expected == result
 
 #         expected = '''
@@ -816,12 +816,12 @@ _ _ _ _ _
 #   <li>An indented numbered bullet</li>
 # </ol>
 #         '''.strip()
-#         result = markdown3.to_html(data)
+#         result = markdown3.to_html(datum)
 #         assert expected == result
 
 #     def test_multiple_bullets(self):
 #         "Test that several bullets with markup in them work"
-#         data = """
+#         datum = """
 # 1. A numbered bullet
 # 2. Another numbered bullet
 # 3. A bullet with *bold*
@@ -842,7 +842,7 @@ _ _ _ _ _
 #               ['plain', "A bullet with "],
 #               ['code', "code"]]]]
 
-#         result = markdown3.parse(data)
+#         result = markdown3.parse(datum)
 #         assert expected == result
 
 #         expected = '''
@@ -854,12 +854,12 @@ _ _ _ _ _
 # </ol>
 #         '''.strip()
 
-#         result = markdown3.to_html(data)
+#         result = markdown3.to_html(datum)
 #         assert expected == result
 
 #     def test_paragraphs_in_bullet(self):
 #         "Test that spaced out bullets add paragraphs"
-#         data = """
+#         datum = """
 # 1. A numbered bullet
 
 # 2. Another numbered bullet
@@ -880,7 +880,7 @@ _ _ _ _ _
 #               ['paragraph',
 #                ['plain', "Yet another bullet"]]]]]
 
-#         result = markdown3.parse(data)
+#         result = markdown3.parse(datum)
 #         assert expected == result
 
 #         expected = '''
@@ -890,11 +890,11 @@ _ _ _ _ _
 #   <li><p>Yet another bullet</p></li>
 # </ol>'''.strip()
 
-#         result = markdown3.to_html(data)
+#         result = markdown3.to_html(datum)
 #         assert expected == result
 
 #     def test_tab_indentation_with_multiple_paragraphs(self):
-#         data = """
+#         datum = """
 # 1.	Bullet One, Paragraph One
 
 # 	Paragraph Two
@@ -919,7 +919,7 @@ _ _ _ _ _
 #               ['paragraph',
 #                ['plain', "Bullet Three"]]]]]
 
-#         result = markdown3.parse(data)
+#         result = markdown3.parse(datum)
 #         assert expected == result
 
 #         expected = """
@@ -928,11 +928,11 @@ _ _ _ _ _
 #   <li><p>Bullet Two</p></li>
 #   <li><p>Bullet Three</p></li>
 # </ol>""".strip()
-#         result = markdown3.to_html(data)
+#         result = markdown3.to_html(datum)
 #         assert expected == result
 
 #     def test_tab_indentation(self):
-#         data = """
+#         datum = """
 # 	1. Bullet One
 # 	2. Bullet Two"""
 
@@ -944,7 +944,7 @@ _ _ _ _ _
 #              ['numbered_bullet_without_paragraph',
 #               ['plain', "Bullet Two"]]]]
 
-#         result = markdown3.parse(data)
+#         result = markdown3.parse(datum)
 #         assert expected == result
 
 #         expected = """
@@ -952,11 +952,11 @@ _ _ _ _ _
 #   <li>Bullet One</li>
 #   <li>Bullet Two</li>
 # </ol>""".strip()
-#         result = markdown3.to_html(data)
+#         result = markdown3.to_html(datum)
 #         assert expected == result
 
 #     def test_multiple_paragraphs_bullet(self):
-#         data = """
+#         datum = """
 # 1. Bullet One, Paragraph One
 #    Paragraph Two
 # """.strip()
@@ -970,17 +970,17 @@ _ _ _ _ _
 #                ['plain',
 #                "Paragraph Two"]]]
 
-#         result = markdown3.parse(data, markdown3.numbered_bullet_with_paragraph)
+#         result = markdown3.parse(datum, markdown3.numbered_bullet_with_paragraph)
 #         assert expected == result
 
 #         expected = """
 # <li><p>Bullet One, Paragraph One</p><p>Paragraph Two</p></li>
 # """.strip()
-#         result = markdown3.to_html(data, markdown3.numbered_bullet_with_paragraph)
+#         result = markdown3.to_html(datum, markdown3.numbered_bullet_with_paragraph)
 #         assert expected == result
 
 #     def test_multiple_paragraphs(self):
-#         data = """
+#         datum = """
 # 1. Bullet One, Paragraph One
 #    Paragraph Two
 
@@ -1002,7 +1002,7 @@ _ _ _ _ _
 #                ['plain',
 #                "Bullet Two"]]]]]
 
-#         result = markdown3.parse(data)
+#         result = markdown3.parse(datum)
 #         assert expected == result
 
 #         expected = """
@@ -1011,16 +1011,16 @@ _ _ _ _ _
 #   <li><p>Bullet Two</p></li>
 # </ol>
 #         """.strip()
-#         result = markdown3.to_html(data)
+#         result = markdown3.to_html(datum)
 #         assert expected == result
 
 
 # def test_unordered_list():
-#     def do_test(data, expected_tree, expected_html):
-#         result = markdown3.parse(data)
+#     def do_test(datum, expected_tree, expected_html):
+#         result = markdown3.parse(datum)
 #         assert expected_tree == result
 
-#         result = markdown3.to_html(data)
+#         result = markdown3.to_html(datum)
 #         assert expected_html == result
 
 #     items = [
@@ -1038,7 +1038,7 @@ _ _ _ _ _
 #   <li>Another bullet</li>
 # </ul>
 #         '''.strip(),
-#             data_templates = [
+#             datum_templates = [
 # """
 # %(bullet)s A bullet
 # %(bullet)s Another bullet""",
@@ -1064,7 +1064,7 @@ _ _ _ _ _
 #   <li><p>Another bullet</p></li>
 # </ul>
 #         '''.strip(),
-#             data_templates = [
+#             datum_templates = [
 # """
 # %(bullet)s A bullet
 
@@ -1081,16 +1081,16 @@ _ _ _ _ _
 #     for item in items:
 #         expected_tree = item['expected_tree']
 #         expected_html = item['expected_html']
-#         data_templates = item['data_templates']
-#         for data_template in data_templates:
+#         datum_templates = item['datum_templates']
+#         for datum_template in datum_templates:
 #             for bullet_type in ["*", "-", "+"]:
 #                 yield (do_test,
-#                        data_template % dict(bullet=bullet_type),
+#                        datum_template % dict(bullet=bullet_type),
 #                        expected_tree,
 #                        expected_html)
 
 # def test_unordered_list_advanced():
-#     data = """
+#     datum = """
 # * A bullet
 # * Another bullet
 # * A bullet with *bold*
@@ -1111,7 +1111,7 @@ _ _ _ _ _
 #           ['plain', "A bullet with "],
 #           ['code', "code"]]]]
 
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = '''
@@ -1123,12 +1123,12 @@ _ _ _ _ _
 # </ul>
 #     '''.strip()
 
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_nested_bullets():
-#     data = """
+#     datum = """
 # 1. A numbered bullet
 #   2. A bullet in a sublist
 #   3. A bullet with *bold* in a sublist
@@ -1152,7 +1152,7 @@ _ _ _ _ _
 #           ['code', "code"],
 #           ['plain', " in the first list"]]]]
 
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = """
@@ -1167,12 +1167,12 @@ _ _ _ _ _
 # </ol>
 # """.strip()
 
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 # def test_code_block():
-#     data = """
+#     datum = """
 #     <p>This is some html</p>"""
 
 #     expected = [
@@ -1181,7 +1181,7 @@ _ _ _ _ _
 #          ['code_line',
 #           "&lt;p&gt;This is some html&lt;/p&gt;"]]]
 
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = """
@@ -1190,12 +1190,12 @@ _ _ _ _ _
 # </code>
 #     """.strip()
 
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 #     # Test list followed by code
 
-#     data = """
+#     datum = """
 
 #     1. A bullet point
 
@@ -1212,7 +1212,7 @@ _ _ _ _ _
 #          ['code_line',
 #           "&lt;p&gt;This is some html&lt;/p&gt;"]]]
 
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = """
@@ -1225,13 +1225,13 @@ _ _ _ _ _
 # </code>
 #     """.strip()
 
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 
 
 # def test_quoted_paragraph():
-#     data = """
+#     datum = """
 # > A quoted paragraph
 # """
 
@@ -1242,7 +1242,7 @@ _ _ _ _ _
 #           ['plain',
 #            "A quoted paragraph"]]]]
 
-#     result = markdown3.parse(data)
+#     result = markdown3.parse(datum)
 #     assert expected == result
 
 #     expected = """
@@ -1252,11 +1252,11 @@ _ _ _ _ _
 # </blockquote>
 #     """.strip()
 
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
 
 # def test_document():
-#     data = """
+#     datum = """
 # # A Header
 
 # ## A SubHeader ##
@@ -1306,5 +1306,5 @@ _ _ _ _ _
 # </blockquote>
 #     """.strip()
 
-#     result = markdown3.to_html(data)
+#     result = markdown3.to_html(datum)
 #     assert expected == result
