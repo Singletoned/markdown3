@@ -227,7 +227,37 @@ class TestUnorderedList(unittest.TestCase):
 
     def test_multiple_paragraphs(self):
         """Test that a bullet can match multiple paragraphs"""
-        datum = """
+        def do_test(datum):
+            expected = [
+                'body',
+                ['unordered_list',
+                 ['unordered_bullet',
+                  ['paragraph',
+                   "bullet one, paragraph one"],
+                  ['paragraph',
+                   "bullet one, paragraph two.  Spans",
+                   " ",
+                   "multiple lines."]],
+                 ['unordered_bullet',
+                  ['paragraph',
+                   "bullet two"]],
+                 ['unordered_bullet',
+                  ['paragraph',
+                   "bullet three"]]]]
+            result = markdown3.parse(datum)
+            assert expected == result
+
+            expected_html = """<ul>
+  <li><p>bullet one, paragraph one</p><p>bullet one, paragraph two.  Spans multiple lines.</p></li>
+  <li><p>bullet two</p></li>
+  <li><p>bullet three</p></li>
+</ul>
+"""
+            result = markdown3.to_html(datum)
+            assert expected_html == result
+
+        data = [
+"""
 * bullet one, paragraph one
 
   bullet one, paragraph two.  Spans
@@ -235,34 +265,19 @@ class TestUnorderedList(unittest.TestCase):
 
 * bullet two
 
-* bullet three""".strip()
-        expected = [
-            'body',
-            ['unordered_list',
-             ['unordered_bullet',
-              ['paragraph',
-               "bullet one, paragraph one"],
-              ['paragraph',
-               "bullet one, paragraph two.  Spans",
-               " ",
-               "multiple lines."]],
-             ['unordered_bullet',
-              ['paragraph',
-               "bullet two"]],
-             ['unordered_bullet',
-              ['paragraph',
-               "bullet three"]]]]
-        result = markdown3.parse(datum)
-        assert expected == result
-
-        expected_html = """<ul>
-  <li><p>bullet one, paragraph one</p><p>bullet one, paragraph two.  Spans multiple lines.</p></li>
-  <li><p>bullet two</p></li>
-  <li><p>bullet three</p></li>
-</ul>
+* bullet three""".strip(),
 """
-        result = markdown3.to_html(datum)
-        assert expected_html == result
+*	bullet one, paragraph one
+
+	bullet one, paragraph two.  Spans
+	multiple lines.
+
+*	bullet two
+
+*	bullet three""".strip()]
+
+        for datum in data:
+            do_test(datum)
 
 
 class TestOrderedList(unittest.TestCase):
@@ -324,7 +339,36 @@ class TestOrderedList(unittest.TestCase):
 
     def test_multiple_paragraphs(self):
         """Test that a bullet can match multiple paragraphs"""
-        datum = """
+        def do_test(datum):
+            expected = [
+                'body',
+                ['ordered_list',
+                 ['ordered_bullet',
+                  ['paragraph',
+                   "bullet one, paragraph one"],
+                  ['paragraph',
+                   "bullet one, paragraph two.  Spans",
+                   " ",
+                   "multiple lines."]],
+                 ['ordered_bullet',
+                  ['paragraph',
+                   "bullet two"]],
+                 ['ordered_bullet',
+                  ['paragraph',
+                   "bullet three"]]]]
+            result = markdown3.parse(datum)
+            assert expected == result
+
+            expected_html = """<ol>
+  <li><p>bullet one, paragraph one</p><p>bullet one, paragraph two.  Spans multiple lines.</p></li>
+  <li><p>bullet two</p></li>
+  <li><p>bullet three</p></li>
+</ol>
+"""
+            result = markdown3.to_html(datum)
+            assert expected_html == result
+
+        data = ["""
 1. bullet one, paragraph one
 
    bullet one, paragraph two.  Spans
@@ -332,34 +376,20 @@ class TestOrderedList(unittest.TestCase):
 
 2. bullet two
 
-3. bullet three""".strip()
-        expected = [
-            'body',
-            ['ordered_list',
-             ['ordered_bullet',
-              ['paragraph',
-               "bullet one, paragraph one"],
-              ['paragraph',
-               "bullet one, paragraph two.  Spans",
-               " ",
-               "multiple lines."]],
-             ['ordered_bullet',
-              ['paragraph',
-               "bullet two"]],
-             ['ordered_bullet',
-              ['paragraph',
-               "bullet three"]]]]
-        result = markdown3.parse(datum)
-        assert expected == result
-
-        expected_html = """<ol>
-  <li><p>bullet one, paragraph one</p><p>bullet one, paragraph two.  Spans multiple lines.</p></li>
-  <li><p>bullet two</p></li>
-  <li><p>bullet three</p></li>
-</ol>
+3. bullet three""".strip(),
 """
-        result = markdown3.to_html(datum)
-        assert expected_html == result
+1.	bullet one, paragraph one
+
+	bullet one, paragraph two.  Spans
+	multiple lines.
+
+2.	bullet two
+
+3.	bullet three""".strip(),
+                ]
+
+        for datum in data:
+            do_test(datum)
 
 
 def test_horizontal_rules():
