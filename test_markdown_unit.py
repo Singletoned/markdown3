@@ -493,23 +493,31 @@ class TestOrderedBullet(unittest.TestCase):
         assert rest == ""
 
     def test_multi_paragraph_bullet(self):
-        data = """
+        def do_test(data):
+            expected = [
+                'ordered_bullet',
+                ['paragraph',
+                 "bullet one, paragraph one"],
+                ['paragraph',
+                 "bullet one, paragraph two"]]
+            result, rest = markdown3.parse(
+                data,
+                markdown3.ordered_bullet(markdown3._multiple_paragraphs),
+                with_rest=True)
+            assert expected == result
+            assert rest == ""
+
+        datas = [
+"""
 1. bullet one, paragraph one
 
-   bullet one, paragraph two""".strip()
+   bullet one, paragraph two""".strip(),
+"""
+1.	bullet one, paragraph one
 
-        expected = [
-            'ordered_bullet',
-            ['paragraph',
-             "bullet one, paragraph one"],
-            ['paragraph',
-             "bullet one, paragraph two"]]
-        result, rest = markdown3.parse(
-            data,
-            markdown3.ordered_bullet(markdown3._multiple_paragraphs),
-            with_rest=True)
-        assert expected == result
-        assert rest == ""
+	bullet one, paragraph two""".strip()]
+        for data in datas:
+            do_test(data)
 
 
 class TestOrderedList(unittest.TestCase):
@@ -593,34 +601,45 @@ class TestOrderedList(unittest.TestCase):
         assert rest == ""
 
     def test_multi_paragraph_list(self):
-        data = """
+        def do_test(data):
+            expected = [
+                'ordered_list',
+                ['ordered_bullet',
+                 ['paragraph',
+                  "bullet one, paragraph one"],
+                 ['paragraph',
+                  "bullet one, paragraph two"]],
+                ['ordered_bullet',
+                 ['paragraph',
+                  "bullet two, paragraph one"]],
+                ['ordered_bullet',
+                 ['paragraph',
+                  "bullet three, paragraph one"]]]
+            result, rest = markdown3.parse(
+                data,
+                markdown3.ordered_list,
+                with_rest=True)
+            assert expected == result
+            assert rest == ""
+
+        datas = ["""
 1. bullet one, paragraph one
 
    bullet one, paragraph two
 
 2. bullet two, paragraph one
 
-3. bullet three, paragraph one""".strip()
+3. bullet three, paragraph one""".strip(),
+"""
+1.	bullet one, paragraph one
 
-        expected = [
-            'ordered_list',
-            ['ordered_bullet',
-             ['paragraph',
-              "bullet one, paragraph one"],
-             ['paragraph',
-              "bullet one, paragraph two"]],
-            ['ordered_bullet',
-             ['paragraph',
-              "bullet two, paragraph one"]],
-            ['ordered_bullet',
-             ['paragraph',
-              "bullet three, paragraph one"]]]
-        result, rest = markdown3.parse(
-            data,
-            markdown3.ordered_list,
-            with_rest=True)
-        assert expected == result
-        assert rest == ""
+	bullet one, paragraph two
+
+2.	bullet two, paragraph one
+
+3.	bullet three, paragraph one""".strip()]
+        for data in datas:
+            do_test(data)
 
 
 class TestLinebreaks(unittest.TestCase):

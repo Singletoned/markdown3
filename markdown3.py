@@ -175,12 +175,17 @@ def unordered_bullet(content):
     return unordered_bullet
 
 def _ordered_bullet_start():
-    return pg.AllOf(
-        pg.Words(letters="0123456789"),
-        ".",
-        pg.OneOf(
-            " ",
-            "\t"))
+    return pg.OneOf(
+        pg.AllOf(
+            pg.Ignore(
+                pg.AllOf(
+                    pg.Words(letters="0123456789"),
+                    ".")),
+            "\t"),
+        pg.AllOf(
+            pg.Words(letters="0123456789"),
+            ".",
+            " "))
 
 @htmliser(htmlise.make_span)
 @tagname("li")
