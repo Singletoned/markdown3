@@ -101,6 +101,23 @@ def convert_tags(data):
         else:
             yield convert_tags(item)
 
+def join_spans(data):
+    "Join consecutive text together"
+    data = iter(data)
+    tag_name = data.next()
+    yield tag_name
+    current_text = []
+    for item in data:
+        if isinstance(item, basestring):
+            current_text.append(item)
+        else:
+            if current_text:
+                yield "".join(current_text)
+                current_text = []
+            yield item
+    if current_text:
+        yield "".join(current_text)
+
 def generate_html(data):
     "Convert a tree to flattened html"
     data = iter(data)

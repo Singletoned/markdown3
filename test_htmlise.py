@@ -44,6 +44,40 @@ class TestConvertTags(unittest.TestCase):
         assert expected == result
 
 
+class TestJoinSpans(unittest.TestCase):
+    """Unittests for join_spans"""
+
+    def test_simple(self):
+        """test simple"""
+        datum = [
+            'span',
+            "fooble",
+            " ",
+            "flobble"]
+        expected = [
+            'span',
+            "fooble flobble"]
+        result = listify(htmlise.join_spans(datum))
+        assert expected == result
+
+    def test_nested(self):
+        """Test with nested tags"""
+        datum = [
+            'span',
+            "flooble",
+            ['emphasis',
+             "booble"],
+            " ",
+            "flim flam"]
+        expected = [
+            'span',
+            "flooble",
+            ['emphasis',
+             "booble"],
+            " flim flam"]
+        result = listify(htmlise.join_spans(datum))
+        assert expected == result
+
 class TestGenerateHTML(unittest.TestCase):
     """Unitests for generate html"""
 
