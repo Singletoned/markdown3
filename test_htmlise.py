@@ -10,6 +10,38 @@ import pegger as pg
 import markdown3 as md
 import htmlise
 
+def listify(data):
+    if isinstance(data, basestring):
+        return data
+    else:
+        return [listify(item) for item in data]
+
+
+class TestConvertTags(unittest.TestCase):
+    """Unittests for convert_tags"""
+
+    def test_nested_list(self):
+        """Test that convert tags handles a nested list"""
+        datum = [
+            'unordered_list',
+            ['unordered_bullet',
+             "list 1, bullet 1",
+             ['unordered_list_nested',
+              ['unordered_bullet',
+               "list 2, bullet 1"],
+              ['unordered_bullet',
+               "list 2, bullet 2"]]]]
+        expected = [
+            'ul',
+            ['li',
+             "list 1, bullet 1",
+             ['ul',
+              ['li',
+               "list 2, bullet 1"],
+              ['li',
+               "list 2, bullet 2"]]]]
+        result = listify(htmlise.convert_tags(datum))
+        assert expected == result
 
 @contextlib.contextmanager
 def patch_tagname_lookups_and_htmliser_funcs():

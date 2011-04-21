@@ -84,3 +84,19 @@ def make_tagless(head, rest, tagname_lookups, htmliser_funcs):
     for item in rest:
         content.extend(do_render(item, tagname_lookups, htmliser_funcs))
     return content
+
+tags = dict(
+    unordered_list="ul",
+    unordered_list_nested="ul",
+    unordered_bullet="li")
+
+def convert_tags(data):
+    "Convert parser element names to tags"
+    data = iter(data)
+    tag = tags[data.next()]
+    yield tag
+    for item in data:
+        if isinstance(item, basestring):
+            yield item
+        else:
+            yield convert_tags(item)
