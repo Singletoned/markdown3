@@ -55,7 +55,7 @@ class TestRenderSpans(unittest.TestCase):
             " ",
             "flobble"]
         expected = ["<span>flooble flobble</span>"]
-        result = listify(htmlise.render_spans(datum))
+        result = listify(htmlise.render_spans(datum[0], datum[1:]))
         assert expected == result
 
     def test_with_tags(self):
@@ -70,7 +70,7 @@ class TestRenderSpans(unittest.TestCase):
             "flim flam"]
         expected = [
             "<span>flooble <strong>booble</strong> flim flam</span>"]
-        result = listify(htmlise.render_spans(datum))
+        result = listify(htmlise.render_spans(datum[0], datum[1:]))
         assert expected == result
 
     def test_nested(self):
@@ -87,7 +87,7 @@ class TestRenderSpans(unittest.TestCase):
             "flim flam"]
         expected = [
             "<span>flooble <strong>booble bobble</strong> flim flam</span>"]
-        result = listify(htmlise.render_spans(datum))
+        result = listify(htmlise.render_spans(datum[0], datum[1:]))
         assert expected == result
 
     def test_with_block(self):
@@ -105,7 +105,7 @@ class TestRenderSpans(unittest.TestCase):
              ['li', "blobble"],
              ['li', "blibble"]],
             "flammble</li>"]
-        result = listify(htmlise.render_spans(datum))
+        result = listify(htmlise.render_spans(datum[0], datum[1:]))
         assert expected == result
 
 

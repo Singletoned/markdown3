@@ -104,10 +104,9 @@ def convert_tags(data):
 
 block_tags = set(["ul"])
 
-def render_spans(data):
+def render_spans(tag_name, rest):
     "Render the spans"
-    data = iter(data)
-    tag_name = data.next()
+    data = iter(rest)
     current_text = ["<%s>" % tag_name]
     for item in data:
         if isinstance(item, basestring):
@@ -120,7 +119,7 @@ def render_spans(data):
                 current_text = []
                 yield itertools.chain([tag], item)
             else:
-                for sub_item in render_spans(itertools.chain([tag], item)):
+                for sub_item in render_spans(tag, item):
                     current_text.append(sub_item)
     current_text.append("</%s>" % tag_name)
     yield "".join(current_text)
