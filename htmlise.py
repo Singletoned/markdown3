@@ -104,6 +104,7 @@ def convert_tags(data):
             yield convert_tags(item)
 
 block_tags = set(["ul"])
+blank_tags = set(["body"])
 
 def indent(data):
     for item in data:
@@ -144,6 +145,19 @@ def render_block(tag_name, rest):
             for sub_item in indent(render_spans(tag, item)):
                 yield sub_item
     yield "</%s>" % tag_name
+
+def render_tagless(tag_name, rest):
+    "Render something without tags"
+    data = iter(rest)
+    for item in data:
+        item = iter(item)
+        tag = item.next()
+        if tag in block_tags:
+            for sub_item in render_block(tag, item):
+                yield sub_item
+        else:
+            for sub_item in render_spans(tag, item):
+                yield sub_item
 
 def generate_html(data):
     "Convert a tree to flattened html"

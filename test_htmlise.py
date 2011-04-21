@@ -168,6 +168,19 @@ class TestRenderBlock(unittest.TestCase):
         assert expected == result
 
 
+def test_render_tagless():
+    """Test render_tagless"""
+    datum = [
+        'body',
+        ['p',
+         "flibble",
+         " ",
+         "flamble"]]
+    expected = ["<p>flibble flamble</p>"]
+    result = listify(htmlise.render_tagless(datum[0], datum[1:]))
+    assert expected == result
+
+
 class TestGenerateHTML(unittest.TestCase):
     """Unitests for generate html"""
 
