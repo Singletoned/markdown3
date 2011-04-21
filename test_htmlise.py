@@ -44,6 +44,18 @@ class TestConvertTags(unittest.TestCase):
         assert expected == result
 
 
+def test_indent():
+    "Test that indent indents things"
+    datum = [
+        "foo",
+        "bar"]
+    expected = [
+        "  foo",
+        "  bar"]
+    result = list(htmlise.indent(datum))
+    assert expected == result
+
+
 class TestRenderSpans(unittest.TestCase):
     """Unittests for render_spans"""
 
@@ -101,10 +113,10 @@ class TestRenderSpans(unittest.TestCase):
             "flammble"]
         expected = [
             "<li>flibble",
-            "<ul>",
-            "<li>blobble</li>",
-            "<li>blibble</li>",
-            "</ul>",
+            "  <ul>",
+            "    <li>blobble</li>",
+            "    <li>blibble</li>",
+            "  </ul>",
             "flammble</li>"]
         result = listify(htmlise.render_spans(datum[0], datum[1:]))
         assert expected == result
@@ -123,8 +135,8 @@ class TestRenderBlock(unittest.TestCase):
              "flobble"]]
         expected = [
             "<ul>",
-            "<li>flibble</li>",
-            "<li>flobble</li>",
+            "  <li>flibble</li>",
+            "  <li>flobble</li>",
             "</ul>"]
         result = listify(htmlise.render_block(datum[0], datum[1:]))
         assert expected == result
@@ -144,13 +156,13 @@ class TestRenderBlock(unittest.TestCase):
              "flobble"]]
         expected = [
             "<ul>",
-            "<li>flibble",
-            "<ul>",
-            "<li>blibble</li>",
-            "<li>blobble</li>",
-            "</ul>",
-            "</li>",
-            "<li>flobble</li>",
+            "  <li>flibble",
+            "    <ul>",
+            "      <li>blibble</li>",
+            "      <li>blobble</li>",
+            "    </ul>",
+            "  </li>",
+            "  <li>flobble</li>",
             "</ul>"]
         result = listify(htmlise.render_block(datum[0], datum[1:]))
         assert expected == result
