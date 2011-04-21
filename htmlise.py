@@ -89,7 +89,8 @@ def make_tagless(head, rest, tagname_lookups, htmliser_funcs):
 tags = dict(
     unordered_list="ul",
     unordered_list_nested="ul",
-    unordered_bullet="li")
+    unordered_bullet="li",
+    paragraph="p")
 
 def convert_tags(data):
     "Convert parser element names to tags"
@@ -146,7 +147,7 @@ def render_block(tag_name, rest):
 
 def generate_html(data):
     "Convert a tree to flattened html"
-    data = iter(data)
+    data = convert_tags(data)
     tag_name = data.next()
-    content = "".join(data)
-    yield "<%s>%s</%s>" % (tag_name, content, tag_name)
+    for item in render_spans(tag_name, data):
+        yield item

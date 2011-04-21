@@ -174,7 +174,7 @@ class TestGenerateHTML(unittest.TestCase):
     def test_paragraph(self):
         """Test that paragraph works"""
         datum = [
-            'p',
+            'paragraph',
             "flibble",
             " ",
             "flamble"]
