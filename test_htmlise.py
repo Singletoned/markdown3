@@ -101,9 +101,10 @@ class TestRenderSpans(unittest.TestCase):
             "flammble"]
         expected = [
             "<li>flibble",
-            ['ul',
-             ['li', "blobble"],
-             ['li', "blibble"]],
+            "<ul>",
+            "<li>blobble</li>",
+            "<li>blibble</li>",
+            "</ul>",
             "flammble</li>"]
         result = listify(htmlise.render_spans(datum[0], datum[1:]))
         assert expected == result
@@ -123,6 +124,32 @@ class TestRenderBlock(unittest.TestCase):
         expected = [
             "<ul>",
             "<li>flibble</li>",
+            "<li>flobble</li>",
+            "</ul>"]
+        result = listify(htmlise.render_block(datum[0], datum[1:]))
+        assert expected == result
+
+    def test_nested(self):
+        """Test whether render_block handles nested blocks"""
+        datum = [
+            'ul',
+            ['li',
+             "flibble",
+             ['ul',
+              ['li',
+               "blibble"],
+              ['li',
+               "blobble"]]],
+            ['li',
+             "flobble"]]
+        expected = [
+            "<ul>",
+            "<li>flibble",
+            "<ul>",
+            "<li>blibble</li>",
+            "<li>blobble</li>",
+            "</ul>",
+            "</li>",
             "<li>flobble</li>",
             "</ul>"]
         result = listify(htmlise.render_block(datum[0], datum[1:]))

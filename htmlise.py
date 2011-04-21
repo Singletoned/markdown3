@@ -117,7 +117,8 @@ def render_spans(tag_name, rest):
             if tag in block_tags:
                 yield "".join(current_text)
                 current_text = []
-                yield itertools.chain([tag], item)
+                for sub_item in render_block(tag, item):
+                    yield sub_item
             else:
                 for sub_item in render_spans(tag, item):
                     current_text.append(sub_item)
@@ -130,8 +131,13 @@ def render_block(tag_name, rest):
     yield "<%s>" % tag_name
     for item in data:
         item = iter(item)
-        for sub_item in render_spans(item.next(), item):
-            yield sub_item
+        tag = item.next()
+        if tag in block_tags:
+            for sub_item in render_block(tag, item):
+                yield sub_item
+        else:
+            for sub_item in render_spans(tag, item):
+                yield sub_item
     yield "</%s>" % tag_name
 
 def generate_html(data):
