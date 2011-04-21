@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import itertools
 
 def make_tagname_decorator(tagname_lookups):
     def tagname_decorator(tagname):
@@ -101,6 +102,8 @@ def convert_tags(data):
         else:
             yield convert_tags(item)
 
+block_tags = set(["ul"])
+
 def render_spans(data):
     "Render the spans"
     data = iter(data)
@@ -110,8 +113,15 @@ def render_spans(data):
         if isinstance(item, basestring):
             current_text.append(item)
         else:
-            for sub_item in render_spans(item):
-                current_text.append(sub_item)
+            item = iter(item)
+            tag = item.next()
+            if tag in block_tags:
+                yield "".join(current_text)
+                current_text = []
+                yield itertools.chain([tag], item)
+            else:
+                for sub_item in render_spans(itertools.chain([tag], item)):
+                    current_text.append(sub_item)
     current_text.append("</%s>" % tag_name)
     yield "".join(current_text)
 

@@ -90,6 +90,24 @@ class TestRenderSpans(unittest.TestCase):
         result = listify(htmlise.render_spans(datum))
         assert expected == result
 
+    def test_with_block(self):
+        """Test that render_spans handles blocks"""
+        datum = [
+            'li',
+            "flibble",
+            ['ul',
+             ['li', "blobble"],
+             ['li', "blibble"]],
+            "flammble"]
+        expected = [
+            "<li>flibble",
+            ['ul',
+             ['li', "blobble"],
+             ['li', "blibble"]],
+            "flammble</li>"]
+        result = listify(htmlise.render_spans(datum))
+        assert expected == result
+
 
 class TestGenerateHTML(unittest.TestCase):
     """Unitests for generate html"""
