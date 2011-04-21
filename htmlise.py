@@ -124,6 +124,16 @@ def render_spans(tag_name, rest):
     current_text.append("</%s>" % tag_name)
     yield "".join(current_text)
 
+def render_block(tag_name, rest):
+    "Render the block"
+    data = iter(rest)
+    yield "<%s>" % tag_name
+    for item in data:
+        item = iter(item)
+        for sub_item in render_spans(item.next(), item):
+            yield sub_item
+    yield "</%s>" % tag_name
+
 def generate_html(data):
     "Convert a tree to flattened html"
     data = iter(data)
