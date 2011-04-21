@@ -44,20 +44,33 @@ class TestConvertTags(unittest.TestCase):
         assert expected == result
 
 
-class TestJoinSpans(unittest.TestCase):
-    """Unittests for join_spans"""
+class TestRenderSpans(unittest.TestCase):
+    """Unittests for render_spans"""
 
     def test_simple(self):
         """test simple"""
         datum = [
             'span',
-            "fooble",
+            "flooble",
             " ",
             "flobble"]
-        expected = [
+        expected = ["<span>flooble flobble</span>"]
+        result = listify(htmlise.render_spans(datum))
+        assert expected == result
+
+    def test_with_tags(self):
+        """Test with tags"""
+        datum = [
             'span',
-            "fooble flobble"]
-        result = listify(htmlise.join_spans(datum))
+            "flooble",
+            " ",
+            ['strong',
+             "booble"],
+            " ",
+            "flim flam"]
+        expected = [
+            "<span>flooble <strong>booble</strong> flim flam</span>"]
+        result = listify(htmlise.render_spans(datum))
         assert expected == result
 
     def test_nested(self):
@@ -65,18 +78,18 @@ class TestJoinSpans(unittest.TestCase):
         datum = [
             'span',
             "flooble",
-            ['emphasis',
-             "booble"],
+            " ",
+            ['strong',
+             "booble",
+             " ",
+             "bobble"],
             " ",
             "flim flam"]
         expected = [
-            'span',
-            "flooble",
-            ['emphasis',
-             "booble"],
-            " flim flam"]
-        result = listify(htmlise.join_spans(datum))
+            "<span>flooble <strong>booble bobble</strong> flim flam</span>"]
+        result = listify(htmlise.render_spans(datum))
         assert expected == result
+
 
 class TestGenerateHTML(unittest.TestCase):
     """Unitests for generate html"""
