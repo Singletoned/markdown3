@@ -90,7 +90,8 @@ tags = dict(
     unordered_list="ul",
     unordered_list_nested="ul",
     unordered_bullet="li",
-    paragraph="p")
+    paragraph="p",
+    body="body")
 
 def convert_tags(data):
     "Convert parser element names to tags"
@@ -102,9 +103,6 @@ def convert_tags(data):
             yield item
         else:
             yield convert_tags(item)
-
-block_tags = set(["ul"])
-blank_tags = set(["body"])
 
 def indent(data):
     for item in data:
@@ -120,13 +118,14 @@ def render_spans(tag_name, rest):
         else:
             item = iter(item)
             tag = item.next()
-            if tag in block_tags:
+            dispatcher = tag_dispatchers[tag]
+            if dispatcher == render_block:
                 yield "".join(current_text)
                 current_text = []
-                for sub_item in indent(render_block(tag, item)):
+                for sub_item in indent(dispatcher(tag, item)):
                     yield sub_item
             else:
-                for sub_item in render_spans(tag, item):
+                for sub_item in dispatcher(tag, item):
                     current_text.append(sub_item)
     current_text.append("</%s>" % tag_name)
     yield "".join(current_text)
@@ -138,12 +137,9 @@ def render_block(tag_name, rest):
     for item in data:
         item = iter(item)
         tag = item.next()
-        if tag in block_tags:
-            for sub_item in indent(render_block(tag, item)):
-                yield sub_item
-        else:
-            for sub_item in indent(render_spans(tag, item)):
-                yield sub_item
+        dispatcher = tag_dispatchers[tag]
+        for sub_item in indent(dispatcher(tag, item)):
+            yield sub_item
     yield "</%s>" % tag_name
 
 def render_tagless(tag_name, rest):
@@ -152,16 +148,21 @@ def render_tagless(tag_name, rest):
     for item in data:
         item = iter(item)
         tag = item.next()
-        if tag in block_tags:
-            for sub_item in render_block(tag, item):
-                yield sub_item
-        else:
-            for sub_item in render_spans(tag, item):
-                yield sub_item
+        dispatcher = tag_dispatchers[tag]
+        for sub_item in dispatcher(tag, item):
+            yield sub_item
+
+tag_dispatchers = dict(
+    ul=render_block,
+    body=render_tagless,
+    strong=render_spans,
+    li=render_spans,
+    p=render_spans)
 
 def generate_html(data):
     "Convert a tree to flattened html"
     data = convert_tags(data)
     tag_name = data.next()
-    for item in render_spans(tag_name, data):
+    dispatcher = tag_dispatchers[tag_name]
+    for item in dispatcher(tag_name, data):
         yield item

@@ -195,6 +195,18 @@ class TestGenerateHTML(unittest.TestCase):
         result = list(htmlise.generate_html(datum))
         assert expected == result
 
+    def test_body(self):
+        """Test that body works"""
+        datum = [
+            'body',
+            ['paragraph',
+             "flibble",
+             " ",
+             "flamble"]]
+        expected = ["<p>flibble flamble</p>"]
+        result = list(htmlise.generate_html(datum))
+        assert expected == result
+
 
 @contextlib.contextmanager
 def patch_tagname_lookups_and_htmliser_funcs():
