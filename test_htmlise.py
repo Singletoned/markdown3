@@ -51,8 +51,10 @@ class TestGenerateHTML(unittest.TestCase):
         """Test that paragraph works"""
         datum = [
             'p',
-            "flibble"]
-        expected = ["<p>flibble</p>"]
+            "flibble",
+            " ",
+            "flamble"]
+        expected = ["<p>flibble flamble</p>"]
         result = list(htmlise.generate_html(datum))
         assert expected == result
 
