@@ -43,6 +43,20 @@ class TestConvertTags(unittest.TestCase):
         result = listify(htmlise.convert_tags(datum))
         assert expected == result
 
+
+class TestGenerateHTML(unittest.TestCase):
+    """Unitests for generate html"""
+
+    def test_paragraph(self):
+        """Test that paragraph works"""
+        datum = [
+            'p',
+            "flibble"]
+        expected = ["<p>flibble</p>"]
+        result = list(htmlise.generate_html(datum))
+        assert expected == result
+
+
 @contextlib.contextmanager
 def patch_tagname_lookups_and_htmliser_funcs():
     with mock.patch.dict(htmlise.tagname_lookups):

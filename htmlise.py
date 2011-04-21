@@ -100,3 +100,9 @@ def convert_tags(data):
             yield item
         else:
             yield convert_tags(item)
+
+def generate_html(data):
+    "Convert a tree to flattened html"
+    data = iter(data)
+    tag_name = data.next()
+    yield "<%s>%s</%s>" % (tag_name, data.next(), tag_name)
