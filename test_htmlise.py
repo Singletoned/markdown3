@@ -87,7 +87,7 @@ class TestRenderSpans(unittest.TestCase):
                 'span',
                 "flooble",
                 " ",
-                ['strong',
+                ['emphasis',
                  "booble"],
                 " ",
                 "flim flam"]
@@ -112,7 +112,7 @@ class TestRenderSpans(unittest.TestCase):
                 'span',
                 "flooble",
                 " ",
-                ['strong',
+                ['emphasis',
                  "booble",
                  " ",
                  "bobble"],
@@ -136,18 +136,18 @@ class TestRenderSpans(unittest.TestCase):
         """Test that render_spans handles blocks"""
         def do_test(with_linebreak):
             datum = [
-                'li',
+                'unordered_bullet',
                 "flibble",
-                ['ul',
-                 ['li', "blobble"],
-                 ['li', "blibble"]],
+                ['unordered_list_nested',
+                 ['unordered_bullet', "blobble"],
+                 ['unordered_bullet', "blibble"]],
                 "flammble"]
             expected = [
                 "<li>flibble",
                 "  <ul>",
                 "    <li>blobble</li>",
                 "    <li>blibble</li>",
-                "  </ul>\n",
+                "  </ul>",
                 "flammble</li>"]
             if with_linebreak:
                 expected[-1] = expected[-1] + "\n"
@@ -169,10 +169,10 @@ class TestRenderBlock(unittest.TestCase):
         """simple test"""
         def do_test(with_linebreak):
             datum = [
-                'ul',
-                ['li',
+                'unordered_list',
+                ['unordered_bullet',
                  "flibble"],
-                ['li',
+                ['unordered_bullet',
                  "flobble"]]
             expected = [
                 "<ul>",
@@ -195,15 +195,15 @@ class TestRenderBlock(unittest.TestCase):
         """Test whether render_block handles nested blocks"""
         def do_test(with_linebreak):
             datum = [
-                'ul',
-                ['li',
+                'unordered_list',
+                ['unordered_bullet',
                  "flibble",
-                 ['ul',
-                  ['li',
+                 ['unordered_list_nested',
+                  ['unordered_bullet',
                    "blibble"],
-                  ['li',
+                  ['unordered_bullet',
                    "blobble"]]],
-                ['li',
+                ['unordered_bullet',
                  "flobble"]]
             expected = [
                 "<ul>",
@@ -211,7 +211,7 @@ class TestRenderBlock(unittest.TestCase):
                 "    <ul>",
                 "      <li>blibble</li>",
                 "      <li>blobble</li>",
-                "    </ul>\n",
+                "    </ul>",
                 "  </li>",
                 "  <li>flobble</li>",
                 "</ul>"]
@@ -231,7 +231,7 @@ def test_render_tagless():
     """Test render_tagless"""
     datum = [
         'body',
-        ['p',
+        ['paragraph',
          "flibble",
          " ",
          "flamble"]]

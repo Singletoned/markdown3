@@ -93,7 +93,9 @@ tags = dict(
     unordered_list_nested="ul",
     unordered_bullet="li",
     paragraph="p",
-    body="body")
+    emphasis="strong",
+    body="body",
+    span="span")
 
 def convert_tags(data):
     "Convert parser element names to tags"
@@ -114,68 +116,72 @@ block_tags = set([
     "ul"
     ])
 
-def render_spans(tag_name, rest, with_linebreak=False):
+def render_spans(head, rest, with_linebreak=False):
     "Render the spans"
     data = iter(rest)
+    tag_name = tags[head]
     current_text = ["<%s>" % tag_name]
     for item in data:
         if isinstance(item, basestring):
             current_text.append(item)
         else:
             item = iter(item)
-            tag = item.next()
-            dispatcher = tag_dispatchers[tag]
+            sub_head = item.next()
+            dispatcher = tag_dispatchers[sub_head]
+            tag = tags[sub_head]
             if tag in block_tags:
                 yield "".join(current_text)
                 current_text = []
-                for sub_item in indent(dispatcher(tag, item)):
+                for sub_item in indent(dispatcher(sub_head, item)):
                     yield sub_item
             else:
-                for sub_item in dispatcher(tag, item):
+                for sub_item in dispatcher(sub_head, item):
                     current_text.append(sub_item)
     current_text.append("</%s>" % tag_name)
     if with_linebreak:
         current_text.append("\n")
     yield "".join(current_text)
 
-def render_block(tag_name, rest, with_linebreak=False):
+def render_block(head, rest, with_linebreak=False):
     "Render the block"
     data = iter(rest)
+    tag_name = tags[head]
     yield "<%s>" % tag_name
     for item in data:
         item = iter(item)
-        tag = item.next()
-        dispatcher = tag_dispatchers[tag]
-        for sub_item in indent(dispatcher(tag, item)):
+        sub_head = item.next()
+        dispatcher = tag_dispatchers[sub_head]
+        for sub_item in indent(dispatcher(sub_head, item)):
             yield sub_item
     if with_linebreak:
         yield "</%s>\n" % tag_name
     else:
         yield "</%s>" % tag_name
 
-def render_tagless(tag_name, rest):
+def render_tagless(head, rest):
     "Render something without tags"
     data = iter(rest)
     for item in data:
         item = iter(item)
-        tag = item.next()
-        dispatcher = tag_dispatchers[tag]
-        for sub_item in dispatcher(tag, item):
+        sub_head = item.next()
+        dispatcher = tag_dispatchers[sub_head]
+        for sub_item in dispatcher(sub_head, item):
             yield sub_item
 
 tag_dispatchers = dict(
-    h1=functools.partial(render_spans, with_linebreak=True),
-    h2=functools.partial(render_spans, with_linebreak=True),
-    ul=functools.partial(render_block, with_linebreak=True),
+    heading_1=functools.partial(render_spans, with_linebreak=True),
+    heading_2=functools.partial(render_spans, with_linebreak=True),
+    unordered_list=functools.partial(render_block, with_linebreak=True),
+    unordered_list_nested=render_block,
     body=render_tagless,
-    strong=render_spans,
-    li=render_spans,
-    p=functools.partial(render_spans, with_linebreak=True))
+    emphasis=render_spans,
+    unordered_bullet=render_spans,
+    paragraph=functools.partial(render_spans, with_linebreak=True))
 
 def generate_html(data):
     "Convert a tree to flattened html"
-    data = convert_tags(data)
-    tag_name = data.next()
-    dispatcher = tag_dispatchers[tag_name]
-    for item in dispatcher(tag_name, data):
+    data = iter(data)
+    head = data.next()
+    dispatcher = tag_dispatchers[head]
+    for item in dispatcher(head, data):
         yield item
