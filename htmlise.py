@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import itertools
+import itertools, functools
 
 def make_tagname_decorator(tagname_lookups):
     def tagname_decorator(tagname):
@@ -87,6 +87,8 @@ def make_tagless(head, rest, tagname_lookups, htmliser_funcs):
     return content
 
 tags = dict(
+    heading_1="h1",
+    heading_2="h2",
     unordered_list="ul",
     unordered_list_nested="ul",
     unordered_bullet="li",
@@ -108,7 +110,11 @@ def indent(data):
     for item in data:
         yield "  %s" % item
 
-def render_spans(tag_name, rest):
+block_tags = set([
+    "ul"
+    ])
+
+def render_spans(tag_name, rest, with_linebreak=False):
     "Render the spans"
     data = iter(rest)
     current_text = ["<%s>" % tag_name]
@@ -119,7 +125,7 @@ def render_spans(tag_name, rest):
             item = iter(item)
             tag = item.next()
             dispatcher = tag_dispatchers[tag]
-            if dispatcher == render_block:
+            if tag in block_tags:
                 yield "".join(current_text)
                 current_text = []
                 for sub_item in indent(dispatcher(tag, item)):
@@ -128,9 +134,11 @@ def render_spans(tag_name, rest):
                 for sub_item in dispatcher(tag, item):
                     current_text.append(sub_item)
     current_text.append("</%s>" % tag_name)
+    if with_linebreak:
+        current_text.append("\n")
     yield "".join(current_text)
 
-def render_block(tag_name, rest):
+def render_block(tag_name, rest, with_linebreak=False):
     "Render the block"
     data = iter(rest)
     yield "<%s>" % tag_name
@@ -140,7 +148,10 @@ def render_block(tag_name, rest):
         dispatcher = tag_dispatchers[tag]
         for sub_item in indent(dispatcher(tag, item)):
             yield sub_item
-    yield "</%s>" % tag_name
+    if with_linebreak:
+        yield "</%s>\n" % tag_name
+    else:
+        yield "</%s>" % tag_name
 
 def render_tagless(tag_name, rest):
     "Render something without tags"
@@ -153,11 +164,13 @@ def render_tagless(tag_name, rest):
             yield sub_item
 
 tag_dispatchers = dict(
-    ul=render_block,
+    h1=functools.partial(render_spans, with_linebreak=True),
+    h2=functools.partial(render_spans, with_linebreak=True),
+    ul=functools.partial(render_block, with_linebreak=True),
     body=render_tagless,
     strong=render_spans,
     li=render_spans,
-    p=render_spans)
+    p=functools.partial(render_spans, with_linebreak=True))
 
 def generate_html(data):
     "Convert a tree to flattened html"
