@@ -113,14 +113,11 @@ def indent(data):
         yield "  %s" % item
 
 block_tags = set([
-    "ul"
+    "ul", "li", "p"
     ])
 
-def render_spans(head, rest, with_linebreak=False):
-    "Render the spans"
-    data = iter(rest)
-    tag_name = tags[head]
-    current_text = ["<%s>" % tag_name]
+def _render_contents(data):
+    current_text = []
     for item in data:
         if isinstance(item, basestring):
             current_text.append(item)
@@ -130,29 +127,36 @@ def render_spans(head, rest, with_linebreak=False):
             dispatcher = tag_dispatchers[sub_head]
             tag = tags[sub_head]
             if tag in block_tags:
-                yield "".join(current_text)
-                current_text = []
+                if current_text:
+                    yield "".join(current_text)
+                    current_text = []
                 for sub_item in indent(dispatcher(sub_head, item)):
                     yield sub_item
             else:
                 for sub_item in dispatcher(sub_head, item):
                     current_text.append(sub_item)
-    current_text.append("</%s>" % tag_name)
-    if with_linebreak:
-        current_text.append("\n")
-    yield "".join(current_text)
+    if current_text:
+        yield "".join(current_text)
 
-def render_block(head, rest, with_linebreak=False):
+def render_spans(head, rest, with_linebreak=False):
+    "Render the spans"
+    data = iter(rest)
+    tag_name = tags[head]
+    items = ["<%s>" % tag_name]
+    items.extend(_render_contents(data))
+    items.append("</%s>" % tag_name)
+    if with_linebreak:
+        items.append("\n")
+    result = "".join(items)
+    yield result
+
+def render_block(head, rest, with_linebreak=False, with_inline_contents=False):
     "Render the block"
     data = iter(rest)
     tag_name = tags[head]
     yield "<%s>" % tag_name
-    for item in data:
-        item = iter(item)
-        sub_head = item.next()
-        dispatcher = tag_dispatchers[sub_head]
-        for sub_item in indent(dispatcher(sub_head, item)):
-            yield sub_item
+    for item in _render_contents(data):
+        yield item
     if with_linebreak:
         yield "</%s>\n" % tag_name
     else:
@@ -175,8 +179,8 @@ tag_dispatchers = dict(
     unordered_list_nested=render_block,
     body=render_tagless,
     emphasis=render_spans,
-    unordered_bullet=render_spans,
-    paragraph=functools.partial(render_spans, with_linebreak=True))
+    unordered_bullet=render_block,
+    paragraph=functools.partial(render_spans, with_linebreak=False))
 
 def generate_html(data):
     "Convert a tree to flattened html"

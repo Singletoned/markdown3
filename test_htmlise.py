@@ -132,35 +132,6 @@ class TestRenderSpans(unittest.TestCase):
         for with_linebreak in [True, False]:
             do_test(with_linebreak)
 
-    def test_with_block(self):
-        """Test that render_spans handles blocks"""
-        def do_test(with_linebreak):
-            datum = [
-                'unordered_bullet',
-                "flibble",
-                ['unordered_list_nested',
-                 ['unordered_bullet', "blobble"],
-                 ['unordered_bullet', "blibble"]],
-                "flammble"]
-            expected = [
-                "<li>flibble",
-                "  <ul>",
-                "    <li>blobble</li>",
-                "    <li>blibble</li>",
-                "  </ul>",
-                "flammble</li>"]
-            if with_linebreak:
-                expected[-1] = expected[-1] + "\n"
-            result = listify(
-                htmlise.render_spans(
-                    datum[0],
-                    datum[1:],
-                    with_linebreak=with_linebreak))
-            assert expected == result
-
-        for with_linebreak in [True, False]:
-            do_test(with_linebreak)
-
 
 class TestRenderBlock(unittest.TestCase):
     """Unittests for render_block"""
@@ -176,8 +147,12 @@ class TestRenderBlock(unittest.TestCase):
                  "flobble"]]
             expected = [
                 "<ul>",
-                "  <li>flibble</li>",
-                "  <li>flobble</li>",
+                "  <li>",
+                "  flibble",
+                "  </li>",
+                "  <li>",
+                "  flobble",
+                "  </li>",
                 "</ul>"]
             if with_linebreak:
                 expected[-1] = expected[-1] + "\n"
@@ -207,13 +182,20 @@ class TestRenderBlock(unittest.TestCase):
                  "flobble"]]
             expected = [
                 "<ul>",
-                "  <li>flibble",
+                "  <li>",
+                "  flibble",
                 "    <ul>",
-                "      <li>blibble</li>",
-                "      <li>blobble</li>",
+                "      <li>",
+                "      blibble",
+                "      </li>",
+                "      <li>",
+                "      blobble",
+                "      </li>",
                 "    </ul>",
                 "  </li>",
-                "  <li>flobble</li>",
+                "  <li>",
+                "  flobble",
+                "  </li>",
                 "</ul>"]
             if with_linebreak:
                 expected[-1] = expected[-1] + "\n"
@@ -227,6 +209,43 @@ class TestRenderBlock(unittest.TestCase):
         for with_linebreak in [True, False]:
             do_test(with_linebreak)
 
+    def test_multiple_paragraphs(self):
+        "Test that multiple paragraphs display properly"
+        datum = [
+            'unordered_list',
+             ['unordered_bullet',
+              ['paragraph',
+               "bullet one, paragraph one"],
+              ['paragraph',
+               "bullet one, paragraph two.  Spans",
+               " ",
+               "multiple lines."]],
+             ['unordered_bullet',
+              ['paragraph',
+               "bullet two"]],
+             ['unordered_bullet',
+              ['paragraph',
+               "bullet three"]]]
+        expected = [
+            "<ul>",
+            "  <li>",
+            "    <p>bullet one, paragraph one</p>",
+            "    <p>bullet one, paragraph two.  Spans multiple lines.</p>",
+            "  </li>",
+            "  <li>",
+            "    <p>bullet two</p>",
+            "  </li>",
+            "  <li>",
+            "    <p>bullet three</p>",
+            "  </li>",
+            "</ul>"]
+        result = listify(
+            htmlise.render_block(
+                datum[0],
+                datum[1:]))
+        assert expected == result
+
+
 def test_render_tagless():
     """Test render_tagless"""
     datum = [
@@ -235,7 +254,7 @@ def test_render_tagless():
          "flibble",
          " ",
          "flamble"]]
-    expected = ["<p>flibble flamble</p>\n"]
+    expected = ["<p>flibble flamble</p>"]
     result = listify(htmlise.render_tagless(datum[0], datum[1:]))
     assert expected == result
 
@@ -250,7 +269,7 @@ class TestGenerateHTML(unittest.TestCase):
             "flibble",
             " ",
             "flamble"]
-        expected = ["<p>flibble flamble</p>\n"]
+        expected = ["<p>flibble flamble</p>"]
         result = list(htmlise.generate_html(datum))
         assert expected == result
 
@@ -262,7 +281,7 @@ class TestGenerateHTML(unittest.TestCase):
              "flibble",
              " ",
              "flamble"]]
-        expected = ["<p>flibble flamble</p>\n"]
+        expected = ["<p>flibble flamble</p>"]
         result = list(htmlise.generate_html(datum))
         assert expected == result
 
