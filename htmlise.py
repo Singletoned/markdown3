@@ -130,7 +130,7 @@ def _render_contents(data):
                 if current_text:
                     yield "".join(current_text)
                     current_text = []
-                for sub_item in indent(dispatcher(sub_head, item)):
+                for sub_item in dispatcher(sub_head, item):
                     yield sub_item
             else:
                 for sub_item in dispatcher(sub_head, item):
@@ -155,7 +155,7 @@ def render_block(head, rest, with_linebreak=False, with_inline_contents=False):
     data = iter(rest)
     tag_name = tags[head]
     yield "<%s>" % tag_name
-    for item in _render_contents(data):
+    for item in indent(_render_contents(data)):
         yield item
     if with_linebreak:
         yield "</%s>\n" % tag_name

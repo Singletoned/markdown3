@@ -148,10 +148,10 @@ class TestRenderBlock(unittest.TestCase):
             expected = [
                 "<ul>",
                 "  <li>",
-                "  flibble",
+                "    flibble",
                 "  </li>",
                 "  <li>",
-                "  flobble",
+                "    flobble",
                 "  </li>",
                 "</ul>"]
             if with_linebreak:
@@ -183,18 +183,18 @@ class TestRenderBlock(unittest.TestCase):
             expected = [
                 "<ul>",
                 "  <li>",
-                "  flibble",
+                "    flibble",
                 "    <ul>",
                 "      <li>",
-                "      blibble",
+                "        blibble",
                 "      </li>",
                 "      <li>",
-                "      blobble",
+                "        blobble",
                 "      </li>",
                 "    </ul>",
                 "  </li>",
                 "  <li>",
-                "  flobble",
+                "    flobble",
                 "  </li>",
                 "</ul>"]
             if with_linebreak:
