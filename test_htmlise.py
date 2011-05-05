@@ -259,6 +259,46 @@ def test_render_tagless():
     assert expected == result
 
 
+class TestRenderVoidElement(unittest.TestCase):
+    """Unittests for render_void_element"""
+
+    def test_simple(self):
+        """Test simplest case"""
+        def do_test(with_linebreak):
+            datum = ['horizontal_rule', ""]
+            expected = ["<hr/>"]
+            if with_linebreak:
+                expected[-1] = expected[-1] + "\n"
+            result = listify(
+                htmlise.render_void_element(
+                    datum[0],
+                    datum[1:],
+                    with_linebreak=with_linebreak))
+            assert expected == result
+
+        for with_linebreak in [True, False]:
+            do_test(with_linebreak)
+
+    def test_ignores_content(self):
+        """Test render_void_element ignores content"""
+        def do_test(with_linebreak):
+            datum = [
+                'horizontal_rule',
+                "flibble"]
+            expected = ["<hr/>"]
+            if with_linebreak:
+                expected[-1] = expected[-1] + "\n"
+            result = listify(
+                htmlise.render_void_element(
+                    datum[0],
+                    datum[1:],
+                    with_linebreak=with_linebreak))
+            assert expected == result
+
+        for with_linebreak in [True, False]:
+            do_test(with_linebreak)
+
+
 class TestGenerateHTML(unittest.TestCase):
     """Unitests for generate html"""
 

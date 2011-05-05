@@ -95,7 +95,8 @@ tags = dict(
     paragraph="p",
     emphasis="strong",
     body="body",
-    span="span")
+    span="span",
+    horizontal_rule="hr")
 
 def convert_tags(data):
     "Convert parser element names to tags"
@@ -172,9 +173,18 @@ def render_tagless(head, rest):
         for sub_item in dispatcher(sub_head, item):
             yield sub_item
 
+def render_void_element(head, rest, with_linebreak=False):
+    "Render something as a void element, ignoring contents"
+    tag_name = tags[head]
+    if with_linebreak:
+        yield "<%s/>\n" % tag_name
+    else:
+        yield "<%s/>" % tag_name
+
 tag_dispatchers = dict(
     heading_1=functools.partial(render_spans, with_linebreak=True),
     heading_2=functools.partial(render_spans, with_linebreak=True),
+    horizontal_rule=functools.partial(render_void_element, with_linebreak=True),
     unordered_list=functools.partial(render_block, with_linebreak=True),
     unordered_list_nested=render_block,
     body=render_tagless,
