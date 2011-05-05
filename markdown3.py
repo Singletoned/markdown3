@@ -636,4 +636,6 @@ def parse(text, pattern=body, with_rest=False):
 
 def to_html(text, pattern=body):
     data = pg.parse_string(text, pattern)
+    content = htmlise.generate_html(data)
+    return "\n".join(content)
     return "\n".join(htmlise.do_render(data, tagname_lookups, htmliser_funcs))

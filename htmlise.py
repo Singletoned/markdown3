@@ -92,6 +92,9 @@ tags = dict(
     unordered_list="ul",
     unordered_list_nested="ul",
     unordered_bullet="li",
+    ordered_list="ol",
+    ordered_list_nested="ol",
+    ordered_bullet="li",
     paragraph="p",
     emphasis="strong",
     body="body",
@@ -187,9 +190,12 @@ tag_dispatchers = dict(
     horizontal_rule=functools.partial(render_void_element, with_linebreak=True),
     unordered_list=functools.partial(render_block, with_linebreak=True),
     unordered_list_nested=render_block,
+    unordered_bullet=render_block,
+    ordered_list=functools.partial(render_block, with_linebreak=True),
+    ordered_list_nested=render_block,
+    ordered_bullet=render_block,
     body=render_tagless,
     emphasis=render_spans,
-    unordered_bullet=render_block,
     paragraph=functools.partial(render_spans, with_linebreak=False))
 
 def generate_html(data):

@@ -120,7 +120,7 @@ class TestParagraph(unittest.TestCase):
         result = markdown3.parse(datum)
         assert expected == result
 
-        expected_html = """<p>A paragraph.</p>\n"""
+        expected_html = """<p>A paragraph.</p>"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
@@ -136,7 +136,7 @@ class TestParagraph(unittest.TestCase):
         result = markdown3.parse(datum)
         assert expected == result
 
-        expected_html = """<p>A paragraph that spans multiple lines.</p>\n"""
+        expected_html = """<p>A paragraph that spans multiple lines.</p>"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
@@ -163,9 +163,15 @@ class TestUnorderedList(unittest.TestCase):
         assert expected == result
 
         expected_html = """<ul>
-  <li>item 1</li>
-  <li>item 2</li>
-  <li>item 3</li>
+  <li>
+    item 1
+  </li>
+  <li>
+    item 2
+  </li>
+  <li>
+    item 3
+  </li>
 </ul>
 """
         result = markdown3.to_html(datum)
@@ -190,9 +196,15 @@ class TestUnorderedList(unittest.TestCase):
         assert expected == result
 
         expected_html = """<ul>
-  <li>item 1</li>
-  <li>item 2</li>
-  <li>item 3</li>
+  <li>
+    item 1
+  </li>
+  <li>
+    item 2
+  </li>
+  <li>
+    item 3
+  </li>
 </ul>
 """
         result = markdown3.to_html(datum)
@@ -217,9 +229,15 @@ class TestUnorderedList(unittest.TestCase):
         assert expected == result
 
         expected_html = """<ul>
-  <li>item 1</li>
-  <li>item 2</li>
-  <li>item 3</li>
+  <li>
+    item 1
+  </li>
+  <li>
+    item 2
+  </li>
+  <li>
+    item 3
+  </li>
 </ul>
 """
         result = markdown3.to_html(datum)
@@ -248,9 +266,16 @@ class TestUnorderedList(unittest.TestCase):
             assert expected == result
 
             expected_html = """<ul>
-  <li><p>bullet one, paragraph one</p><p>bullet one, paragraph two.  Spans multiple lines.</p></li>
-  <li><p>bullet two</p></li>
-  <li><p>bullet three</p></li>
+  <li>
+    <p>bullet one, paragraph one</p>
+    <p>bullet one, paragraph two.  Spans multiple lines.</p>
+  </li>
+  <li>
+    <p>bullet two</p>
+  </li>
+  <li>
+    <p>bullet three</p>
+  </li>
 </ul>
 """
             result = markdown3.to_html(datum)
@@ -302,9 +327,15 @@ class TestOrderedList(unittest.TestCase):
         assert expected == result
 
         expected_html = """<ol>
-  <li>item 1</li>
-  <li>item 2</li>
-  <li>item 3</li>
+  <li>
+    item 1
+  </li>
+  <li>
+    item 2
+  </li>
+  <li>
+    item 3
+  </li>
 </ol>
 """
         result = markdown3.to_html(datum)
@@ -329,9 +360,15 @@ class TestOrderedList(unittest.TestCase):
         assert expected == result
 
         expected_html = """<ol>
-  <li>item 1</li>
-  <li>item 2</li>
-  <li>item 3</li>
+  <li>
+    item 1
+  </li>
+  <li>
+    item 2
+  </li>
+  <li>
+    item 3
+  </li>
 </ol>
 """
         result = markdown3.to_html(datum)
@@ -360,9 +397,16 @@ class TestOrderedList(unittest.TestCase):
             assert expected == result
 
             expected_html = """<ol>
-  <li><p>bullet one, paragraph one</p><p>bullet one, paragraph two.  Spans multiple lines.</p></li>
-  <li><p>bullet two</p></li>
-  <li><p>bullet three</p></li>
+  <li>
+    <p>bullet one, paragraph one</p>
+    <p>bullet one, paragraph two.  Spans multiple lines.</p>
+  </li>
+  <li>
+    <p>bullet two</p>
+  </li>
+  <li>
+    <p>bullet three</p>
+  </li>
 </ol>
 """
             result = markdown3.to_html(datum)
