@@ -5,13 +5,7 @@ import string
 import pegger as pg
 import htmlise
 
-tagname_lookups = dict()
-tagname = htmlise.make_tagname_decorator(tagname_lookups)
-htmliser_funcs = dict()
-htmliser = htmlise.make_htmlise_decorator(htmliser_funcs)
 
-
-@htmliser(htmlise.make_tagless)
 def body():
     return pg.Many(
         pg.OneOf(
@@ -22,22 +16,6 @@ def body():
             heading_1,
             heading_2,
             paragraph))
-
-# def body():
-#     return pg.Many(
-#         linebreaks,
-#         horizontal_rule,
-#         title_level_2,
-#         title_level_1,
-#         ordered_list,
-#         unordered_list,
-#         code_block,
-#         paragraph,
-#         blockquote,
-#         )
-
-# def plain():
-#     return pg.Words(string.lowercase+string.uppercase+string.digits+"., :")
 
 def emphasis():
     return pg.AllOf(
@@ -75,8 +53,6 @@ span = pg.Many(
         )
     )
 
-@htmliser(htmlise.make_span_with_linebreak)
-@tagname("p")
 def paragraph():
     return pg.AllOf(
         span,
@@ -120,15 +96,11 @@ def _make_list(bullet_type, optional):
             _multiple_bullets(bullet_type=bullet_type(span))),
         optional=optional)
 
-@htmliser(htmlise.make_block_with_linebreak)
-@tagname("ul")
 def unordered_list():
     return _make_list(
         bullet_type=unordered_bullet,
         optional=True)
 
-@htmliser(htmlise.make_block_with_linebreak)
-@tagname("ol")
 def ordered_list():
     return _make_list(
         bullet_type=ordered_bullet,
@@ -164,8 +136,6 @@ def _unordered_bullet_start():
             pg.OneOf("*", "+", "-"),
             " "))
 
-@htmliser(htmlise.make_span)
-@tagname("li")
 def unordered_bullet(content):
     def unordered_bullet():
         return _make_bullet(
@@ -187,8 +157,6 @@ def _ordered_bullet_start():
             ".",
             " "))
 
-@htmliser(htmlise.make_span)
-@tagname("li")
 def ordered_bullet(content):
     def ordered_bullet():
         return _make_bullet(
@@ -212,8 +180,6 @@ def _blank_line():
                         "\t"))),
             "\n"))
 
-@htmliser(htmlise.make_span_with_linebreak)
-@tagname("h1")
 def heading_1():
     return pg.AllOf(
         pg.Ignore("# "),
@@ -221,8 +187,6 @@ def heading_1():
         pg.Optional(
             pg.Ignore(" #")))
 
-@htmliser(htmlise.make_span_with_linebreak)
-@tagname("h2")
 def heading_2():
     return pg.AllOf(
         pg.Ignore("## "),
@@ -230,8 +194,6 @@ def heading_2():
         pg.Optional(
             pg.Ignore(" ##")))
 
-@htmliser(htmlise.make_void_element_with_linebreak)
-@tagname("hr")
 def horizontal_rule():
     return pg.AllOf(
         pg.Ignore(
