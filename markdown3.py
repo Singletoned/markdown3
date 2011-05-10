@@ -49,9 +49,15 @@ span = pg.Many(
     pg.OneOf(
         words,
         emphasis,
-        " "
-        )
-    )
+        " "))
+
+def _span_and_list():
+    return pg.AllOf(
+        span,
+        pg.Optional(
+            pg.AllOf(
+                pg.Ignore("\n"),
+                unordered_list)))
 
 def paragraph():
     return pg.AllOf(
@@ -101,7 +107,7 @@ def _make_list(bullet_type, optional):
                     content=_multiple_paragraphs)),
             _multiple_bullets(
                 bullet_type=bullet_type(
-                    content=span))),
+                    content=_span_and_list))),
         optional=optional)
 
 def unordered_list():

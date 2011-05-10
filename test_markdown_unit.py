@@ -340,7 +340,7 @@ class TestUnorderedList(unittest.TestCase):
                 'unordered_list',
                 ['unordered_bullet',
                  "bullet one, list one",
-                 ['unordered_list_nested',
+                 ['unordered_list',
                   ['unordered_bullet',
                    "bullet one, list two"]]]]
             result, rest = markdown3.parse(datum, markdown3.unordered_list, with_rest=True)
