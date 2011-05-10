@@ -68,9 +68,13 @@ def _multiple_paragraphs():
         paragraph,
         pg.Optional(
             pg.Many(
-                pg.AllOf(
-                    pg.Ignore("\n\n"),
-                    paragraph))))
+                pg.OneOf(
+                    pg.AllOf(
+                        pg.Ignore("\n\n"),
+                        paragraph),
+                    pg.AllOf(
+                        pg.Ignore("\n"),
+                        unordered_list)))))
 
 def _list_with_paragraphs(bullet_type):
     return pg.AllOf(

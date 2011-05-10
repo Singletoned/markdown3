@@ -435,6 +435,66 @@ class TestOrderedList(unittest.TestCase):
         for datum in data:
             do_test(datum)
 
+    def test_multiple_paragraphs_with_nested_list(self):
+        """Test that multiple paragraphs work with nested lists"""
+        datum = """
+1.	First
+
+2.	Second:
+	* Fee
+	* Fie
+	* Foe
+
+3.	Third
+        """.strip()
+        expected = [
+            'body',
+            ['ordered_list',
+             ['ordered_bullet',
+              ['paragraph',
+               "First"]],
+             ['ordered_bullet',
+              ['paragraph',
+               "Second:"],
+              ['unordered_list',
+               ['unordered_bullet',
+                "Fee"],
+               ['unordered_bullet',
+                "Fie"],
+               ['unordered_bullet',
+                "Foe"]]],
+             ['ordered_bullet',
+              ['paragraph',
+               "Third"]]]]
+        result = markdown3.parse(datum)
+        assert expected == result
+
+        expected_html = """<ol>
+  <li>
+    <p>First</p>
+  </li>
+  <li>
+    <p>Second:</p>
+    <ul>
+      <li>
+        Fee
+      </li>
+      <li>
+        Fie
+      </li>
+      <li>
+        Foe
+      </li>
+    </ul>
+
+  </li>
+  <li>
+    <p>Third</p>
+  </li>
+</ol>
+"""
+        result = markdown3.to_html(datum)
+        assert expected_html == result
 
 def test_horizontal_rules():
     datum = """
