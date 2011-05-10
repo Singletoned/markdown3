@@ -462,8 +462,6 @@ class TestOrderedList(unittest.TestCase):
              ['ordered_bullet',
               "Third"]]]
         result = markdown3.parse(datum)
-        print repr(expected)
-        print repr(result)
         assert expected == result
 
         expected_html = """<ol>
