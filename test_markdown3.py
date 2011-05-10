@@ -552,6 +552,7 @@ class TestOrderedList(unittest.TestCase):
         result = markdown3.to_html(datum)
         assert expected_html == result
 
+
 def test_horizontal_rules():
     datum = """
 ---
