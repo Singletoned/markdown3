@@ -96,8 +96,12 @@ def _multiple_bullets(bullet_type):
 def _make_list(bullet_type, optional):
     return pg.Indented(
         pg.OneOf(
-            _list_with_paragraphs(bullet_type=bullet_type(_multiple_paragraphs)),
-            _multiple_bullets(bullet_type=bullet_type(span))),
+            _list_with_paragraphs(
+                bullet_type=bullet_type(
+                    content=_multiple_paragraphs)),
+            _multiple_bullets(
+                bullet_type=bullet_type(
+                    content=span))),
         optional=optional)
 
 def unordered_list():
