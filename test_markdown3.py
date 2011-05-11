@@ -120,7 +120,7 @@ class TestParagraph(unittest.TestCase):
         result = markdown3.parse(datum)
         assert expected == result
 
-        expected_html = """<p>A paragraph.</p>"""
+        expected_html = """<p>A paragraph.</p>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
@@ -136,7 +136,7 @@ class TestParagraph(unittest.TestCase):
         result = markdown3.parse(datum)
         assert expected == result
 
-        expected_html = """<p>A paragraph that spans multiple lines.</p>"""
+        expected_html = """<p>A paragraph that spans multiple lines.</p>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
@@ -481,7 +481,6 @@ class TestOrderedList(unittest.TestCase):
         Foe
       </li>
     </ul>
-
   </li>
   <li>
     Third
@@ -542,7 +541,6 @@ class TestOrderedList(unittest.TestCase):
         Foe
       </li>
     </ul>
-
   </li>
   <li>
     <p>Third</p>

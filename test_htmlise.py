@@ -254,7 +254,7 @@ def test_render_tagless():
          "flibble",
          " ",
          "flamble"]]
-    expected = ["<p>flibble flamble</p>"]
+    expected = ["<p>flibble flamble</p>", ""]
     result = listify(htmlise.render_tagless(datum[0], datum[1:]))
     assert expected == result
 
@@ -321,7 +321,7 @@ class TestGenerateHTML(unittest.TestCase):
              "flibble",
              " ",
              "flamble"]]
-        expected = ["<p>flibble flamble</p>"]
+        expected = ["<p>flibble flamble</p>", ""]
         result = list(htmlise.generate_html(datum))
         assert expected == result
 

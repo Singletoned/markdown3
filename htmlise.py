@@ -91,6 +91,7 @@ def render_tagless(head, rest):
         dispatcher = tag_dispatchers[sub_head]
         for sub_item in dispatcher(sub_head, item):
             yield sub_item
+        yield ""
 
 def render_void_element(head, rest, with_linebreak=False):
     "Render something as a void element, ignoring contents"
@@ -101,13 +102,13 @@ def render_void_element(head, rest, with_linebreak=False):
         yield "<%s/>" % tag_name
 
 tag_dispatchers = dict(
-    heading_1=functools.partial(render_spans, with_linebreak=True),
-    heading_2=functools.partial(render_spans, with_linebreak=True),
-    horizontal_rule=functools.partial(render_void_element, with_linebreak=True),
-    unordered_list=functools.partial(render_block, with_linebreak=True),
+    heading_1=render_spans,
+    heading_2=render_spans,
+    horizontal_rule=render_void_element,
+    unordered_list=render_block,
     unordered_list_nested=render_block,
     unordered_bullet=render_block,
-    ordered_list=functools.partial(render_block, with_linebreak=True),
+    ordered_list=render_block,
     ordered_list_nested=render_block,
     ordered_bullet=render_block,
     body=render_tagless,
