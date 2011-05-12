@@ -1019,6 +1019,24 @@ class TestLink(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
+    def test_link_with_title_and_idiotic_spacing(self):
+        """Test that the url part can have a title"""
+        datum = '[a link to Google](http://www.google.com  \t"Google")'
+        expected = [
+            'link',
+            ['link_text',
+             "a link to Google"],
+            ['link_url',
+             "http://www.google.com"],
+            ['link_title',
+             "Google"]]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
     def test_paragraph_with_link_with_title(self):
         """Test that a link matches as part of a paragraph"""
         datum = """some text with [a link to Google](http://www.google.com "Google!") in it"""

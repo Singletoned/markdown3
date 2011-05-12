@@ -47,7 +47,12 @@ def link_url():
 
 def link_title():
     return pg.AllOf(
-        pg.Ignore(''' "'''),
+        pg.Ignore(
+            pg.Many(
+                pg.OneOf(
+                    " ",
+                    "\t"))),
+        pg.Ignore('''"'''),
         pg.Join(
             pg.Many(
                 pg.Not('''"'''))),
