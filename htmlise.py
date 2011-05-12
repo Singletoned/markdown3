@@ -105,7 +105,11 @@ def render_void_element(head, rest, with_linebreak=False):
 def render_link(head, rest):
     "Render a link.  `rest` is a list of key, value pairs"
     data = dict(rest)
-    template = '''<a href="%(link_url)s">%(link_text)s</a>'''
+    if data.has_key('link_title'):
+        data['link_title'] = ''' title="%s"''' % data['link_title']
+    else:
+        data['link_title'] = ''
+    template = '''<a href="%(link_url)s"%(link_title)s>%(link_text)s</a>'''
     yield template % data
 
 tag_dispatchers = dict(

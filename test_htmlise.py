@@ -298,17 +298,34 @@ class TestRenderVoidElement(unittest.TestCase):
         for with_linebreak in [True, False]:
             do_test(with_linebreak)
 
+class TestRenderLink(unittest.TestCase):
+    """Unittests for render_link"""
 
-def test_render_link():
-    datum = [
-        'link',
-        ['link_text', "a link to Google"],
-        ['link_url',
-         "http://www.google.com"]]
+    def test_without_title(self):
+        """Test without a title"""
+        datum = [
+            'link',
+            ['link_text', "a link to Google"],
+            ['link_url',
+             "http://www.google.com"]]
 
-    expected = ['''<a href="http://www.google.com">a link to Google</a>''']
-    result = listify(htmlise.render_link(datum[0], datum[1:]))
-    assert expected == result
+        expected = ['''<a href="http://www.google.com">a link to Google</a>''']
+        result = listify(htmlise.render_link(datum[0], datum[1:]))
+        assert expected == result
+
+    def test_with_title(self):
+        """Test with a title"""
+        datum = [
+            'link',
+            ['link_text', "a link to Google"],
+            ['link_url',
+             "http://www.google.com"],
+            ['link_title',
+             "Google!"]]
+
+        expected = ['''<a href="http://www.google.com" title="Google!">a link to Google</a>''']
+        result = listify(htmlise.render_link(datum[0], datum[1:]))
+        assert expected == result
 
 
 class TestGenerateHTML(unittest.TestCase):

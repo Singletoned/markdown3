@@ -943,11 +943,33 @@ class TestLink(unittest.TestCase):
 
     def test_link_url(self):
         """Test that the link part matches"""
-        datum = "(http://foo.com)"
+        datum = "http://foo.com"
         expected = ['link_url', "http://foo.com"]
         result, rest = markdown3.parse(
             datum,
             markdown3.link_url,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_link_url_with_title(self):
+        """Test that the link part matches, but not past a space"""
+        datum = "http://foo.com foo"
+        expected = ['link_url', "http://foo.com"]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link_url,
+            with_rest=True)
+        assert expected == result
+        assert rest == " foo"
+
+    def test_link_title(self):
+        """Test that the title part matches"""
+        datum = ''' "Foo"'''
+        expected = ['link_title', "Foo"]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link_title,
             with_rest=True)
         assert expected == result
         assert rest == ""
@@ -963,7 +985,7 @@ class TestLink(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
-    def test_link(self):
+    def test_link_without_title(self):
         """Test that a whole link matches by itself"""
         datum = "[a link to Google](http://www.google.com)"
         expected = [
@@ -979,9 +1001,27 @@ class TestLink(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
-    def test_paragraph_with_link(self):
+    def test_link_with_title(self):
+        """Test that the url part can have a title"""
+        datum = '[a link to Google](http://www.google.com "Google")'
+        expected = [
+            'link',
+            ['link_text',
+             "a link to Google"],
+            ['link_url',
+             "http://www.google.com"],
+            ['link_title',
+             "Google"]]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_paragraph_with_link_with_title(self):
         """Test that a link matches as part of a paragraph"""
-        datum = "some text with [a link to Google](http://www.google.com) in it"
+        datum = """some text with [a link to Google](http://www.google.com "Google!") in it"""
         expected = [
             'paragraph',
             "some text with",
@@ -990,7 +1030,9 @@ class TestLink(unittest.TestCase):
              ['link_text',
               "a link to Google"],
              ['link_url',
-              "http://www.google.com"]],
+              "http://www.google.com"],
+             ['link_title',
+              "Google!"]],
             " ",
             "in it"]
         result, rest = markdown3.parse(

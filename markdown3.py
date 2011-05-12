@@ -24,7 +24,13 @@ def emphasis():
         pg.Ignore('*'))
 
 def link():
-    return pg.AllOf(link_text, link_url)
+    return pg.AllOf(
+        link_text,
+        pg.Ignore("("),
+        link_url,
+        pg.Optional(
+            link_title),
+        pg.Ignore(")"))
 
 def link_text():
     return pg.AllOf(
@@ -35,12 +41,17 @@ def link_text():
         pg.Ignore("]"))
 
 def link_url():
+    return pg.Join(
+        pg.Many(
+            url_characters))
+
+def link_title():
     return pg.AllOf(
-        pg.Ignore("("),
+        pg.Ignore(''' "'''),
         pg.Join(
             pg.Many(
-                pg.Not(")"))),
-        pg.Ignore(")"))
+                pg.Not('''"'''))),
+        pg.Ignore('''"'''))
 
 multiline_words = pg.AllOf(
     pg.Words(string.lowercase+string.uppercase+string.digits+"., :"),
@@ -52,6 +63,7 @@ multiline_words = pg.AllOf(
                 pg.Words(string.lowercase+string.uppercase+string.digits+"., :")))))
 
 characters = pg.Words(string.lowercase+string.uppercase+string.digits+""".,:\"'""")
+url_characters = pg.Words(string.lowercase+string.uppercase+string.digits+"/:.")
 
 words = pg.Join(
     pg.AllOf(

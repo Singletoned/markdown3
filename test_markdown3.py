@@ -142,7 +142,7 @@ class TestParagraph(unittest.TestCase):
 
     def test_paragraph_with_link(self):
         """Test that a link matches as part of a paragraph"""
-        datum = "Some text with [a link to Google](http://www.google.com) in it."
+        datum = '''Some text with [a link to Google!](http://www.google.com "Google!") in it.'''
         expected = [
             'body',
             ['paragraph',
@@ -150,15 +150,17 @@ class TestParagraph(unittest.TestCase):
              " ",
              ['link',
               ['link_text',
-               "a link to Google"],
+               "a link to Google!"],
               ['link_url',
-               "http://www.google.com"]],
+               "http://www.google.com"],
+              ['link_title',
+               "Google!"]],
              " ",
              "in it."]]
         result = markdown3.parse(datum)
         assert expected == result
 
-        expected_html = """<p>Some text with <a href="http://www.google.com">a link to Google</a> in it.</p>\n"""
+        expected_html = """<p>Some text with <a href="http://www.google.com" title="Google!">a link to Google!</a> in it.</p>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
