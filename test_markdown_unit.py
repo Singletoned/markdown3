@@ -898,7 +898,6 @@ class TestHorizontalRule(unittest.TestCase):
                 do_test(datum+suffix)
 
 
-
 class TestBlankLine(unittest.TestCase):
     """Unittests for _blankline"""
 
