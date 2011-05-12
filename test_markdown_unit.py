@@ -986,7 +986,7 @@ class TestLink(unittest.TestCase):
         assert rest == ""
 
     def test_link_without_title(self):
-        """Test that a whole link matches by itself"""
+        """Test that a link without a title matches"""
         datum = "[a link to Google](http://www.google.com)"
         expected = [
             'link',
@@ -1002,7 +1002,7 @@ class TestLink(unittest.TestCase):
         assert rest == ""
 
     def test_link_with_title(self):
-        """Test that the url part can have a title"""
+        """Test that a link can have a title"""
         datum = '[a link to Google](http://www.google.com "Google")'
         expected = [
             'link',
@@ -1020,7 +1020,7 @@ class TestLink(unittest.TestCase):
         assert rest == ""
 
     def test_link_with_title_and_idiotic_spacing(self):
-        """Test that the url part can have a title"""
+        """Test that there can be spaces and tabs between the url and title"""
         datum = '[a link to Google](http://www.google.com  \t"Google")'
         expected = [
             'link',
@@ -1038,7 +1038,7 @@ class TestLink(unittest.TestCase):
         assert rest == ""
 
     def test_paragraph_with_link_with_title(self):
-        """Test that a link matches as part of a paragraph"""
+        """Test that a link with a title matches as part of a paragraph"""
         datum = """some text with [a link to Google](http://www.google.com "Google!") in it"""
         expected = [
             'paragraph',
