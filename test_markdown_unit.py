@@ -937,3 +937,66 @@ class TestBlankLine(unittest.TestCase):
 
         for datum in data:
             do_test(datum)
+
+
+class TestLink(unittest.TestCase):
+    """Unittests for link"""
+
+    def test_link_url(self):
+        """Test that the link part matches"""
+        datum = "(http://foo.com)"
+        expected = ['link_url', "http://foo.com"]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link_url,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_link_text(self):
+        """Test that the text part matches"""
+        datum = "[foo]"
+        expected = ['link_text', "foo"]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link_text,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_link(self):
+        """Test that a whole link matches by itself"""
+        datum = "[a link to Google](http://www.google.com)"
+        expected = [
+            'link',
+            ['link_text',
+             "a link to Google"],
+            ['link_url',
+             "http://www.google.com"]]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_paragraph_with_link(self):
+        """Test that a link matches as part of a paragraph"""
+        datum = "some text with [a link to Google](http://www.google.com) in it"
+        expected = [
+            'paragraph',
+            "some text with",
+            " ",
+            ['link',
+             ['link_text',
+              "a link to Google"],
+             ['link_url',
+              "http://www.google.com"]],
+            " ",
+            "in it"]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.paragraph,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""

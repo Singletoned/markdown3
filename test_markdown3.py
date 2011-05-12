@@ -140,6 +140,28 @@ class TestParagraph(unittest.TestCase):
         result = markdown3.to_html(datum)
         assert expected_html == result
 
+    def test_paragraph_with_link(self):
+        """Test that a link matches as part of a paragraph"""
+        datum = "Some text with [a link to Google](http://www.google.com) in it."
+        expected = [
+            'body',
+            ['paragraph',
+             "Some text with",
+             " ",
+             ['link',
+              ['link_text',
+               "a link to Google"],
+              ['link_url',
+               "http://www.google.com"]],
+             " ",
+             "in it."]]
+        result = markdown3.parse(datum)
+        assert expected == result
+
+        expected_html = """<p>Some text with <a href="http://www.google.com">a link to Google</a> in it.</p>\n"""
+        result = markdown3.to_html(datum)
+        assert expected_html == result
+
 
 class TestUnorderedList(unittest.TestCase):
     """General tests for unordered list"""

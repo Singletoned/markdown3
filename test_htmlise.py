@@ -299,6 +299,18 @@ class TestRenderVoidElement(unittest.TestCase):
             do_test(with_linebreak)
 
 
+def test_render_link():
+    datum = [
+        'link',
+        ['link_text', "a link to Google"],
+        ['link_url',
+         "http://www.google.com"]]
+
+    expected = ['''<a href="http://www.google.com">a link to Google</a>''']
+    result = listify(htmlise.render_link(datum[0], datum[1:]))
+    assert expected == result
+
+
 class TestGenerateHTML(unittest.TestCase):
     """Unitests for generate html"""
 

@@ -15,6 +15,7 @@ tags = dict(
     emphasis="strong",
     body="body",
     span="span",
+    link="a",
     horizontal_rule="hr")
 
 def convert_tags(data):
@@ -101,6 +102,12 @@ def render_void_element(head, rest, with_linebreak=False):
     else:
         yield "<%s/>" % tag_name
 
+def render_link(head, rest):
+    "Render a link.  `rest` is a list of key, value pairs"
+    data = dict(rest)
+    template = '''<a href="%(link_url)s">%(link_text)s</a>'''
+    yield template % data
+
 tag_dispatchers = dict(
     heading_1=render_spans,
     heading_2=render_spans,
@@ -113,6 +120,7 @@ tag_dispatchers = dict(
     ordered_bullet=render_block,
     body=render_tagless,
     emphasis=render_spans,
+    link=render_link,
     paragraph=functools.partial(render_spans, with_linebreak=False))
 
 def generate_html(data):
