@@ -3,8 +3,8 @@
 import itertools, functools
 
 tags = dict(
-    heading_1="h1",
-    heading_2="h2",
+    header_1="h1",
+    header_2="h2",
     unordered_list="ul",
     unordered_list_nested="ul",
     unordered_bullet="li",
@@ -118,8 +118,8 @@ def render_link(head, rest):
     yield template % data
 
 tag_dispatchers = dict(
-    heading_1=render_spans,
-    heading_2=render_spans,
+    header_1=render_spans,
+    header_2=render_spans,
     horizontal_rule=render_void_element,
     unordered_list=render_block,
     unordered_list_nested=render_block,

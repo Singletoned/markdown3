@@ -13,8 +13,8 @@ def body():
             unordered_list,
             ordered_list,
             linebreaks,
-            heading_1,
-            heading_2,
+            header_1,
+            header_2,
             paragraph))
 
 def emphasis():
@@ -232,14 +232,14 @@ def _blank_line():
                         "\t"))),
             "\n"))
 
-def heading_1():
+def header_1():
     return pg.AllOf(
         pg.Ignore("# "),
         words,
         pg.Optional(
             pg.Ignore(" #")))
 
-def heading_2():
+def header_2():
     return pg.AllOf(
         pg.Ignore("## "),
         words,

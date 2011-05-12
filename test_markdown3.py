@@ -6,94 +6,94 @@ import unittest
 
 import markdown3, htmlise
 
-class TestHeading1(unittest.TestCase):
-    """General tests for heading_1"""
+class TestHeader1(unittest.TestCase):
+    """General tests for header_1"""
 
     def test_simple(self):
         """test simplest case"""
-        datum = """# A level one heading #"""
+        datum = """# A level one header #"""
         expected = [
             'body',
-            ['heading_1', "A level one heading"]]
+            ['header_1', "A level one header"]]
         result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h1>A level one heading</h1>\n"""
+        expected_html = """<h1>A level one header</h1>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_without_closing_tag(self):
-        """Test heading_1 without closing tag"""
-        datum = """# A level one heading"""
+        """Test header_1 without closing tag"""
+        datum = """# A level one header"""
         expected = [
             'body',
-            ['heading_1', "A level one heading"]]
+            ['header_1', "A level one header"]]
         result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h1>A level one heading</h1>\n"""
+        expected_html = """<h1>A level one header</h1>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_with_leading_linebreaks(self):
-        """Test heading_1 with leading linebreaks"""
-        datum = """\n\n# A level one heading"""
+        """Test header_1 with leading linebreaks"""
+        datum = """\n\n# A level one header"""
         expected = [
             'body',
-            ['heading_1', "A level one heading"]]
+            ['header_1', "A level one header"]]
         result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h1>A level one heading</h1>\n"""
+        expected_html = """<h1>A level one header</h1>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
 
-class TestHeading2(unittest.TestCase):
-    """General tests for heading_2"""
+class TestHeader2(unittest.TestCase):
+    """General tests for header_2"""
 
     def test_simple(self):
         """test simplest case"""
-        datum = """## A level two heading ##"""
+        datum = """## A level two header ##"""
         expected = [
             'body',
-            ['heading_2', "A level two heading"]]
+            ['header_2', "A level two header"]]
         result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h2>A level two heading</h2>\n"""
+        expected_html = """<h2>A level two header</h2>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_without_closing_tag(self):
-        """Test heading_2 without closing tag"""
-        datum = """## A level two heading"""
+        """Test header_2 without closing tag"""
+        datum = """## A level two header"""
         expected = [
             'body',
-            ['heading_2', "A level two heading"]]
+            ['header_2', "A level two header"]]
         result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h2>A level two heading</h2>\n"""
+        expected_html = """<h2>A level two header</h2>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 
     def test_with_leading_linebreaks(self):
-        """Test heading_2 with leading linebreaks"""
-        datum = """\n\n## A level two heading"""
+        """Test header_2 with leading linebreaks"""
+        datum = """\n\n## A level two header"""
         expected = [
             'body',
-            ['heading_2', "A level two heading"]]
+            ['header_2', "A level two header"]]
         result, rest = markdown3.parse(datum, with_rest=True)
         assert expected == result
         assert rest == ""
 
-        expected_html = """<h2>A level two heading</h2>\n"""
+        expected_html = """<h2>A level two header</h2>\n"""
         result = markdown3.to_html(datum)
         assert expected_html == result
 

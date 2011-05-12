@@ -682,69 +682,69 @@ class TestLinebreaks(unittest.TestCase):
         assert rest == ""
 
 
-class TestHeading1(unittest.TestCase):
-    """Unittests for Heading"""
+class TestHeader1(unittest.TestCase):
+    """Unittests for Header"""
 
     def test_level_1(self):
-        """Test level one heading"""
-        datum = "# Heading 1 #"
+        """Test level one header"""
+        datum = "# Header 1 #"
         expected = [
-            'heading_1',
-            "Heading 1"]
-        result, rest = markdown3.parse(datum, markdown3.heading_1, with_rest=True)
+            'header_1',
+            "Header 1"]
+        result, rest = markdown3.parse(datum, markdown3.header_1, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_level_1_one_word(self):
-        """Test level one heading with only one word"""
-        datum = "# Heading #"
+        """Test level one header with only one word"""
+        datum = "# Header #"
         expected = [
-            'heading_1',
-            "Heading"]
-        result, rest = markdown3.parse(datum, markdown3.heading_1, with_rest=True)
+            'header_1',
+            "Header"]
+        result, rest = markdown3.parse(datum, markdown3.header_1, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_level_1_without_end_tag(self):
-        """Test level one heading without closing hash"""
-        datum = "# Heading 1"
+        """Test level one header without closing hash"""
+        datum = "# Header 1"
         expected = [
-            'heading_1',
-            "Heading 1"]
-        result, rest = markdown3.parse(datum, markdown3.heading_1, with_rest=True)
+            'header_1',
+            "Header 1"]
+        result, rest = markdown3.parse(datum, markdown3.header_1, with_rest=True)
         assert expected == result
         assert rest == ""
 
 
-class TestHeading2(unittest.TestCase):
-    """Unittests for Heading"""
+class TestHeader2(unittest.TestCase):
+    """Unittests for Header"""
     def test_level_2(self):
-        """Test level two heading"""
-        datum = "## Heading 2 ##"
+        """Test level two header"""
+        datum = "## Header 2 ##"
         expected = [
-            'heading_2',
-            "Heading 2"]
-        result, rest = markdown3.parse(datum, markdown3.heading_2, with_rest=True)
+            'header_2',
+            "Header 2"]
+        result, rest = markdown3.parse(datum, markdown3.header_2, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_level_2_one_word(self):
-        """Test level two heading with only one word"""
-        datum = "## Heading ##"
+        """Test level two header with only one word"""
+        datum = "## Header ##"
         expected = [
-            'heading_2',
-            "Heading"]
-        result, rest = markdown3.parse(datum, markdown3.heading_2, with_rest=True)
+            'header_2',
+            "Header"]
+        result, rest = markdown3.parse(datum, markdown3.header_2, with_rest=True)
         assert expected == result
         assert rest == ""
 
     def test_level_2_without_end_tag(self):
-        """Test level two heading without closing hash"""
-        datum = "## Heading 2"
+        """Test level two header without closing hash"""
+        datum = "## Header 2"
         expected = [
-            'heading_2',
-            "Heading 2"]
-        result, rest = markdown3.parse(datum, markdown3.heading_2, with_rest=True)
+            'header_2',
+            "Header 2"]
+        result, rest = markdown3.parse(datum, markdown3.header_2, with_rest=True)
         assert expected == result
         assert rest == ""
 
