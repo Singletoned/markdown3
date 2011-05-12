@@ -715,6 +715,22 @@ class TestHeader1(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
+    def test_level_1_setext_header(self):
+        """Test level one heading setext style"""
+        datum = """
+Header 1
+========
+""".strip()
+        expected = [
+            'header_1',
+            "Header 1"]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.header_1,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
 
 class TestHeader2(unittest.TestCase):
     """Unittests for Header"""
@@ -745,6 +761,22 @@ class TestHeader2(unittest.TestCase):
             'header_2',
             "Header 2"]
         result, rest = markdown3.parse(datum, markdown3.header_2, with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_level_2_setext_header(self):
+        """Test level two heading setext style"""
+        datum = """
+Header 2
+--------
+""".strip()
+        expected = [
+            'header_2',
+            "Header 2"]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.header_2,
+            with_rest=True)
         assert expected == result
         assert rest == ""
 

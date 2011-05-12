@@ -233,18 +233,30 @@ def _blank_line():
             "\n"))
 
 def header_1():
-    return pg.AllOf(
-        pg.Ignore("# "),
-        words,
-        pg.Optional(
-            pg.Ignore(" #")))
+    return pg.OneOf(
+        pg.AllOf(
+            words,
+            pg.Ignore("\n"),
+            pg.Ignore(
+                pg.Many("="))),
+        pg.AllOf(
+            pg.Ignore("# "),
+            words,
+            pg.Optional(
+                pg.Ignore(" #"))))
 
 def header_2():
-    return pg.AllOf(
-        pg.Ignore("## "),
-        words,
-        pg.Optional(
-            pg.Ignore(" ##")))
+    return pg.OneOf(
+        pg.AllOf(
+            words,
+            pg.Ignore("\n"),
+            pg.Ignore(
+                pg.Many("-"))),
+        pg.AllOf(
+            pg.Ignore("## "),
+            words,
+            pg.Optional(
+                pg.Ignore(" ##"))))
 
 def horizontal_rule():
     return pg.AllOf(
