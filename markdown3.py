@@ -232,31 +232,33 @@ def _blank_line():
                         "\t"))),
             "\n"))
 
+def _setext_style_header(underline):
+    return pg.AllOf(
+        words,
+        pg.Ignore("\n"),
+        pg.Ignore(
+            pg.Many(underline)))
+
+def _atx_style_header(hashes):
+    return pg.AllOf(
+        pg.Ignore(hashes),
+        pg.Ignore(" "),
+        words,
+        pg.Optional(
+            pg.Ignore(
+                pg.AllOf(
+                    " ",
+                    hashes))))
+
 def header_1():
     return pg.OneOf(
-        pg.AllOf(
-            words,
-            pg.Ignore("\n"),
-            pg.Ignore(
-                pg.Many("="))),
-        pg.AllOf(
-            pg.Ignore("# "),
-            words,
-            pg.Optional(
-                pg.Ignore(" #"))))
+        _setext_style_header("="),
+        _atx_style_header("#"))
 
 def header_2():
     return pg.OneOf(
-        pg.AllOf(
-            words,
-            pg.Ignore("\n"),
-            pg.Ignore(
-                pg.Many("-"))),
-        pg.AllOf(
-            pg.Ignore("## "),
-            words,
-            pg.Optional(
-                pg.Ignore(" ##"))))
+        _setext_style_header("-"),
+        _atx_style_header("##"))
 
 def horizontal_rule():
     return pg.AllOf(
