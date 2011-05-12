@@ -327,6 +327,27 @@ class TestRenderLink(unittest.TestCase):
         result = listify(htmlise.render_link(datum[0], datum[1:]))
         assert expected == result
 
+    def test_empty(self):
+        """Test empty link"""
+        datum = [
+            'link',
+            ['link_text', "a link to nothing"]]
+
+        expected = ['''<a>a link to nothing</a>''']
+        result = listify(htmlise.render_link(datum[0], datum[1:]))
+        assert expected == result
+
+    def test_only_title(self):
+        """Test link with only title, no url"""
+        datum = [
+            'link',
+            ['link_text', "a link to Google!"],
+            ['link_title', "Google!"]]
+
+        expected = ['''<a title="Google!">a link to Google!</a>''']
+        result = listify(htmlise.render_link(datum[0], datum[1:]))
+        assert expected == result
+
 
 class TestGenerateHTML(unittest.TestCase):
     """Unitests for generate html"""

@@ -102,14 +102,19 @@ def render_void_element(head, rest, with_linebreak=False):
     else:
         yield "<%s/>" % tag_name
 
+_link_part_templates = dict(
+    link_title=''' title="%s"''',
+    link_url=''' href="%s"''',
+    link_text='%s')
+
 def render_link(head, rest):
     "Render a link.  `rest` is a list of key, value pairs"
     data = dict(rest)
-    if data.has_key('link_title'):
-        data['link_title'] = ''' title="%s"''' % data['link_title']
-    else:
-        data['link_title'] = ''
-    template = '''<a href="%(link_url)s"%(link_title)s>%(link_text)s</a>'''
+    for key in data.keys():
+        data[key] = _link_part_templates[key] % data[key]
+    for key in ['link_title', 'link_url']:
+        data.setdefault(key, '')
+    template = '''<a%(link_url)s%(link_title)s>%(link_text)s</a>'''
     yield template % data
 
 tag_dispatchers = dict(

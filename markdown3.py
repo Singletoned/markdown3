@@ -27,7 +27,8 @@ def link():
     return pg.AllOf(
         link_text,
         pg.Ignore("("),
-        link_url,
+        pg.Optional(
+            link_url),
         pg.Optional(
             link_title),
         pg.Ignore(")"))

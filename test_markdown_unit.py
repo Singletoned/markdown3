@@ -985,6 +985,20 @@ class TestLink(unittest.TestCase):
         assert expected == result
         assert rest == ""
 
+    def test_empty_link(self):
+        """Test that an empty link matches"""
+        datum = "[a link to nothing]()"
+        expected = [
+            'link',
+            ['link_text',
+             "a link to nothing"]]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
     def test_link_without_title(self):
         """Test that a link without a title matches"""
         datum = "[a link to Google](http://www.google.com)"
@@ -1010,6 +1024,22 @@ class TestLink(unittest.TestCase):
              "a link to Google"],
             ['link_url',
              "http://www.google.com"],
+            ['link_title',
+             "Google"]]
+        result, rest = markdown3.parse(
+            datum,
+            markdown3.link,
+            with_rest=True)
+        assert expected == result
+        assert rest == ""
+
+    def test_link_with_only_title(self):
+        """Test that a link can have only a title"""
+        datum = '[a link to Google]( "Google")'
+        expected = [
+            'link',
+            ['link_text',
+             "a link to Google"],
             ['link_title',
              "Google"]]
         result, rest = markdown3.parse(
